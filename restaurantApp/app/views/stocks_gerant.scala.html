@@ -4,18 +4,20 @@
 	<head>
 		<meta charset="utf-8">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<link href="../assets/stylesheets/file0.css" rel="stylesheet">
 		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
 	</head>
 
 	<body>
+		<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" >
+			<a href="../views/authentification.html"><input type="button" name="Deconnexion" value="Déconnexion" >
+		
 		<div class="container">
 			<nav class="navbar navbar-inverse">
 				<div class="container-fluid">
 					<ul class="nav navbar-nav">
 						<li onclick="clicked(this)"> <a href="#">Stocks</a> </li>
 						<li onclick="clicked(this)"> <a href="#">Demande de réapprovisionnement</a> </li>
-						<li onclick="clicked(this)"> <a href="#">Alerte</a> </li>
+						<li onclick="clicked(this)"> <a href="#">Alertes</a> </li>
 						<li onclick="clicked(this)"> <a href="#">Administration</a> </li>
 						<li onclick="clicked(this)"> <a href="#">Suivi des commandes</a> </li>
 					</ul>
@@ -37,50 +39,46 @@
 				
 				<div class="form-group" id="id2">
 					<div class="col-md-2">
-						<label for="ingredient">Ingrédient:</label>
+						<label for="ingredient">Ingrédient :</label>
 						<select name="ingredient" id="ingredient">
-							<option value="france">France</option>
-							<option value="espagne">Espagne</option>
-							<option value="italie">Italie</option>
-							<option value="royaume-uni">Royaume-Uni</option>
-							<option value="canada">Canada</option>
-							<option value="etats-unis">États-Unis</option>
-							<option value="chine">Chine</option>
-							<option value="japon">Japon</option>
+							<option value="fromage">Fromage</option>
+							<option value="chorizo">Chorizo</option>
+							<option value="pâtes">Pâtes</option>
+							<option value="oeuf">Oeufs</option>
+							<option value="pomme">Pomme</option>
+							<option value="chocolat">Chocolat</option>
+							<option value="noix de coco">Noix de coco</option>
+							<option value="riz">Riz</option>
 						</select>
 					</div>
 						
 					<div class="col-md-2">
-						<label for="qualite">Qualité:</label>
+						<label for="qualite">Qualité :</label>
 						<input 7type="text" id="qualite" name="Nom" />
 					</div>
 					
 					<div class="col-md-2">
-						<label for="minimum">Minimum:</label>
+						<label for="minimum">Minimum :</label>
 						<input type="text" id="minimum" name="Nom" />
 					</div>
 					
 					<div class="col-md-2">
-						<label for="maximum">Maximum:</label>
+						<label for="maximum">Maximum :</label>
 						<input type="text" id="maximum" name="Nom" />
 					</div>
 					
 					<div class="col-md-2">
-						<label for="alerte">Seuil d'alerte:</label>
+						<label for="alerte">Seuil d'alerte :</label>
 						<input type="text" id="alerte" name="alerte" />
 					</div>
 					
 					<div class="col-md-2">
-						<label for="unite">Unité:</label>
+						<label for="unite">Unité :</label>
 						<select name="unite" id="unite">
-							<option value="france">France</option>
-							<option value="espagne">Espagne</option>
-							<option value="italie">Italie</option>
-							<option value="royaume-uni">Royaume-Uni</option>
-							<option value="canada">Canada</option>
-							<option value="etats-unis">États-Unis</option>
-							<option value="chine">Chine</option>
-							<option value="japon">Japon</option>
+							<option value="pièce">Pièce</option>
+							<option value="kilogramme">kilogramme</option>
+							<option value="gramme">gramme</option>
+							<option value="litre">litre</option>
 						</select>
 					</div>
 				</div>
