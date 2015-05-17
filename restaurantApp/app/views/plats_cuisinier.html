@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-<title>Plats du cuisinier</title>
-</head>
-<body>
-<label>Plat A</label>
-<a href="../views/recette_cuisinier.html"><input type="button" name="recette" value="Recette"> 
-</body>
+	
+	<head>
+		<meta charset="ISO-8859-1">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+		<title>Plats du cuisinier</title>
+	</head>
+	
+	<body>
+		<label>Plat A</label>
+		<a href="../views/recette_cuisinier.html"><input type="button" name="recette" value="Recette"> 
+		
+		<a href="../views/ajouter_plat_cuisinier.html"><input type="button" name="ajouter_plat" value="Ajouter un plat"> 
+		<form>
+		
+		</form>
+		<fieldset>
+				<label for="nom">Nom du plat : </label>
+				<input type="text" id="nom_plat" name="nom_plat"/> </br>
+				
+	
+				<label for="rôle">Rôle de l'utilisateur : </label>
+				<select id="role" name="role"> 
+					<option> - </option>
+					<option>Gérant</option>
+					<option>Cuisinier</option>
+					<option>Serveur</option>
+				</select></br>
+				
+				<input type="button" id="ajouter" name="ajouter" value="Créer membre"/>
+			</fieldset>
+	</body>
+	
 </html>
