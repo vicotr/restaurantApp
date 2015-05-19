@@ -1,17 +1,16 @@
 package models;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-import javax.persistence.*;
-
-import play.db.ebean.*;
-
-import com.avaje.ebean.*;
+import play.db.ebean.Model;
 
 @Entity
-public class Utilisateur {
+public class Utilisateur extends Model {
 
-    public int uid;
+	public int uid;
     public String lastName;
     public String firstName;
     public String email;
@@ -83,4 +82,8 @@ public class Utilisateur {
     public void setLocal(Local local){
       this.local = local;
     }
+    
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

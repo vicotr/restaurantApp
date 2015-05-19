@@ -1,6 +1,7 @@
 package controllers;
 
 import static play.data.Form.form;
+import models.queries.userLog;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -24,7 +25,9 @@ public class Application extends Controller {
 	
 	public static Result authenticate() {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
-	    if (loginForm.hasErrors()) {
+	    String email = loginForm.get().email;
+	    String password = loginForm.get().password;
+	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
 	    } else {
 	        session().clear();
@@ -34,8 +37,6 @@ public class Application extends Controller {
 	        );
 	    }
 	}
-	
-	
 	
 	public static Result index(){
 		return ok(
