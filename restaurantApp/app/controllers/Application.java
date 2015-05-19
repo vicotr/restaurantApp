@@ -31,11 +31,19 @@ public class Application extends Controller {
 	        return badRequest(login.render(loginForm));
 	    } else {
 	        session().clear();
-	        session("email", loginForm.get().email);
+	        session("email", email);
+	        session("password",password);
 	        return redirect(
 	            routes.Application.index()
 	        );
 	    }
+	}
+	
+	public static Result logOut() {
+		session().clear();
+		return ok(
+	            login.render(form(Login.class))
+	        );
 	}
 	
 	public static Result index(){

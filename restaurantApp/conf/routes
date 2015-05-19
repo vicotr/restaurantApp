@@ -9,7 +9,10 @@ GET     /                  controllers.Application.index()
 #login page
 GET   /login         controllers.Application.login()
 
-POST    /login                      controllers.Application.authenticate()
+POST    /login                 controllers.Application.authenticate()
+
+#log out
+GET	/stocks_gerant				controllers.Application.logOut()
  
 
 
