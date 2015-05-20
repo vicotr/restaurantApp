@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
+	</head>
+
+	<body>
+		<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" >
+			<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Déconnexion" >
+		
+		<div class="container">
+			<nav class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<ul class="nav navbar-nav">
+						
+						
+						
+						<li onclick="clicked(this)"> <a href="../views/accueil_gerant.html">Accueil</a> </li>
+							<li onclick="clicked(this)"> <a href="../views/stocks_gerant.scala.html">Stocks</a> </li>
+							<li onclick="clicked(this)"> <a href="../views/demande_reapprovisionnement_gerant.html">Demande de réapprovisionnement</a> </li>
+							<li onclick="clicked(this)"> <a href="../views/alertes_gerant.html">Alertes</a> </li>
+							<li onclick="clicked(this)"> <a href="../views/administration_gerant.html">Administration</a> </li>
+							<li onclick="clicked(this)"> <a href="../views/suivi_des_commandes_gerant.html">Suivi des commandes</a> </li>
+						
+						
+					
+					</ul>
+				</div>
+			</nav>
+			
+			<form id="form1" class="col-lg-12">
+				<div class="form-group" id="id0">
+				</div>
+				
+				<div class="form-group" id="id1">
+					<div>
+						Code couleur :<br>
+						<canvas id="myCanvas" width="200" height="0" style="border:1px solid green;"> </canvas>Stock normal.<br>
+						<canvas id="myCanvas" width="200" height="0" style="border:1px solid orange;"> </canvas>Stock faible.<br>
+						<canvas id="myCanvas" width="200" height="0" style="border:1px solid red;"> </canvas>Stock critique, en-dessous du seuil ou nul.<br>
+					</div>
+				</div>
+				
+				<div class="form-group" id="id2">
+					<div class="col-md-2">
+						<label for="ingredient">Ingrédient :</label>
+						<select name="ingredient" id="ingredient">
+							<option value="fromage">Fromage</option>
+							<option value="chorizo">Chorizo</option>
+							<option value="pâtes">Pâtes</option>
+							<option value="oeuf">Oeufs</option>
+							<option value="pomme">Pomme</option>
+							<option value="chocolat">Chocolat</option>
+							<option value="noix de coco">Noix de coco</option>
+							<option value="riz">Riz</option>
+						</select>
+					</div>
+						
+					<div class="col-md-2">
+						<label for="qualite">Qualité :</label>
+						<input 7type="text" id="qualite" name="Nom" />
+					</div>
+					
+					<div class="col-md-2">
+						<label for="minimum">Minimum :</label>
+						<input type="text" id="minimum" name="Nom" />
+					</div>
+					
+					<div class="col-md-2">
+						<label for="maximum">Maximum :</label>
+						<input type="text" id="maximum" name="Nom" />
+					</div>
+					
+					<div class="col-md-2">
+						<label for="alerte">Seuil d'alerte :</label>
+						<input type="text" id="alerte" name="alerte" />
+					</div>
+					
+					<div class="col-md-2">
+						<label for="unite">Unité :</label>
+						<select name="unite" id="unite">
+							<option value="pièce">Pièce</option>
+							<option value="kilogramme">kilogramme</option>
+							<option value="gramme">gramme</option>
+							<option value="litre">litre</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button onclick="clickedBis()" class="btn btn-primary" type="button">Nouvel ingrédient.</button>
+				</div>
+
+			</form>
+		</div>
+
+	</body>
+	
+	<script>
+		var compteur = 0;
+		var tab = ["Ingrédient","Qualité","Minimum","Maximum","Seuil d'alerte","Unité"];
+
+		function clicked(element){
+			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
+			$(".active").removeClass("active");
+			$(element).addClass("active");
+		}
+
+		function clickedBis(){
+			compteur++;
+
+			$('<div />', {
+    						id : "blocv"+compteur,
+    						class : "form-group", 
+						}).appendTo('form');
+			$('<div />', {
+							id: "bloc"+compteur,
+							class: "row",
+						}).appendTo($('#blocv'+compteur));
+
+			for(var i = 0; i < 6; i++){
+				if(i == 0){
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+compteur+i,
+								}).appendTo($("#bloc"+compteur));
+					$('<label />', {
+									for: tab[i]+compteur+i,
+									id : 'label'+compteur+i,	
+								}).appendTo($("#div"+compteur+i));
+					$('#label'+compteur+i).html(tab[i]+":");
+					$('<select />', {
+										name: tab[i],
+										id: tab[i]+compteur+i,
+									}).appendTo($("#div"+compteur+i));
+					$('<option />', {
+										value: "Poire",
+										id: "option"+compteur+i,
+									}).appendTo($("#"+tab[i]+compteur+i));
+					$("#option"+compteur+i).html("poirehbhbjhhhrghuhreuuhjeoijg");
+				}else if(i == 5){
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+compteur+i,
+								}).appendTo($("#bloc"+compteur));
+					$('<label />', {
+									for: tab[i],
+									id : 'label'+compteur+i,	
+								}).appendTo($("#div"+compteur+i));
+					$('#label'+compteur+i).html(tab[i]+":");
+					$('<select />', {
+										name:tab[i],
+										id: tab[i]+compteur+i,
+									} ).appendTo($("#div"+compteur+i));
+					$('<option />', {
+										value: "Poire",
+										id: "option"+compteur+i,
+									}).appendTo($("#"+tab[i]+compteur+i));
+					$("#option"+compteur+i).html("Poirekrjgetgjlijrotee");
+				}else{
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+compteur+i,
+								}).appendTo($("#bloc"+compteur));
+					$('<label />', {
+									for: tab[i],
+									id : "label"+compteur+i,	
+								}).appendTo($("#div"+compteur+i));
+					$('#label'+compteur+i).html(tab[i]+":");
+					$('<input />', {
+										name : tab[i],
+										id : tab[i],
+										type : "text",
+										css :{ border: "red 2px solid",
+									}
+								}).appendTo($("#div"+compteur+i));
+				}
+			}
+		}
+
+	</script>
+</html>
