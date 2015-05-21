@@ -30,7 +30,7 @@ public class Etat {
     public void setName(String name){
     	this.name = name;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Etat> find= new Finder<Long,Etat>(
+    		Long.class, Etat.class
     		);
 }

@@ -67,7 +67,7 @@ public class Local {
     public void setCommandes(List<Commande> commandes){
     	this.commandes = commandes;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Local> find= new Finder<Long,Local>(
+    		Long.class, Local.class
     		);
 }

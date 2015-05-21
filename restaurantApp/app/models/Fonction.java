@@ -30,8 +30,8 @@ public class Fonction {
     public void setActivity(String activity){
     	this.activity = activity;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Fonction> find= new Finder<Long,Fonction>(
+    		Long.class, Fonction.class
     		);
   
 }

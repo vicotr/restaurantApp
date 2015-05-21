@@ -27,7 +27,7 @@ public class Categorie {
     public void setCategoryName(String categoryName){
     	this.categoryName = categoryName;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Categorie> find= new Finder<Long,Categorie>(
+    		Long.class, Categorie.class
     		);
 }

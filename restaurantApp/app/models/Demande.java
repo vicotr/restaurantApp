@@ -60,7 +60,7 @@ public class Demande {
     public void setDemande(List<Commande> commandes){
     	this.commandes = commandes;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Demande> find= new Finder<Long,Demande>(
+    		Long.class, Demande.class
     		);
 }

@@ -61,7 +61,7 @@ public class Commande {
     public void setCommentaires(String commentaires){
     	this.commentaires = commentaires;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,Commande> find= new Finder<Long,Commande>(
+    		Long.class, Commande.class
     		);
 }

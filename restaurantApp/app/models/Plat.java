@@ -41,7 +41,7 @@ public class Plat {
 	   public void setProduits(List<Produit> produits){
 		   this.produits = produits;
 	   }
-	   public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-	    		Long.class, Utilisateur.class
+	   public static Finder<Long,Plat> find= new Finder<Long,Plat>(
+	    		Long.class, Plat.class
 	    		);
 }

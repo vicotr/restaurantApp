@@ -79,7 +79,7 @@ public class StockResto {
     public void setLocal(Local local){
        this.local = local;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,StockResto> find= new Finder<Long,StockResto>(
+    		Long.class, StockResto.class
     		);
 }

@@ -70,7 +70,7 @@ public class StockFournisseur {
     public void setPrixUnite(int prixUnite){
     	this.prixUnite = prixUnite;
     }
-    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
-    		Long.class, Utilisateur.class
+    public static Finder<Long,StockFournisseur> find= new Finder<Long,StockFournisseur>(
+    		Long.class, StockFournisseur.class
     		);
 }
