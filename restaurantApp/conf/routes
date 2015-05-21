@@ -23,3 +23,9 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET  /gerant_demande_reapprovisionnement    controllers.Application.demande()
 
 POST  /gerant_demande_reapprovisionnement   controllers.Application.traitement()
+
+#administration des membres
+GET  /gerant_administration   controllers.Application.administration()
+
+GET  /gerant_nouveau_membre   controllers.Application.nouveauMembre()
+POST  /gerant_nouveau_membre   controllers.Application.nouveauMembreTraitement()

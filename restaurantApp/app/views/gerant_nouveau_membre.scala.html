@@ -7,8 +7,7 @@
 <title>Nouveau membre gérant</title>
 </head>
 <body>
-	
-	<form>
+	@helper.form(routes.Application.nouveauMembreTraitement) {
 			<h1> Ajouter un nouveau membre </h1>
 			<fieldset>
 				<legend> Informations du nouveau membre</legend>
@@ -17,7 +16,7 @@
 				<input type="text" id="identifiant" name="identifiant"/> </br>
 				
 				<label for="password">Mot de passe (provisoire) : </label>
-				<input type="password" id="password" name="password"/> </br>
+	 			<input type="password" id="password" name="password"/> </br>
 				
 				<label for="rôle">Rôle de l'utilisateur : </label>
 				<select id="role" name="role"> 
@@ -27,8 +26,8 @@
 					<option>Serveur</option>
 				</select></br>
 				
-				<input type="button" id="ajouter" name="ajouter" value="Créer membre"/>
+				<button type="submit">Créer un membre</button>
 			</fieldset>
-		</form>
+	}
 </body>
 </html>
