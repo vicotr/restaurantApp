@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import play.db.ebean.*;
+import play.db.ebean.Model.Finder;
 
 import com.avaje.ebean.*;
 
@@ -59,4 +60,7 @@ public class Demande {
     public void setDemande(List<Commande> commandes){
     	this.commandes = commandes;
     }
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class Plat {
 	
@@ -39,4 +41,7 @@ public class Plat {
 	   public void setProduits(List<Produit> produits){
 		   this.produits = produits;
 	   }
+	   public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+	    		Long.class, Utilisateur.class
+	    		);
 }

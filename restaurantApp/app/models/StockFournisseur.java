@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class StockFournisseur {
 	
@@ -68,4 +70,7 @@ public class StockFournisseur {
     public void setPrixUnite(int prixUnite){
     	this.prixUnite = prixUnite;
     }
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

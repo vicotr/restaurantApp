@@ -1,3 +1,5 @@
+@(produits: List[Produit])
+
 <!DOCTYPE HTML>
 <html>
 
@@ -47,15 +49,13 @@
 				<div class="form-group" id="id2">
 					<div class="col-md-2">
 						<label for="ingredient">Ingrédient :</label>
+
 						<select name="ingredient" id="ingredient">
-							<option value="fromage">Fromage</option>
-							<option value="chorizo">Chorizo</option>
-							<option value="pâtes">Pâtes</option>
-							<option value="oeuf">Oeufs</option>
-							<option value="pomme">Pomme</option>
-							<option value="chocolat">Chocolat</option>
-							<option value="noix de coco">Noix de coco</option>
-							<option value="riz">Riz</option>
+						
+						@for(produit <- produits) {
+							<option value="fromage">@produit.productName</option>
+						}
+					
 						</select>
 					</div>
 						

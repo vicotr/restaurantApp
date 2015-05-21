@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class StockResto {
 	
@@ -77,4 +79,7 @@ public class StockResto {
     public void setLocal(Local local){
        this.local = local;
     }
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

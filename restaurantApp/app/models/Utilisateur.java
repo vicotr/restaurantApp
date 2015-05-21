@@ -86,4 +86,5 @@ public class Utilisateur extends Model {
     public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
     		Long.class, Utilisateur.class
     		);
+
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class Etat {
 	
@@ -28,4 +30,7 @@ public class Etat {
     public void setName(String name){
     	this.name = name;
     }
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

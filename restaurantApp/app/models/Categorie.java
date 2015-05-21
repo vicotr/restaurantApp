@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class Categorie {
 	
@@ -25,4 +27,7 @@ public class Categorie {
     public void setCategoryName(String categoryName){
     	this.categoryName = categoryName;
     }
+    public static Finder<Long,Utilisateur> find= new Finder<Long,Utilisateur>(
+    		Long.class, Utilisateur.class
+    		);
 }

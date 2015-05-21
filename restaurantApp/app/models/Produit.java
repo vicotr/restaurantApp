@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import play.db.ebean.Model.Finder;
+
 @Entity
 public class Produit {
     
@@ -87,4 +89,7 @@ public class Produit {
     public void setStockFournisseur(StockFournisseur stockFournisseur){
     	this.stockFournisseur = stockFournisseur;
     }
+    public static Finder<Long,Produit> find= new Finder<Long,Produit>(
+    		Long.class, Produit.class
+    		);
 }

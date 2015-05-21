@@ -1,6 +1,11 @@
 package controllers;
 
 import static play.data.Form.form;
+
+import java.util.List;
+
+import models.Produit;
+import models.queries.StockGerant;
 import models.queries.userLog;
 import play.data.Form;
 import play.mvc.Controller;
@@ -47,9 +52,9 @@ public class Application extends Controller {
 	}
 	
 	public static Result index(){
-		return ok(
-				stocks_gerant.render()
-				);
+		List<Produit> list_produit = StockGerant.getItem();
+		
+		return ok(stocks_gerant.render(list_produit));
 	}
 
 }
