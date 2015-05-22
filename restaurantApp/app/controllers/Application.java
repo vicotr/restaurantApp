@@ -8,6 +8,8 @@ import static play.data.Form.form;
 
 
 
+
+
 import java.util.List;
 
 import com.avaje.ebean.Ebean;
@@ -22,7 +24,9 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.gerant_administration;
+import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
+import views.html.gerant_suivi_des_commandes;
 import views.html.login;
 import views.html.stocks_gerant;
 import views.html.gerant_demande_reapprovisionnement;
@@ -107,11 +111,7 @@ public class Application extends Controller {
         );
     }
 	
-	public static Result adminGerant(){
-		return ok(
-				gerant_nouveau_membre.render()
-				);
-	}
+
 	
 	public static Result authenticate() {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
@@ -141,5 +141,27 @@ public class Application extends Controller {
 		
 		return ok(stocks_gerant.render(list_produit));
 	}
+	
+	
+	public static Result gerantAccueil(){
+		return ok(
+				gerant_accueil.render()
+				);
+	}
+	
+
+	
+	public static Result gerantAlertes(){
+		return ok(
+				gerant_alertes.render()
+				);
+	}
+	
+	public static Result gerantSuivi(){
+		return ok(
+				gerant_suivi_des_commandes.render()
+				);
+	}
+	
 
 }
