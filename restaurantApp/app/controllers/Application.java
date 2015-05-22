@@ -2,11 +2,21 @@ package controllers;
 
 import static play.data.Form.form;
 
+
+
+
+
+
+
+import java.util.List;
+
 import com.avaje.ebean.Ebean;
 
 import models.Demande;
 import models.Fonction;
+import models.Produit;
 import models.Utilisateur;
+import models.queries.StockGerant;
 import models.queries.userLog;
 import play.data.Form;
 import play.mvc.Controller;
@@ -99,7 +109,7 @@ public class Application extends Controller {
 	
 	public static Result adminGerant(){
 		return ok(
-				views.html.new_member_gerant.render()
+				gerant_nouveau_membre.render()
 				);
 	}
 	
