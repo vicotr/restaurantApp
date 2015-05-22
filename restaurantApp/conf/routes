@@ -15,8 +15,7 @@ POST    /login                 controllers.Application.authenticate()
 #log out
 GET	/stocks_gerant				controllers.Application.logOut()
  
-#admin
-GET /stock_gerant			controllers.Application.adminGerant()
+
 
 
 # Map static resources from the /public folder to the /assets URL path
@@ -32,3 +31,16 @@ GET  /gerant_administration   controllers.Application.administration()
 
 GET  /gerant_nouveau_membre   controllers.Application.nouveauMembre()
 POST  /gerant_nouveau_membre   controllers.Application.nouveauMembreTraitement()
+
+
+#gerantAccueil
+GET /gerant_accueil			controllers.Application.gerantAccueil()
+
+
+
+#gerantAlertes
+GET /gerant_alertes			controllers.Application.gerantAlertes()
+
+#gerantSuivi
+GET /gerant_suivi			controllers.Application.gerantSuivi()
+
