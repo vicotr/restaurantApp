@@ -28,6 +28,12 @@ public class Application extends Controller {
         );
     }
 	
+	public static Result adminGerant(){
+		return ok(
+				views.html.new_member_gerant.render()
+				);
+	}
+	
 	public static Result authenticate() {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
 	    String email = loginForm.get().email;
