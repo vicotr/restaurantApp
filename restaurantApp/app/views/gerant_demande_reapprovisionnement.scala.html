@@ -7,8 +7,8 @@
 <title>Demande de réapprovisionnement</title>
 </head>
 <body>
-
-<h1> Demande de réapprovisionnement </h1>
+@helper.form(routes.Application.traitement) {
+	<h1> Demande de réapprovisionnement </h1>
 		<fieldset>
 			<legend>Informations pour la demande de réapprovisionnement</legend>
 				<form>
@@ -22,5 +22,6 @@
 					<button type="submit">Envoyer la demande</button>
 				</form>
 		</fieldset>
+}
 </body>
 </html>

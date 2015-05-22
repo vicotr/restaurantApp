@@ -2,16 +2,21 @@ package controllers;
 
 import static play.data.Form.form;
 
-import java.util.List;
+import com.avaje.ebean.Ebean;
 
-import models.Produit;
-import models.queries.StockGerant;
+import models.Demande;
+import models.Fonction;
+import models.Utilisateur;
 import models.queries.userLog;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.gerant_administration;
+import views.html.gerant_nouveau_membre;
 import views.html.login;
 import views.html.stocks_gerant;
+import views.html.gerant_demande_reapprovisionnement;
+import views.html.gerant_accueil;
 
 public class Application extends Controller {
 	
@@ -20,6 +25,70 @@ public class Application extends Controller {
 	    public String email;
 	    public String password;
 
+	}
+	
+	public static class DemandeBis {
+		public String commentaires;
+	}
+	
+	public static class NouvelUtilisateur{
+		public String identifiant;
+		public String password;
+		public String role;
+	}
+	
+	public static Result demande(){
+		return ok(
+				gerant_demande_reapprovisionnement.render()
+				);
+	}
+	
+	public static Result administration() {
+		return ok(
+				gerant_administration.render()
+				);
+	}
+
+	public static Result nouveauMembre() {
+		return ok(
+				gerant_nouveau_membre.render()
+				);
+	}
+	
+	public static Result nouveauMembreTraitement() {
+		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
+		String pseudo = nouvelUtilisateurForm.get().identifiant;
+		String password = nouvelUtilisateurForm.get().password;
+		String role = nouvelUtilisateurForm.get().role;
+		
+		Fonction fonction = new Fonction();
+		fonction.setActivity(role);
+		
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setPseudo(pseudo);
+		utilisateur.setPassword(password);
+		utilisateur.setFonction(fonction);
+		
+		Ebean.save(fonction);
+		Ebean.save(utilisateur);
+		
+		return ok(
+				gerant_administration.render()
+				);
+	}
+	
+	public static Result traitement(){
+		  Form<DemandeBis> loginForm = form(DemandeBis.class).bindFromRequest();
+		    String commentaires = loginForm.get().commentaires;
+		    
+		    Demande demande = new Demande();
+		    demande.setCommentaires(commentaires);
+		    
+		    Ebean.save(demande);
+
+		return ok(
+				gerant_accueil.render()	
+				);
 	}
 	
 	public static Result login() {
