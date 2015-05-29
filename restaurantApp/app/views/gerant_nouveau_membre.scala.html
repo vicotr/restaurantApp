@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
-<title>Nouveau membre gérant</title>
-</head>
-<body>
+	
+	<head>
+		<meta charset="ISO-8859-1">
+		 <link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
+		<title>Nouveau membre gérant</title>
+	</head>
+	
+	<body>
 	@views.html.gerant_header()
 	@helper.form(routes.Application.nouveauMembreTraitement) {
 			<h1> Ajouter un nouveau membre </h1>
@@ -31,5 +34,6 @@
 			</fieldset>
 	}
 	@views.html.footer()
-</body>
+	</body>
+	
 </html>

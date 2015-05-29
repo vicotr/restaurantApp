@@ -1,13 +1,45 @@
 @(form: Form[Application.Login])
 <html>
 <head>
-<title>Gestion Restaurant</title>
-<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="@routes.Assets.at("stylesheets/login.css")">
+	<meta charset="ISO-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--   <meta name="description" content="Connexion à mon application"> --> 
+	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
+	<title>Mon application</title>
+	<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="@routes.Assets.at("stylesheets/login.css")">
 </head>
 <body>
 	@helper.form(routes.Application.authenticate) {
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+	     						 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+							<h1>Page de connexion</h1>
+							<h2>Veuillez vous authentifier : </h2>
+							
+							   <form action="/users/login" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
+	           					   <div class="form-group">
+	           					   <div class="col-md-8"><input name="email" placeholder="Email" class="form-control" type="email" id="UserUsername" value="@form("email").value"/></div>
+	           						</div> 
+	           						
+	           						<div class="form-group">
+	             						<div class="col-md-8">
+	             						<input name="password" placeholder="Password" class="form-control" type="password" id="UserPassword"/></div>
+	              					</div> 
+	              					
+	              					<div class="col-md-offset-0 col-md-8"><input  class="btn btn-success btn btn-success" type="submit" value="Connexion"/></div>
+	            						</div>
+	          
+	        							</form>
+	              					
+           
 	<h1>Sign in</h1>
 
 	<p>
@@ -19,6 +51,7 @@
 	<p>
 		<button type="submit">Login</button>
 	</p>
+	
 	}
 </body>
 </html>

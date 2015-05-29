@@ -6,12 +6,12 @@ body {
 
 h1{
 	text-align: center;
-	color: blue;
+	color: rgb(126,126,126);
 }
 
 h2{
 	text-align: left;
-	color: 105,182,243;
+	color: rgb(90,90,90);
 }
 
 a:link{
