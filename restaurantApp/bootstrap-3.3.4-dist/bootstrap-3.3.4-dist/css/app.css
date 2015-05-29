@@ -19,7 +19,7 @@ body {
 
 
 h1{
-	text-align: left;
+	text-align: center;
 	color: rgb(126,126,126);
 }
 
@@ -41,4 +41,14 @@ a span{
 	...
      margin-top:23px;
      margin-left:-35px;
+}
+
+
+#myCanvas{
+	border-radius: 10px;	
+}
+
+.name{
+	color: rgb(80,80,80);
+	margin-bottom: 5px;
 }
