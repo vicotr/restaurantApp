@@ -33,12 +33,13 @@ create table etat (
 create table fonction (
   fid                       integer auto_increment not null,
   activity                  varchar(255),
+  constraint uq_fonction_activity unique (activity),
   constraint pk_fonction primary key (fid))
 ;
 
 create table local (
   lid                       integer auto_increment not null,
-  local_name                varchar(255),
+  localName                 varchar(255),
   address                   varchar(255),
   codePostal                varchar(255),
   type                      varchar(255),
@@ -59,8 +60,6 @@ create table produit (
   accessibleFournisseur     tinyint(1) default 0,
   unite                     varchar(255),
   categorie_catid           integer,
-  stockResto                integer,
-  stockFournisseur          integer,
   constraint pk_produit primary key (pid))
 ;
 
@@ -75,6 +74,7 @@ create table stock_fournisseur (
 
 create table stock_resto (
   srid                      integer auto_increment not null,
+  produit_pid               integer,
   quantite                  integer,
   stockMax                  integer,
   stockMin                  integer,
@@ -124,18 +124,16 @@ alter table demande add constraint fk_demande_eid_3 foreign key (ETAT_ID) refere
 create index ix_demande_eid_3 on demande (ETAT_ID);
 alter table produit add constraint fk_produit_categorie_4 foreign key (categorie_catid) references categorie (catid) on delete restrict on update restrict;
 create index ix_produit_categorie_4 on produit (categorie_catid);
-alter table produit add constraint fk_produit_stockResto_5 foreign key (stockResto) references stock_resto (srid) on delete restrict on update restrict;
-create index ix_produit_stockResto_5 on produit (stockResto);
-alter table produit add constraint fk_produit_stockFournisseur_6 foreign key (stockFournisseur) references stock_fournisseur (sfid) on delete restrict on update restrict;
-create index ix_produit_stockFournisseur_6 on produit (stockFournisseur);
-alter table stock_fournisseur add constraint fk_stock_fournisseur_lid_7 foreign key (lid_lid) references local (lid) on delete restrict on update restrict;
-create index ix_stock_fournisseur_lid_7 on stock_fournisseur (lid_lid);
-alter table stock_resto add constraint fk_stock_resto_local_8 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
-create index ix_stock_resto_local_8 on stock_resto (local_lid);
-alter table utilisateur add constraint fk_utilisateur_fonction_9 foreign key (fonction_fid) references fonction (fid) on delete restrict on update restrict;
-create index ix_utilisateur_fonction_9 on utilisateur (fonction_fid);
-alter table utilisateur add constraint fk_utilisateur_local_10 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
-create index ix_utilisateur_local_10 on utilisateur (local_lid);
+alter table stock_fournisseur add constraint fk_stock_fournisseur_lid_5 foreign key (lid_lid) references local (lid) on delete restrict on update restrict;
+create index ix_stock_fournisseur_lid_5 on stock_fournisseur (lid_lid);
+alter table stock_resto add constraint fk_stock_resto_produit_6 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
+create index ix_stock_resto_produit_6 on stock_resto (produit_pid);
+alter table stock_resto add constraint fk_stock_resto_local_7 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
+create index ix_stock_resto_local_7 on stock_resto (local_lid);
+alter table utilisateur add constraint fk_utilisateur_fonction_8 foreign key (fonction_fid) references fonction (fid) on delete restrict on update restrict;
+create index ix_utilisateur_fonction_8 on utilisateur (fonction_fid);
+alter table utilisateur add constraint fk_utilisateur_local_9 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
+create index ix_utilisateur_local_9 on utilisateur (local_lid);
 
 
 

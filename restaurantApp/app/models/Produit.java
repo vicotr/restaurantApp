@@ -2,12 +2,14 @@ package models;
 	
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.db.ebean.Model.Finder;
 
@@ -20,8 +22,8 @@ public class Produit {
     public String unite;
     public Categorie categorie;
     public List<Plat> plats;
-    public StockResto stockResto;
-    public StockFournisseur stockFournisseur;
+    public List<StockResto> stockRestos;
+   // public List<StockFournisseur> stockFournisseurs;
     
     @Id
     public int getPid(){
@@ -72,23 +74,22 @@ public class Produit {
     	this.plats = plats;
     }
     
-    @ManyToOne
-    @JoinColumn(name="stockResto",nullable=false)
-    public StockResto getStockResto(){
-    	return stockResto;
+   @OneToMany(cascade=CascadeType.ALL, mappedBy="produit")
+    public List<StockResto> getStockRestos(){
+    	return stockRestos;
     }
-    public void setStockResto(StockResto stockResto){
-    	this.stockResto = stockResto;
-    }
+    public void setStockRestos(List<StockResto> stockRestos){
+    	this.stockRestos = stockRestos;
+    } 
     
-    @ManyToOne
-    @JoinColumn(name="stockFournisseur",nullable=false)
-    public StockFournisseur getStockFournisseur(){
-    	return stockFournisseur;
+   /* @OneToMany(cascade=CascadeType.ALL, mappedBy="produit")
+    public List<StockFournisseur> getStockFournisseurs(){
+    	return stockFournisseurs;
     }
-    public void setStockFournisseur(StockFournisseur stockFournisseur){
-    	this.stockFournisseur = stockFournisseur;
-    }
+    public void setStockFournisseurs(List<StockFournisseur> stockFournisseurs){
+    	this.stockFournisseurs = stockFournisseurs;
+    } */
+   
     public static Finder<Long,Produit> find= new Finder<Long,Produit>(
     		Long.class, Produit.class
     		);

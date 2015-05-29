@@ -16,7 +16,7 @@ import play.db.ebean.Model.Finder;
 public class StockFournisseur {
 	
     public int sfid;
-    public List<Produit> produits;
+    public Produit produit;
     public int quantite;
     public Local lid;
     public String commentaires;
@@ -30,13 +30,12 @@ public class StockFournisseur {
     	this.sfid = sfid;
     }
     
-    //@Column(name = "produits")
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="stockFournisseur")
-    public List<Produit> getProduits(){
-        return produits;
+    @ManyToOne
+    public Produit getProduits(){
+        return produit;
     }
-    public void setProduits(List<Produit> produits){
-    	this.produits= produits;
+    public void setProduits(Produit produit){
+    	this.produit= produit;
     }
 
     @Column(name = "quantite")
@@ -47,7 +46,7 @@ public class StockFournisseur {
     	this.quantite = quantite;
     }
     
-    @OneToOne
+    @ManyToOne
     public Local getLid(){
         return lid;
     }

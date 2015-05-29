@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -16,7 +17,7 @@ import play.db.ebean.Model.Finder;
 public class StockResto {
 	
     public int srid;
-    public List<Produit> produits;
+    public Produit produit;
     public int quantite;
     public int stockMax;
     public int stockMin;
@@ -32,12 +33,12 @@ public class StockResto {
     }
     
    // @Column(name = "produits")
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="stockResto")
-    public List<Produit> getProduits(){
-    	return produits;
+    @ManyToOne
+    public Produit getProduit(){
+    	return produit;
     }
-    public void setProduits(List<Produit> produits){
-       this.produits = produits;
+    public void setProduit(Produit produit){
+       this.produit = produit;
     }
 
     @Column(name = "quantite")
@@ -79,6 +80,7 @@ public class StockResto {
     public void setLocal(Local local){
        this.local = local;
     }
+    
     public static Finder<Long,StockResto> find= new Finder<Long,StockResto>(
     		Long.class, StockResto.class
     		);

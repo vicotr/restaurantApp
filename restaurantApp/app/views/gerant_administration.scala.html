@@ -1,9 +1,10 @@
+@(utilisateurs: List[Utilisateur], fonctions: List[Fonction])
+
 <!DOCTYPE html>
 <html>
 
 	<head>
 		<meta charset="ISO-8859-1">
-		 <link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
 		<title>Administration</title>
@@ -12,10 +13,14 @@
 	<body>
 	@views.html.gerant_header()
 		<h1> Liste des utilisateurs du site </h1>
-				<p> Gérant A <input type="button" value="Supprimer" /> </br>
-				Gérant B <input type="button" value="Supprimer" />
-				</p>
-				<a href="../gerant_nouveau_membre"><input type="button" value="Nouveau membre" />
+			@for(utilisateur <- utilisateurs) {
+				@for(fonction <- fonctions) {
+					@if(fonction.fid == utilisateur.fonction.fid) {
+  						@utilisateur.pseudo : @fonction.activity <a href="@routes.Application.supprimerMembre(utilisateur.uid)"><input type="button" value="Supprimer" /></a><br>
+					}
+				}
+			}
+				<a href="../gerant_nouveau_membre"><input type="button" value="Nouveau membre" /></a>
 		
 		@views.html.footer()
 	</body>
