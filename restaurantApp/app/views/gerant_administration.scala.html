@@ -3,19 +3,35 @@
 
 	<head>
 		<meta charset="ISO-8859-1">
-		 <link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
+		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
 		<title>Administration</title>
 	</head>
 	
 	<body>
 	@views.html.gerant_header()
+		
+			<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+		
 		<h1> Liste des utilisateurs du site </h1>
-				<p> Gérant A <input type="button" value="Supprimer" /> </br>
-				Gérant B <input type="button" value="Supprimer" />
+				<p class="name"> Gérant A <input type="button" value="Supprimer" class="btn btn-success btn btn-success" /> <br>
+			 Gérant B <input type="button" value="Supprimer" class="btn btn-success btn btn-success" />
 				</p>
-				<a href="../gerant_nouveau_membre"><input type="button" value="Nouveau membre" />
+				<a href="../views/gerant_nouveau_membre.scala.html"><input type="button" value="Nouveau membre" class="btn btn-success btn btn-success" />
+				</a>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
 		
 		@views.html.footer()
 	</body>
