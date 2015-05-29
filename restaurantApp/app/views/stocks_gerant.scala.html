@@ -4,51 +4,57 @@
 <html>
 
 	<head>
+		<meta charset="ISO-8859-1">
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
 		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
+		<title> Mes stocks</title>
 	</head>
 
 	<body>
-		<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" ></a>
-			<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="DÃ©connexion" ></a>
-		
 		<div class="container">
-			<nav class="navbar navbar-inverse">
-				<div class="container-fluid">
-					<ul class="nav navbar-nav">
-						
-						
-						
-						<li onclick="clicked(this)"> <a href="../gerant_acceuil">Accueil</a> </li>
-							<li onclick="clicked(this)"> <a href="../stocks_gerant">Stocks</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_demande_reapprovisionnement">Demande de rÃ©approvisionnement</a> </li>
-							<li onclick="clicked(this)"> <a href="../views/alertes_gerant.html">Alertes</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_administration">Administration</a> </li>
-							<li onclick="clicked(this)"> <a href="../views/suivi_des_commandes_gerant.html">Suivi des commandes</a> </li>
-						
-						
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+							<nav class="navbar navbar-inverse">
+								<div class="container-fluid">
 					
-					</ul>
-				</div>
-			</nav>
-			
+									<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
+									<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Déconnexion" class="btn btn-success btn btn-success"></a>
+									
+									<ul class="nav navbar-nav">
+										<li onclick="clicked(this)"> <a href="../views/gerant_accueil.scala.html">Accueil</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/stocks_gerant.scala.html">Stocks</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_demande_reapprovisionnement.scala.html">Demande de réapprovisionnement</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_alertes.scala.html">Alertes</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_administration.scala.html">Administration</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_suivi_des_commandes.scala.html">Suivi des commandes</a> </li>	
+									</ul>
+								</div>
+							</nav>
+					
 			<form id="form1" class="col-lg-12">
 				<div class="form-group" id="id0">
 				</div>
 				
 				<div class="form-group" id="id1">
-					<div>
+					<div class="row">
 						Code couleur :<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid green;"> </canvas>Stock normal.<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid orange;"> </canvas>Stock faible.<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid red;"> </canvas>Stock critique, en-dessous du seuil ou nul.<br>
+						<div class="span5 offset3">Stock normal :</div> <div class="span4"> <canvas id="myCanvas" width="50" height="0" style="border:5px solid rgb(0,210,0);"></canvas> </div> 
+						<div class="span5 offset3">Stock faible : </div> <div class="span4"> <canvas id="myCanvas" width="50" height="0" style="border:5px solid orange;"> </canvas>
+						<div class="span5 offset3">Stock critique (en-dessous du seuil ou nul) :</div> <div class="span4"><canvas id="myCanvas" width="50" height="0" style="border:5px solid red;"> </canvas></div>
+						</div>
+						
 					</div>
 				</div>
 				
 				<div class="form-group" id="id2">
 					<div class="col-md-2">
-						<label for="ingredient">IngrÃ©dient :</label>
+						<label for="ingredient">Ingrédient :</label>
 
 						<select name="ingredient" id="ingredient">
 						
@@ -60,7 +66,7 @@
 					</div>
 						
 					<div class="col-md-2">
-						<label for="qualite">QualitÃ© :</label>
+						<label for="qualite">Qualité :</label>
 						<input 7type="text" id="qualite" name="Nom" />
 					</div>
 					
@@ -80,9 +86,9 @@
 					</div>
 					
 					<div class="col-md-2">
-						<label for="unite">UnitÃ© :</label>
+						<label for="unite">Unité :</label>
 						<select name="unite" id="unite">
-							<option value="piÃ¨ce">PiÃ¨ce</option>
+							<option value="pièce">Pièce</option>
 							<option value="kilogramme">kilogramme</option>
 							<option value="gramme">gramme</option>
 							<option value="litre">litre</option>
@@ -91,20 +97,23 @@
 				</div>
 
 				<div class="form-group">
-					<button onclick="clickedBis()" class="btn btn-primary" type="button">Nouvel ingrÃ©dient.</button>
+					<button onclick="clickedBis()" class="btn btn-success btn btn-success" type="button">Nouvel ingrédient</button>
 				</div>
 
 			</form>
 		</div>
 		
-		
+			</div>
+					</div>
+				</div>
+			</div>
 		@views.html.footer()
 
 	</body>
 	
 	<script>
 		var compteur = 0;
-		var tab = ["IngrÃ©dient","QualitÃ©","Minimum","Maximum","Seuil d'alerte","UnitÃ©"];
+		var tab = ["Ingrédient","Qualité","Minimum","Maximum","Seuil d'alerte","Unité"];
 
 		function clicked(element){
 			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
