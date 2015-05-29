@@ -3,35 +3,48 @@
 	
 	<head>
 		<meta charset="ISO-8859-1">
-		 <link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
+		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
 		<title>Nouveau membre gérant</title>
 	</head>
 	
 	<body>
 	@views.html.gerant_header()
 	@helper.form(routes.Application.nouveauMembreTraitement) {
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+	              		 	<div class="col-xs-4 col-sm-6 col-sm-offset-1">
 			<h1> Ajouter un nouveau membre </h1>
-			<fieldset>
-				<legend> Informations du nouveau membre</legend>
 			
-				<label for="identifiant">Identifiant : </label>
-				<input type="text" id="identifiant" name="identifiant"/> </br>
-				
-				<label for="password">Mot de passe (provisoire) : </label>
-	 			<input type="password" id="password" name="password"/> </br>
+				<h2> Informations du nouveau membre</h2>
+			
+			
+				<input type="text" id="identifiant" name="identifiant"  placeholder="Adresse mail" class="form-control"/> </br>
+				<input type="password" id="password" name="password"  placeholder="Password" class="form-control"/> </br>
 				
 				<label for="rôle">Rôle de l'utilisateur : </label>
 				<select id="role" name="role"> 
 					<option> - </option>
-					<option>Gerant</option>
+					<option>Gérant</option>
 					<option>Cuisinier</option>
 					<option>Serveur</option>
 				</select></br>
 				
-				<button type="submit">Créer un membre</button>
-			</fieldset>
+				<button type="submit" class="btn btn-success btn btn-success">Créer un membre</button>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+			
 	}
 	@views.html.footer()
 	</body>
