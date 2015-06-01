@@ -60,3 +60,8 @@ GET /gerant_suivi_des_commandes			controllers.Application.gerantSuivi()
 
 
 GET  /authentification          controllers.Application.logOut()
+
+
+#ressources
+GET /assets/*file    controllers.Assets.at(path="/public", file)
+GET /webjars/*file   controllers.WebJarAssets.at(file)

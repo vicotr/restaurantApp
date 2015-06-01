@@ -4,98 +4,180 @@
 <html>
 
 	<head>
+		<meta charset="ISO-8859-1">
 		<meta charset="utf-8">
-		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.css"))' rel="stylesheet">
+		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel="stylesheet">
+		<link href='@routes.Assets.at("app.css")' rel="stylesheet">
+		<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+		<title> Mes stocks</title>
 	</head>
 
 	<body>		
-			@views.html.gerant_header()
-				<div class="form-group" id="id0">
+		
+	 <div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+						<nav class="navbar navbar-inverse">
+							<div class="container-fluid">
+					
+								<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
+								<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Déconnexion" class="btn btn-success btn btn-success"></a>
+									
+								<ul class="nav navbar-nav">
+									<li onclick="clicked(this)"> <a href="../gerant_accueil">Accueil</a> </li>
+									<li onclick="clicked(this)"> <a href="../gerant_stocks">Stocks</a> </li>
+									<li onclick="clicked(this)"> <a href="../gerant_demande_reapprovisionnement">Demande de réapprovisionnement</a> </li>
+									<li onclick="clicked(this)"> <a href="../gerant_alertes">Alertes</a> </li>
+									<li onclick="clicked(this)"> <a href="../gerant_administration">Administration</a> </li>
+									<li onclick="clicked(this)"> <a href="../gerant_suivi_des_commandes">Suivi des commandes</a> </li>
+								</ul>
+								
+							</div>
+						</nav>
+					</div>
 				</div>
-				
-				<div>
-					@for(produit <- produits){
-						@for(stockResto <- stockRestos){
-							@if(stockResto.produit.pid == produit.pid){
-								<input type="text" id="ingredient" name="ingredient" value="@produit.productName" />
-								<input type="text" id="quantite" name="quantite" value="@stockResto.quantite"/>
-								<input type="text" id="minimum" name="minimum" value="@stockResto.stockMin" />
-								<input type="text" id="maximum" name="maximum" value="@stockResto.stockMax" />
-								<input type="text" id="alerte" name="alerte" value="@stockResto.stockAlerte" />
-								<input type="text" id="unite" name="unite" value="@produit.unite" /><br>
+			</div>
+		
+			<br><br><br>	
+			<form id="form1" class="col-lg-12">
+			
+				<div class="form-group" id="id0">
+					<script>
+						var quantite = 0, minimum = 0, alerte=0,couleur=0;
+						var tabIndice = ["ingredient","quantite","minimum","maximum","alerte","unite"];
+						var tabValeurs = [];
+						var compteurTab = 0, compteurLigne = 0;
+						
+						for(var i = 0; i < tabIndice.length; i++){
+							$('<label />', {class : "indice"}).css({color: couleur,
+								    							   				border: "2px solid blue",
+								    							   				backgroundColor: "white"})
+								    							   		  .width(179)
+								    									  .text(tabIndice[i])
+								   							              .appendTo($("#id0"));
+							if(i == tabIndice.length -1){$('<br>').appendTo($("#id0"));}
+						}
+						
+						@for(produit <- produits){
+							
+							@for(stockResto <- stockRestos){
+								quantite = @stockResto.quantite;
+								minimum = @stockResto.stockMin; 
+								alerte = @stockResto.stockAlerte;
+								
+								@if(stockResto.produit.pid == produit.pid){
+									console.log(quantite+","+minimum)
+									if(quantite <= alerte){
+										couleur = "orange";
+										if (quantite < minimum){
+											couleur = "red";
+										}
+									}else if(quantite > alerte){
+										couleur = "green";
+									}
+									
+									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@produit.unite"];
+									
+									for(var i = 0; i < tabIndice.length; i++){
+										$('<input />', {
+				    						id : tabIndice[compteurTab] + compteurLigne,
+				    						class : tabIndice[compteurTab], 
+				    						name : tabIndice[compteurTab] + compteurLigne,
+				    						value : tabValeurs[i]
+										}).css({color: couleur,
+											    border: "5px solid "+couleur}).appendTo($("#id0"));	
+										if(i == tabIndice.length - 1){
+											$('<br>').appendTo($("#id0"));
+											$('<br>').appendTo($("#id0"));
+										}
+									}
+									
+								}
 							}
 						}
-					}
+						
+					</script>
+					
 				</div>
 				
-									
 				<div class="form-group" id="id1">
-					<div>
+				
+					<div class="row">
+						<br><br><br>
 						Code couleur :<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid green;"> </canvas>Stock normal.<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid orange;"> </canvas>Stock faible.<br>
-						<canvas id="myCanvas" width="200" height="0" style="border:1px solid red;"> </canvas>Stock critique, en-dessous du seuil ou nul.<br>
+						<div class="col-xs-2">Stock normal : <canvas id="myCanvas" width="50" height="0" style="border:5px solid rgb(0,210,0);"></canvas> </div> <br>
+						<div class="col-xs-2">Stock faible : <canvas id="myCanvas" width="50" height="0" style="border:5px solid orange;"> </canvas> </div><br>
+						<div class="col-xs-2">Stock critique : <canvas id="myCanvas" width="50" height="0" style="border:5px solid red;"> </canvas></div>
+					
 					</div>
+						
+				</div>
+			
+			<br><br><br>	
+			
+				<div class="form-group" id="id2">
+				
+					<div class="row">
+					
+						<div class="col-md-2">
+							<label for="ingredient">Ingrédient :</label>
+							<select name="ingredient" id="ingredient">
+								@for(produit <- produits) {
+									<option value="fromage">@produit.productName</option>
+								}
+							</select>
+						</div>
+							
+						<div class="col-md-2">
+							<label for="qualite">Qualité :</label>
+							<input 7type="text" id="qualite" name="Nom" />
+						</div>
+						
+						<div class="col-md-2">
+							<label for="minimum">Minimum :</label>
+							<input type="text" id="minimum" name="Nom" />
+						</div>
+						
+						<div class="col-md-2">
+							<label for="maximum">Maximum :</label>
+							<input type="text" id="maximum" name="Nom" />
+						</div>
+						
+						<div class="col-md-2">
+							<label for="alerte">Seuil d'alerte :</label>
+							<input type="text" id="alerte" name="alerte" />
+						</div>
+						
+						<div class="col-md-2">
+							<label for="unite">Unité :</label>
+							<select name="unite" id="unite">
+								<option value="pièce">Pièce</option>
+								<option value="kilogramme">kilogramme</option>
+								<option value="gramme">gramme</option>
+								<option value="litre">litre</option>
+							</select>
+						</div>
+					
+					</div>
+				
 				</div>
 				
-				<div class="form-group" id="id2">
-					<div class="col-md-2">
-						<label for="ingredient">IngrÃ©dient :</label>
-
-						<select name="ingredient" id="ingredient">
-						
-						@for(produit <- produits) {
-							<option value="fromage">@produit.productName</option>
-						}
-					
-						</select>
-					</div>
-						
-					<div class="col-md-2">
-						<label for="qualite">QuanitÃ© :</label>
-						<input type="text" id="quantite" name="quantite" />
-					</div>
-					
-					<div class="col-md-2">
-						<label for="minimum">Minimum :</label>
-						<input type="text" id="minimum" name="minimum" />
-					</div>
-					
-					<div class="col-md-2">
-						<label for="maximum">Maximum :</label>
-						<input type="text" id="maximum" name="maximum" />
-					</div>
-					
-					<div class="col-md-2">
-						<label for="alerte">Seuil d'alerte :</label>
-						<input type="text" id="alerte" name="alerte" />
-					</div>
-					
-					<div class="col-md-2">
-						<label for="unite">UnitÃ© :</label>
-						<select name="unite" id="unite">
-							<option value="piÃ¨ce">PiÃ¨ce</option>
-							<option value="kilogramme">kilogramme</option>
-							<option value="gramme">gramme</option>
-							<option value="litre">litre</option>
-						</select>
-					</div>
-				</div>
-
 				<div class="form-group">
-					<a href="../gerant_nouvel_ingredient"><button onclick="clickedBis()" class="btn btn-primary" type="button">Nouvel ingrÃ©dient.</button></a>
+					<a href="../gerant_nouvel_ingredient"><input type="button" value="Nouvel ingredient" /></a>
 				</div>
+				
 		</div>
-		
-		
-		@views.html.footer()
 
 	</body>
-	
+	<br><br><br>
+	@views.html.footer()
+		
 	<script>
 		var compteur = 0;
-		var tab = ["IngrÃ©dient","QualitÃ©","Minimum","Maximum","Seuil d'alerte","UnitÃ©"];
+		var tab = ["Ingrédient","Qualité","Minimum","Maximum","Seuil d'alerte","Unité"];
 
 		function clicked(element){
 			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
@@ -176,4 +258,5 @@
 		}
 
 	</script>
+
 </html>

@@ -10,7 +10,10 @@ libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
   cache,
-  javaWs
+  javaWs,
+  "org.webjars" %% "webjars-play" % "2.3.0",
+  "org.webjars" % "jquery" % "2.1.4",
+  "org.webjars" % "bootstrap" % "3.3.4"
 )
 
 libraryDependencies += javaEbean
