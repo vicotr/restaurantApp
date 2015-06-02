@@ -1,18 +1,19 @@
 @CHARSET "ISO-8859-1";
+
 body {
-    background: #252525;
+    background: #d9f0de;
  	font-family: 'Open Sans';
     font-weight: 30;
 }
 .main {
-    background: white url(machine_a_ecrire.jpg) right top no-repeat;
+    background: #d9f0de;
     background-size: contain;
     padding: 0px 20px 20px;
     margin-top: 20px;
 }
 @media only screen and (max-width : 92px) {
     .main {
-        background: white;
+        background: #d9f0de;
         margin-top: 0px;
     }
 }
@@ -58,4 +59,8 @@ p{
 	
 	margin-bottom: 5px;
 
+}
+
+.col-md-2{
+	
 }
