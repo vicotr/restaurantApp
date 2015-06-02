@@ -1,33 +1,46 @@
-
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+
 	<head>
 		<meta charset="ISO-8859-1">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
-		<title>Header & footer pour le gérant</title>
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
+		<script src="../../target/web/public/main/lib/jquery/jquery.js"></script>
+		<title> Mes stocks</title>
 	</head>
 
 	<body>
-		<header>
-			<a href="../restaurant_mon_compte"><input type="button" name="Mon compte" value="Mon compte" >
-			<a href="../authentification"><input type="button" name="Deconnexion" value="Déconnexion" >
-			
-			<div class="container">
-				<nav class="navbar navbar-inverse">
-					<div class="container-fluid">
-						<ul class="nav navbar-nav">
-							<li onclick="clicked(this)"> <a href="../gerant_accueil">Accueil</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_stocks">Stocks</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_demande_reapprovisionnement">Demande de réapprovisionnement</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_alertes">Alertes</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_administration">Administration</a> </li>
-							<li onclick="clicked(this)"> <a href="../gerant_suivi_des_commandes">Suivi des commandes</a> </li>
-						</ul>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+							<nav class="navbar navbar-inverse">
+								<div class="container-fluid">
+					
+									<a href="../views/compte_gerant.html"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
+									<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Déconnexion" class="btn btn-success btn btn-success"></a>
+									
+									<ul class="nav navbar-nav">
+										<li onclick="clicked(this)"> <a href="../views/gerant_accueil.scala.html">Accueil</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/stocks_gerant.scala.html">Stocks</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_demande_reapprovisionnement.scala.html">Demande de réapprovisionnement</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_alertes.scala.html">Alertes</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_administration.scala.html">Administration</a> </li>
+										<li onclick="clicked(this)"> <a href="../views/gerant_suivi_des_commandes.scala.html">Suivi des commandes</a> </li>	
+									</ul>
+									
+								</div>
+							</nav>
+						</div>
 					</div>
-				</nav>
+				</div>
 			</div>
-		</header>
-		
+		</div>
 	</body>
+	
+
 </html>
