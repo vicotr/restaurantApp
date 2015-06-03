@@ -12,29 +12,32 @@
 		
 		@helper.form(routes.Application.nouvelIngredientTraitement) {
 			
+
 		<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+	     						 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+	
 			<h1> Ajouter un nouvel ingrédient </h1>
-			<fieldset>
-				<legend> Informations du nouvel ingrédient</legend>
+			<h2> Informations du nouvel ingrédient</h2> <br>
 			
 				<label for="nom">Nom : </label>
-				<select name="nom" id="ingredient">
+				<select name="nom" id="ingredient" >
 				@for(produit <- produits) {
 					<option value="@produit.productName">@produit.productName</option>
 				}
-				</select></br>
+				</select>
 				
-				<label for="quantite">Quantite : </label>
-				<input type="text" id="quantite" name="quantite"/> </br>
+				</br></br>
 				
-				<label for="minimum">Minimum : </label>
-				<input type="text" id="minimum" name="minimum"/> </br>
-				
-				<label for="maximum">Maximum : </label>
-				<input type="text" id="maximum" name="maximum"/> </br>
-				
-				<label for="seuilAlerte">Seuil d'alerte : </label>
-				<input type="text" id="seuilAlerte" name="seuilAlerte"/> </br>
+				<label for="quantite">Caractéristiques : </label>
+				</br></br>
+				<input type="text" id="quantite" name="quantite" placeholder="Quantité" class="form-control"/> </br>
+				<input type="text" id="minimum" name="minimum" placeholder="Minimum"class="form-control"/> </br>
+				<input type="text" id="maximum" name="maximum" placeholder="Maximum"class="form-control"/> </br>
+				<input type="text" id="seuilAlerte" name="seuilAlerte" placeholder="Seuil d'alerte"class="form-control"/> </br>
 				
 				<label for="unité">Unité : </label>
 				<select id="unité" name="unite"> 
@@ -42,9 +45,11 @@
 					<option value="kilogramme">kilogramme</option>
 					<option value="gramme">gramme</option>
 					<option value="litre">litre</option>
-				</select></br>
+				</select>
 				
-				<input type="submit" id="ajouter" name="ajouter" value="Ajouter ingrédient"/>
+				</br></br>
+				
+				<input type="submit" id="ajouter" name="ajouter" value="Ajouter ingrédient" class="btn btn-success btn btn-success"/>
 			</fieldset>
 		}
 		

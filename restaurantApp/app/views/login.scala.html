@@ -8,7 +8,7 @@
 	<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.css"))' rel="stylesheet">
 	<link href='@routes.Assets.at("app.css")' rel="stylesheet">
 	<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script><meta charset="ISO-8859-1">
-	<title>Mon application</title>
+	<title>Bienvenue</title>
 </head>
 <body>
 
@@ -23,16 +23,16 @@
 									<h1>Bienvenue sur la plateforme Restaurant</h1>
 									<h2>Veuillez vous authentifier : </h2>
 								
-									<form action="/users/login" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
+									<form action="/users/login" name="login" role="form" method="post" accept-charset="utf-8">
 		           					   <div class="form-group">
 		           					   <div class="col-md-8"><input name="email" placeholder="Email" class="form-control" type="email" id="UserUsername" value="@form("email").value"/></div>
 		           						</div> 
-		           						
+		           						<br><br>
 		           						<div class="form-group">
 		             						<div class="col-md-8">
 		             						<input name="password" placeholder="Password" class="form-control" type="password" id="UserPassword"/></div>
 		              					</div> 
-		              					
+		              					<br><br>
 		              					<div class="col-md-offset-0 col-md-8"><input  class="btn btn-success btn btn-success" type="submit" value="Connexion"/></div>
 		              				</form>
 	            				
