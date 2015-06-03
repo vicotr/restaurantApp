@@ -17,6 +17,7 @@ import models.queries.StockGerant;
 import models.queries.StockRestoQuery;
 import models.queries.UtilisateurQuery;
 import models.queries.userLog;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -126,16 +127,7 @@ public class Application extends Controller {
             login.render(form(Login.class))
         );
     }
-	
-	public static Result supprimerMembre(int id){
-		
-		Utilisateur utilisateur = Ebean.find(Utilisateur.class, id);
-		Ebean.delete(utilisateur);
-		
-		List<Fonction> newFonctions = FonctionQuery.getItem();
-		List<Utilisateur> utilisateurs = UtilisateurQuery.getItem();
-		return ok(gerant_administration.render(utilisateurs,newFonctions));
-	}
+
 	
 	public static Result gerantStock(){
 		List<Produit> list_produit = StockGerant.getItem();
@@ -152,6 +144,12 @@ public class Application extends Controller {
 		return ok(gerant_nouvel_ingredient.render(list_produit));
 	}
 	
+	
+	// ==========================================================================
+	// ==========================================================================
+	// ==========================================================================
+	
+	//Méthodes POST
 	public static Result nouvelIngredientTraitement(){
 		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();
 	    
@@ -198,7 +196,6 @@ public class Application extends Controller {
 	    return redirect("/gerant_stocks");
 	}
 	
-	// Méthodes POST
 	public static Result nouveauMembreTraitement() {
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
 		String pseudo = nouvelUtilisateurForm.get().identifiant;
@@ -239,6 +236,7 @@ public class Application extends Controller {
 		return redirect("/gerant_administration");
 	}
 	
+	// demande
 	public static Result traitement(){
 		  Form<DemandeBis> loginForm = form(DemandeBis.class).bindFromRequest();
 		    String commentaires = loginForm.get().commentaires;
@@ -267,4 +265,73 @@ public class Application extends Controller {
 	    }
 	}
 
+	public static Result supprimerMembre(int id){
+		
+		Utilisateur utilisateur = Ebean.find(Utilisateur.class, id);
+		Ebean.delete(utilisateur);
+		
+		List<Fonction> newFonctions = FonctionQuery.getItem();
+		List<Utilisateur> utilisateurs = UtilisateurQuery.getItem();
+		return ok(gerant_administration.render(utilisateurs,newFonctions));
+	}
+	
+	public static Result modificationStock(){
+		DynamicForm stockForm = Form.form().bindFromRequest();
+		int linesUpdated = Integer.parseInt(stockForm.get("linesUpdated"));
+		int linesCreated = Integer.parseInt(stockForm.get("linesCreated"));
+		int quantite = 0;
+		int minimum = 0;
+		int maximum = 0;
+		int seuilAlerte = 0;
+		int srid = 0;
+		int pidProduit = 0;
+		
+		for(int i = 1; i < linesUpdated+1; i++){
+			
+			quantite = Integer.parseInt(stockForm.get("quantitelineUpdated"+i));
+			minimum = Integer.parseInt(stockForm.get("minimumlineUpdated"+i));
+			maximum = Integer.parseInt(stockForm.get("maximumlineUpdated"+i));
+			seuilAlerte = Integer.parseInt(stockForm.get("alertelineUpdated"+i));
+			srid = Integer.parseInt(stockForm.get("hiddenlineUpdated"+i));
+		    
+			
+			String s = "UPDATE stock_resto SET quantite = :quantite, stockMin = :stockMin, stockMax = :stockMax, stockAlerte = :stockAlerte WHERE srid = :srid";
+		    SqlUpdate update = Ebean.createSqlUpdate(s);
+		 	update.setParameter("quantite",quantite);
+		 	update.setParameter("stockMin",minimum);
+		 	update.setParameter("stockMax", maximum);
+		 	update.setParameter("stockAlerte", seuilAlerte);
+		 	update.setParameter("srid", srid);
+		 	
+		 	Ebean.execute(update);
+		}
+			
+			for(int i = 1; i < linesCreated+1; i++){
+				
+				if(stockForm.get("quantitelineCreated"+i) != "" && stockForm.get("minimumlineCreated"+i) != "" &&  stockForm.get("maximumlineCreated"+i) != "" && stockForm.get("alertelineCreated"+i) != "" && stockForm.get("ingredientlineCreated"+i) != ""){
+				
+					quantite = Integer.parseInt(stockForm.get("quantitelineCreated"+i));
+					minimum = Integer.parseInt(stockForm.get("minimumlineCreated"+i));
+					maximum = Integer.parseInt(stockForm.get("maximumlineCreated"+i));
+					seuilAlerte = Integer.parseInt(stockForm.get("alertelineCreated"+i));
+					pidProduit = Integer.parseInt(stockForm.get("ingredientlineCreated"+i));
+					
+					String s = "INSERT INTO stock_resto (quantite,stockMax,stockMin,stockAlerte,produit_pid) VALUES (:quantite,:stockMax,:stockMin,:stockAlerte,:produit_pid)";
+				 	SqlUpdate update = Ebean.createSqlUpdate(s);
+				 	update.setParameter("quantite",quantite);
+				 	update.setParameter("stockMin",minimum);
+				 	update.setParameter("stockMax", maximum);
+				 	update.setParameter("stockAlerte", seuilAlerte);
+				 	update.setParameter("produit_pid", pidProduit);
+				 	
+				 	Ebean.execute(update);
+				}
+			}
+		
+		
+		List<Produit> list_produit = StockGerant.getItem();
+		List<StockResto> stockRestos = StockRestoQuery.getItem();
+		return ok(gerant_stocks.render(list_produit, stockRestos));
+	
+	}
 }

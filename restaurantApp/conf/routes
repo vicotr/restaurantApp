@@ -24,6 +24,8 @@ GET    /restaurant_mon_compte       controllers.Application.compteResto()
 GET   /gerant_nouvel_ingredient  controllers.Application.nouvelIngredient()
 POST  /gerant_nouvel_ingredient  controllers.Application.nouvelIngredientTraitement()
 
+#stock gérant
+POST  /gerant_stocks             controllers.Application.modificationStock()
 
 #création nouvel ingrédient
 GET   /creationIngredient        controllers.Application.creationIngredient()

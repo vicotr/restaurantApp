@@ -24,7 +24,7 @@
 								<ul class="nav navbar-nav">
 									<li onclick="clicked(this)"> <a href="../gerant_accueil">Accueil</a> </li>
 									<li onclick="clicked(this)"> <a href="../gerant_stocks">Stocks</a> </li>
-									<li onclick="clicked(this)"> <a href="../gerant_demande_reapprovisionnement">Demande de réapprovisionnement</a> </li>
+									<li onclick="clicked(this)"> <a href="../g"app/views/gerant_stocks.scala.html"erant_demande_reapprovisionnement">Demande de réapprovisionnement</a> </li>
 									<li onclick="clicked(this)"> <a href="../gerant_alertes">Alertes</a> </li>
 									<li onclick="clicked(this)"> <a href="../gerant_administration">Administration</a> </li>
 									<li onclick="clicked(this)"> <a href="../gerant_suivi_des_commandes">Suivi des commandes</a> </li>
@@ -38,14 +38,16 @@
 			-->
 		
 			<br><br><br>	
-			<form id="form1" class="col-lg-12">
 			
+	@helper.form(routes.Application.modificationStock) {
+				
+				<input type="hidden" name="linesUpdated" id="linesUpdated" value="" />
 				<div class="form-group" id="id0">
 					<script>
 						var quantite = 0, minimum = 0, alerte=0,couleur=0;
 						var tabIndice = ["ingredient","quantite","minimum","maximum","alerte","unite"];
 						var tabValeurs = [];
-						var compteurTab = 0, compteurLigne = 0;
+						var compteurLigne = 0;
 						
 						for(var i = 0; i < tabIndice.length; i++){
 							$('<label />', {class : "indice"}).css({color: couleur,
@@ -57,18 +59,20 @@
 							if(i == tabIndice.length -1){$('<br>').appendTo($("#id0"));}
 						}
 						
-						@for(produit <- produits){
+						@for(produit <- produits){// pour chaque produit stocké dans la base de données;
 							
-							@for(stockResto <- stockRestos){
-								quantite = @stockResto.quantite;
-								minimum = @stockResto.stockMin; 
-								alerte = @stockResto.stockAlerte;
+							@for(stockResto <- stockRestos){// Pour chaque stock stocké dans la base de données;
 								
-								@if(stockResto.produit.pid == produit.pid){
-									console.log(quantite+","+minimum)
+								@if(stockResto.produit.pid == produit.pid){ // Si le stock se réfère au produit courant alors on l'affiche, sinon on ne fait rien;
+									
+									quantite = @stockResto.quantite;
+									minimum = @stockResto.stockMin; 
+									alerte = @stockResto.stockAlerte;
+									compteurLigne ++;
+									
 									if(quantite <= alerte){
 										couleur = "orange";
-										if (quantite < minimum){
+										if (quantite <= minimum){
 											couleur = "red";
 										}
 									}else if(quantite > alerte){
@@ -79,9 +83,9 @@
 									
 									for(var i = 0; i < tabIndice.length; i++){
 										$('<input />', {
-				    						id : tabIndice[compteurTab] + compteurLigne,
-				    						class : tabIndice[compteurTab], 
-				    						name : tabIndice[compteurTab] + compteurLigne,
+				    						id : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    						class : tabIndice[i], 
+				    						name : tabIndice[i] +"lineUpdated"+ compteurLigne,
 				    						value : tabValeurs[i]
 										}).css({color: couleur,
 											    border: "5px solid "+couleur}).appendTo($("#id0"));	
@@ -90,10 +94,17 @@
 											$('<br>').appendTo($("#id0"));
 										}
 									}
-									
+									$('<input />',{
+													type: "hidden",  
+													name: "hiddenlineUpdated"+ compteurLigne,
+													value: "@stockResto.srid"
+												  }).appendTo($("#id0"));
 								}
+								
 							}
 						}
+						
+						$("#linesUpdated").val(compteurLigne); // on indique le nombre de stocks affichés;
 						
 					</script>
 					
@@ -112,45 +123,52 @@
 						
 				</div>
 			
-			<br><br><br>	
-			
-				<div class="form-group" id="id2">
+			<br><br><br>
+				
+			<div id="id2">
+		
+				<input type="hidden" name="linesCreated" id="linesCreated" value="" />
+				<script>
+					var line = 1;
+					$('#linesCreated').val(line);
+				</script> 
+				<div class="form-group">
 				
 					<div class="row">
 					
 						<div class="col-md-2">
-							<label for="ingredient">Ingrédient :</label>
-							<select name="ingredient" id="ingredient">
+							<label for="ingredientlineCreated1">Ingrédient :</label>
+							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
 								@for(produit <- produits) {
-									<option value="fromage">@produit.productName</option>
+									<option value="@produit.pid">@produit.productName</option>
 								}
 							</select>
 						</div>
 							
 						<div class="col-md-2">
-							<label for="qualite">Qualité :</label>
-							<input 7type="text" id="qualite" name="Nom" />
+							<label for="quantitelineCreated1">Quantite :</label>
+							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="minimum">Minimum :</label>
-							<input type="text" id="minimum" name="Nom" />
+							<label for="minimumlineCreated1">Minimum :</label>
+							<input type="text" id="minimumlineCreated1" name="minimumlineCreated1" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="maximum">Maximum :</label>
-							<input type="text" id="maximum" name="Nom" />
+							<label for="maximumlineCreated1">Maximum :</label>
+							<input type="text" id="maximumlineCreated1" name="maximumlineCreated1" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="alerte">Seuil d'alerte :</label>
-							<input type="text" id="alerte" name="alerte" />
+							<label for="alertelineCreated1">Seuil d'alerte :</label>
+							<input type="text" id="alertelineCreated1" name="alertelineCreated1" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="unite">Unité :</label>
-							<select name="unite" id="unite">
-								<option value="pièce">Pièce</option>
+							<label for="unitelineCreated1">Unité :</label><br>
+							<select name="unitelineCreated1" id="unitelineCreated1">
+								<option value="pièce">piece</option>
 								<option value="kilogramme">kilogramme</option>
 								<option value="gramme">gramme</option>
 								<option value="litre">litre</option>
@@ -160,11 +178,13 @@
 					</div>
 				
 				</div>
+			</div>
 				
-				<div class="form-group">
-					<a href="../gerant_nouvel_ingredient"><input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" /></a>
-				</div>
-				
+			<div class="form-group">
+				<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clickedBis()" /><br><br>
+				<input type="submit" value="Valider" class="btn btn-success btn btn-success" id="validation" />
+			</div>
+	}			
 		@views.html.footer()
 		</div>
 
@@ -173,8 +193,7 @@
 	
 		
 	<script>
-		var compteur = 0;
-		var tab = ["Ingrédient","Qualité","Minimum","Maximum","Seuil d'alerte","Unité"];
+		var unites = ["piece","kilogramme","gramme","litre"];
 
 		function clicked(element){
 			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
@@ -183,75 +202,96 @@
 		}
 
 		function clickedBis(){
-			compteur++;
+			line ++;
 
 			$('<div />', {
-    						id : "blocv"+compteur,
+    						id : "blocv"+line,
     						class : "form-group", 
-						}).appendTo('form');
+						}).appendTo($('#id2'));
 			$('<div />', {
-							id: "bloc"+compteur,
+							id: "bloc"+line,
 							class: "row",
-						}).appendTo($('#blocv'+compteur));
+						}).appendTo($('#blocv'+line));
 
 			for(var i = 0; i < 6; i++){
+				
 				if(i == 0){
+					
 					$('<div />', {
 									class: "col-md-2",
-									id: "div"+compteur+i,
-								}).appendTo($("#bloc"+compteur));
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
 					$('<label />', {
-									for: tab[i]+compteur+i,
-									id : 'label'+compteur+i,	
-								}).appendTo($("#div"+compteur+i));
-					$('#label'+compteur+i).html(tab[i]+":");
+									for: tabIndice[i]+line+i,
+									id : 'label'+line+i,	
+								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+					
+					$('<br>').appendTo($("#div"+line+i));
+					
 					$('<select />', {
-										name: tab[i],
-										id: tab[i]+compteur+i,
-									}).appendTo($("#div"+compteur+i));
-					$('<option />', {
-										value: "Poire",
-										id: "option"+compteur+i,
-									}).appendTo($("#"+tab[i]+compteur+i));
-					$("#option"+compteur+i).html("poirehbhbjhhhrghuhreuuhjeoijg");
+										name: tabIndice[i] + "lineCreated" + line,
+										class : "select" + tabIndice[i],
+										id: tabIndice[i] + "lineCreated" + line
+									}).appendTo($("#div"+line+i));
+					
+					@for(produit <- produits) {
+						$('<option />', {
+											value: "@produit.pid",
+											id: "option"+line+i,
+										}).html("@produit.productName")
+										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
+					}
+					
 				}else if(i == 5){
+					
 					$('<div />', {
 									class: "col-md-2",
-									id: "div"+compteur+i,
-								}).appendTo($("#bloc"+compteur));
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
 					$('<label />', {
-									for: tab[i],
-									id : 'label'+compteur+i,	
-								}).appendTo($("#div"+compteur+i));
-					$('#label'+compteur+i).html(tab[i]+":");
+									for: tabIndice[i],
+									id : 'label'+line+i,	
+								}).html(tabIndice[i]+":")
+								  .appendTo($("#div"+line+i));
+					
+					$('<br>').appendTo($("#div"+line+i));
+
 					$('<select />', {
-										name:tab[i],
-										id: tab[i]+compteur+i,
-									} ).appendTo($("#div"+compteur+i));
-					$('<option />', {
-										value: "Poire",
-										id: "option"+compteur+i,
-									}).appendTo($("#"+tab[i]+compteur+i));
-					$("#option"+compteur+i).html("Poirekrjgetgjlijrotee");
+										name: tabIndice[i] + "lineCreated" + line,
+										class : "select"+tabIndice[i],
+										id: tabIndice[i] + "lineCreated" + line,
+									} ).appendTo($("#div"+line+i));
+					
+					for(var j = 0; j < unites.length; j++){
+						$('<option />', {
+											value: unites[j],
+											id: "option"+line+i,
+										}).html(unites[j])
+										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
+					}
+					
 				}else{
+					
 					$('<div />', {
 									class: "col-md-2",
-									id: "div"+compteur+i,
-								}).appendTo($("#bloc"+compteur));
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
 					$('<label />', {
-									for: tab[i],
-									id : "label"+compteur+i,	
-								}).appendTo($("#div"+compteur+i));
-					$('#label'+compteur+i).html(tab[i]+":");
+									for: tabIndice[i],
+									id : "label"+line+i,	
+								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+					
 					$('<input />', {
-										name : tab[i],
-										id : tab[i],
-										type : "text",
-										css :{ border: "red 2px solid",
-									}
-								}).appendTo($("#div"+compteur+i));
+									name : tabIndice[i] + "lineCreated" + line,
+									class : "select" + tabIndice[i],
+									id : tabIndice[i] + "lineCreated" + line,
+									type : "text",
+								}).appendTo($("#div"+line+i));
+					
 				}
 			}
+			
+			$('#linesCreated').val(line);
 		}
 
 	</script>

@@ -64,3 +64,8 @@ p{
 .col-md-2{
 	
 }
+
+#validation{
+	display: block;
+	margin:auto;
+}
