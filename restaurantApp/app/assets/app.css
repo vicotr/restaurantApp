@@ -66,4 +66,7 @@ p{
 }
 .canvasfooter{
 	width: 100%;
+	border-left: 2px solid black;
+padding-left: 15px;
+margin-left: 180px; 
 }
