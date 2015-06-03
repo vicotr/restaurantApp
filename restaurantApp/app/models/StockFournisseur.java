@@ -31,10 +31,10 @@ public class StockFournisseur {
     }
     
     @ManyToOne
-    public Produit getProduits(){
+    public Produit getProduit(){
         return produit;
     }
-    public void setProduits(Produit produit){
+    public void setProduit(Produit produit){
     	this.produit= produit;
     }
 
@@ -69,6 +69,7 @@ public class StockFournisseur {
     public void setPrixUnite(int prixUnite){
     	this.prixUnite = prixUnite;
     }
+    
     public static Finder<Long,StockFournisseur> find= new Finder<Long,StockFournisseur>(
     		Long.class, StockFournisseur.class
     		);

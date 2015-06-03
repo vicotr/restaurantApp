@@ -23,7 +23,7 @@ public class Produit {
     public Categorie categorie;
     public List<Plat> plats;
     public List<StockResto> stockRestos;
-   // public List<StockFournisseur> stockFournisseurs;
+    public List<StockFournisseur> stockFournisseurs;
     
     @Id
     public int getPid(){
@@ -82,13 +82,13 @@ public class Produit {
     	this.stockRestos = stockRestos;
     } 
     
-   /* @OneToMany(cascade=CascadeType.ALL, mappedBy="produit")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="produit")
     public List<StockFournisseur> getStockFournisseurs(){
     	return stockFournisseurs;
     }
     public void setStockFournisseurs(List<StockFournisseur> stockFournisseurs){
     	this.stockFournisseurs = stockFournisseurs;
-    } */
+    } 
    
     public static Finder<Long,Produit> find= new Finder<Long,Produit>(
     		Long.class, Produit.class

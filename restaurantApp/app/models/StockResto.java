@@ -32,7 +32,6 @@ public class StockResto {
       this.srid = srid;
     }
     
-   // @Column(name = "produits")
     @ManyToOne
     public Produit getProduit(){
     	return produit;
