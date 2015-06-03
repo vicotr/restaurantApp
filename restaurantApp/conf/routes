@@ -59,6 +59,10 @@ GET /gerant_alertes			controllers.Application.gerantAlertes()
 GET /gerant_suivi_des_commandes			controllers.Application.gerantSuivi()
 
 
+#gerantCompte
+GET /restaurant_mon_compte			controllers.Application.gerantCompte()
+
+
 GET  /authentification          controllers.Application.logOut()
 
 

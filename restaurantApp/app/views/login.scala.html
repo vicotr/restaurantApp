@@ -2,16 +2,16 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--   <meta name="description" content="Connexion à mon application"> --> 
-	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-	<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/app.css" rel="stylesheet">
+	<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel="stylesheet">
+	<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.css"))' rel="stylesheet">
+	<link href='@routes.Assets.at("app.css")' rel="stylesheet">
+	<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script><meta charset="ISO-8859-1">
 	<title>Mon application</title>
-	<link rel="stylesheet" type="text/css" media="screen"
-		href="@routes.Assets.at("stylesheets/login.css")">
 </head>
 <body>
+
 	@helper.form(routes.Application.authenticate) {
 	
 	<div class="container">
@@ -20,27 +20,29 @@
 	      			<div class="main">
 	              		 <div class="row">
 	     						 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
-							<h1>Bienvenue sur la plateforme Restaurant</h1>
-							<h2>Veuillez vous authentifier : </h2>
-							
-							   <form action="/users/login" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
-	           					   <div class="form-group">
-	           					   <div class="col-md-8"><input name="email" placeholder="Email" class="form-control" type="email" id="UserUsername" value="@form("email").value"/></div>
-	           						</div> 
-	           						
-	           						<div class="form-group">
-	             						<div class="col-md-8">
-	             						<input name="password" placeholder="Password" class="form-control" type="password" id="UserPassword"/></div>
-	              					</div> 
-	              					
-	              					<div class="col-md-offset-0 col-md-8"><input  class="btn btn-success btn btn-success" type="submit" value="Connexion"/></div>
-	            						</div>
-	          
-	        							</form>
-	              					
-           
-	
-	
+									<h1>Bienvenue sur la plateforme Restaurant</h1>
+									<h2>Veuillez vous authentifier : </h2>
+								
+									<form action="/users/login" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
+		           					   <div class="form-group">
+		           					   <div class="col-md-8"><input name="email" placeholder="Email" class="form-control" type="email" id="UserUsername" value="@form("email").value"/></div>
+		           						</div> 
+		           						
+		           						<div class="form-group">
+		             						<div class="col-md-8">
+		             						<input name="password" placeholder="Password" class="form-control" type="password" id="UserPassword"/></div>
+		              					</div> 
+		              					
+		              					<div class="col-md-offset-0 col-md-8"><input  class="btn btn-success btn btn-success" type="submit" value="Connexion"/></div>
+		              				</form>
+	            				
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+	           </div>
+	           
 	}
 </body>
 </html>

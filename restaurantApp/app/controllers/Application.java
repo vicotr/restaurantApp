@@ -115,6 +115,12 @@ public class Application extends Controller {
 				);
 	}
 	
+	public static Result gerantCompte(){
+		return ok(
+				restaurant_mon_compte.render()
+				);
+	}
+	
 	public static Result login() {
         return ok(
             login.render(form(Login.class))

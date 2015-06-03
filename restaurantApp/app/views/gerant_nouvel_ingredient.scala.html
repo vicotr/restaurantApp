@@ -2,15 +2,17 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
 <title>Nouvel ingrédient gérant</title>
 </head>
+
 <body>
 @views.html.gerant_header()
+		
 		@helper.form(routes.Application.nouvelIngredientTraitement) {
+			
+		<div class="container">
 			<h1> Ajouter un nouvel ingrédient </h1>
 			<fieldset>
 				<legend> Informations du nouvel ingrédient</legend>
@@ -47,5 +49,6 @@
 		}
 		
 		@views.html.footer()
+		</div>
 </body>
 </html>

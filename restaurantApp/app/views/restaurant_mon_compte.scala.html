@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
 <title>Compte</title>
 </head>
-<body>
 
-	<h1>Votre compte</h1>
+<body>
+@views.html.gerant_header()
+
+	<div class="container">
+		<h1>Votre compte</h1>
 			
 				<label for="identifiant">Identifiant : </label>
 				<input type="text" id="identifiant" name="identifiant" value="A"/> </br>
@@ -27,5 +28,9 @@
 				<input type="button" id="modifier" name="modifier" value="Modifier votre compte"/>
 
 		</form>
+		
+		@views.html.footer()
+	</div>
+	
 </body>
 </html>

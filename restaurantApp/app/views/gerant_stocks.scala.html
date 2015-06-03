@@ -4,19 +4,14 @@
 <html>
 
 	<head>
-		<meta charset="ISO-8859-1">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel="stylesheet">
-		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.css"))' rel="stylesheet">
-		<link href='@routes.Assets.at("app.css")' rel="stylesheet">
-		<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
 		<title> Mes stocks</title>
 	</head>
 
-	<body>		
+	<body>
+	@views.html.gerant_header()	
 		
 	 <div class="container">
+			<!--
 			<div class="row">
 				<div class="col-xs-12">
 	      			<div class="main">
@@ -40,6 +35,7 @@
 					</div>
 				</div>
 			</div>
+			-->
 		
 			<br><br><br>	
 			<form id="form1" class="col-lg-12">
@@ -169,11 +165,12 @@
 					<a href="../gerant_nouvel_ingredient"><input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" /></a>
 				</div>
 				
+		@views.html.footer()
 		</div>
 
 	</body>
 	<br><br><br>
-	@views.html.footer()
+	
 		
 	<script>
 		var compteur = 0;
