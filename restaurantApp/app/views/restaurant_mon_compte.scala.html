@@ -9,23 +9,28 @@
 @views.html.gerant_header()
 
 	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+	     						 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+	
 		<h1>Votre compte</h1>
 			
 				<label for="identifiant">Identifiant : </label>
-				<input type="text" id="identifiant" name="identifiant" value="A"/> </br>
+				<input type="text" id="identifiant" name="identifiant" value="A" placeholder="Identifiant" class="form-control"/> </br>
 				
-				<label for="password">Mot de passe (provisoire) : </label>
-				<input type="password" id="password" name="password"/> </br>
+				<input type="password" id="password" name="password" placeholder="Mot de passe provisoire"class="form-control"/> </br>
 				
 				<label for="rôle">Rôle de l'utilisateur : </label>
-				<select id="role" name="role"> 
+				<select id="role" name="role"class="form-control" 
 					<option> - </option>
 					<option>Gérant</option>
 					<option>Cuisinier</option>
 					<option>Serveur</option>
 				</select></br>
 				
-				<input type="button" id="modifier" name="modifier" value="Modifier votre compte"/>
+				<input type="button" id="modifier" name="modifier" value="Modifier votre compte" class="btn btn-success btn btn-success"/>
 
 		</form>
 		
