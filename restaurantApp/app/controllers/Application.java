@@ -64,25 +64,49 @@ public class Application extends Controller {
 	}
 	
 	public static Result demande(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				gerant_demande_reapprovisionnement.render()
 				);
+        }
 	}
 	
 	public static Result compteResto(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(restaurant_mon_compte.render());
+        }
 	}
 	
 	public static Result administration() {
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<Fonction> list_fonctions = FonctionQuery.getItem();
 		List<Utilisateur> list_utilisateurs = UtilisateurQuery.getItem();
 		return ok(gerant_administration.render(list_utilisateurs, list_fonctions));
+        }
 	}
 
 	public static Result nouveauMembre() {
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				gerant_nouveau_membre.render()
 				);
+        }
 	}
 	
 	public static Result logOut() {
@@ -93,33 +117,63 @@ public class Application extends Controller {
 	}
 	
 	public static Result index(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<Produit> list_produit = StockGerant.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(gerant_stocks.render(list_produit, stockRestos));
+        }
 	}
 	
 	public static Result gerantAccueil(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				gerant_accueil.render()
 				);
+        }
 	}
 	
 	public static Result gerantAlertes(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				gerant_alertes.render()
 				);
+        }
 	}
 	
 	public static Result gerantSuivi(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				gerant_suivi_des_commandes.render()
 				);
+        }
 	}
 	
 	public static Result gerantCompte(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		return ok(
 				restaurant_mon_compte.render()
 				);
+        }
 	}
 	
 	public static Result login() {
@@ -130,9 +184,15 @@ public class Application extends Controller {
 
 	
 	public static Result gerantStock(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<Produit> list_produit = StockGerant.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(gerant_stocks.render(list_produit, stockRestos));
+        }
 	}
 	
 	public static Result creationIngredient(){
@@ -334,4 +394,13 @@ public class Application extends Controller {
 		return ok(gerant_stocks.render(list_produit, stockRestos));
 	
 	}
+	
+	public static boolean checkSession(){       
+	        if (session("email")!= null){
+	            return true;
+	        }else{
+	            return false;
+	        }
+	    }
+	
 }
