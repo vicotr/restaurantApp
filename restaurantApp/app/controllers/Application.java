@@ -24,7 +24,6 @@ import play.mvc.Result;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
-import views.html.gerant_nouvel_ingredient;
 import views.html.gerant_suivi_des_commandes;
 import views.html.login;
 import views.html.gerant_stocks;
@@ -205,10 +204,6 @@ public class Application extends Controller {
 		return ok(creationIngredient.render());
 	}
 	
-	public static Result nouvelIngredient(){
-		List<Produit> list_produit = StockGerant.getItem();
-		return ok(gerant_nouvel_ingredient.render(list_produit));
-	}
 	
 	
 	// ==========================================================================
@@ -216,36 +211,6 @@ public class Application extends Controller {
 	// ==========================================================================
 	
 	//Méthodes POST
-	public static Result nouvelIngredientTraitement(){
-		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();
-	    
-	    String nomProduit = nouveauProduit.get().nom;
-	    int quantite = nouveauProduit.get().quantite;
-		int minimum = nouveauProduit.get().minimum;
-		int maximum = nouveauProduit.get().maximum;
-		int seuilAlerte = nouveauProduit.get().seuilAlerte;
-		String unite = nouveauProduit.get().unite;
-		int pidProduit = 0;
-	    
-		List<Produit> produits = Produit.find.all();
-		for(int i = 0; i < produits.size(); i++){
-			if(produits.get(i).productName.equals(nomProduit)){
-				pidProduit = produits.get(i).pid;
-			}
-		}
-		
-	    String s = "INSERT INTO stock_resto (produit_pid,quantite,stockMax,stockMin,stockAlerte) VALUES (:produit_pid,:quantite,:stockMax,:stockMin,:stockAlerte)";
-	 	SqlUpdate update = Ebean.createSqlUpdate(s);
-	 	update.setParameter("produit_pid",pidProduit);
-	 	update.setParameter("quantite",quantite);
-	 	update.setParameter("stockMax",maximum);
-	 	update.setParameter("stockMin",minimum);
-	 	update.setParameter("stockAlerte",seuilAlerte);
-	 
-	 	Ebean.execute(update);
-	   
-	    return redirect("/gerant_stocks");
-	}
 	
 	public static Result creationIngredientTraitement(){
 		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();

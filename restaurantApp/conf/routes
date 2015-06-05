@@ -20,10 +20,6 @@ GET	/gerant_stocks				controllers.Application.gerantStock()
 GET    /restaurant_mon_compte       controllers.Application.compteResto()       
 
 
-#nouvel ingrédient
-GET   /gerant_nouvel_ingredient  controllers.Application.nouvelIngredient()
-POST  /gerant_nouvel_ingredient  controllers.Application.nouvelIngredientTraitement()
-
 #stock gérant
 POST  /gerant_stocks             controllers.Application.modificationStock()
 
@@ -71,3 +67,4 @@ GET  /authentification          controllers.Application.logOut()
 #ressources
 GET /assets/*file    controllers.Assets.at(path="/public", file)
 GET /webjars/*file   controllers.WebJarAssets.at(file)
+
