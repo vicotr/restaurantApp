@@ -23,7 +23,7 @@ public class Fonction {
     	this.fid = fid;
     }
 
-    @Column(name = "activity")
+    @Column(name = "activity", unique=true)
     public String getActivity(){
     	return activity;
     }

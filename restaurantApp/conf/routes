@@ -5,26 +5,40 @@
 #login page
 GET   /login         controllers.Application.login()
 
+
+
 # Home page
 GET     /                  controllers.Application.index()
-
-
-
 POST    /login                 controllers.Application.authenticate()
 
+
 #log out
-GET	/stocks_gerant				controllers.Application.logOut()
- 
+GET	/gerant_stocks				controllers.Application.gerantStock()
 
 
+#mon compte
+GET    /restaurant_mon_compte       controllers.Application.compteResto()       
+
+
+#nouvel ingrédient
+GET   /gerant_nouvel_ingredient  controllers.Application.nouvelIngredient()
+POST  /gerant_nouvel_ingredient  controllers.Application.nouvelIngredientTraitement()
+
+#stock gérant
+POST  /gerant_stocks             controllers.Application.modificationStock()
+
+#création nouvel ingrédient
+GET   /creationIngredient        controllers.Application.creationIngredient()
+POST  /creationIngredient        controllers.Application.creationIngredientTraitement()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+
 #demande de reapprovisionnement du gerant
 GET  /gerant_demande_reapprovisionnement    controllers.Application.demande()
-
 POST  /gerant_demande_reapprovisionnement   controllers.Application.traitement()
+
 
 #administration des membres
 GET  /gerant_administration   controllers.Application.administration()
@@ -32,15 +46,28 @@ GET  /gerant_administration   controllers.Application.administration()
 GET  /gerant_nouveau_membre   controllers.Application.nouveauMembre()
 POST  /gerant_nouveau_membre   controllers.Application.nouveauMembreTraitement()
 
+GET  /gerant_supprimer_membre   controllers.Application.supprimerMembre(uid: Int)
+
 
 #gerantAccueil
 GET /gerant_accueil			controllers.Application.gerantAccueil()
 
 
-
 #gerantAlertes
 GET /gerant_alertes			controllers.Application.gerantAlertes()
 
-#gerantSuivi
-GET /gerant_suivi			controllers.Application.gerantSuivi()
 
+#gerantSuivi
+GET /gerant_suivi_des_commandes			controllers.Application.gerantSuivi()
+
+
+#gerantCompte
+GET /restaurant_mon_compte			controllers.Application.gerantCompte()
+
+
+GET  /authentification          controllers.Application.logOut()
+
+
+#ressources
+GET /assets/*file    controllers.Assets.at(path="/public", file)
+GET /webjars/*file   controllers.WebJarAssets.at(file)

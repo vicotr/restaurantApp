@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Nouvel ingrédient gérant</title>
+</head>
+
+<body>
+@views.html.gerant_header()
+		
+		@helper.form(routes.Application.creationIngredientTraitement) {
+			<h1> Ajouter un nouvel ingrédient </h1>
+			<fieldset>
+				<legend> Informations du nouvel ingrédient</legend>
+			
+				<label for="nom">Nom : </label>
+				<input type="text" id="nom" name="nom"/> </br>
+				
+				<label for="unité">Unité : </label>
+				<select id="unité" name="unite"> 
+					<option value="piece">Pièce</option>
+					<option value="kilogramme">kilogramme</option>
+					<option value="gramme">gramme</option>
+					<option value="litre">litre</option>
+				</select></br>
+				
+				<input type="submit" id="ajouter" name="ajouter" value="Ajouter ingrédient"/>
+			</fieldset>
+		}
+		
+		@views.html.footer()
+</body>
+</html>

@@ -28,7 +28,7 @@ public class Local {
     }
 
     @Column(name = "localName")
-    public String getL3ocalName(){
+    public String getLocalName(){
       return localName;
     }
     public void setLocalName(String localName){

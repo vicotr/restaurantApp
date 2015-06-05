@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/gerant.css" rel="stylesheet">
-<title>Suivi des commandes gérant</title>
-</head>
-<body>
-<!-- ajouter commandes et état commande de façon dynamique -->
 
-@views.html.footer()
-</body>
+	<head>
+		<title>Suivi des commandes gérant</title>
+	</head>
+
+	<body>
+		<!-- ajouter commandes et état commande de façon dynamique -->
+		@views.html.gerant_header()
+		<div class="container">
+	
+		<div class="row">
+			<div class="col-xs-12">
+	      			<div class="main">
+	              		 <div class="row">
+	     						 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+	     						 	<h1>Suivi des commandes</h1>
+			
+		@views.html.footer()
+		</div>
+	</body>
+
 </html>

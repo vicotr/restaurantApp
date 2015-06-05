@@ -1,0 +1,270 @@
+@(produits: List[Produit], stockRestos: List[StockResto])
+
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<title> Mes stocks</title>
+	</head>
+
+	<body>
+	@views.html.gerant_header()	
+		
+	 <div class="container">
+			<br><br><br>	
+			
+	@helper.form(routes.Application.modificationStock) {
+				
+				<input type="hidden" name="linesUpdated" id="linesUpdated" value="" />
+				<div class="form-group" id="id0">
+					<script>
+						var quantite = 0, minimum = 0, alerte=0,couleur=0;
+						var tabIndice = ["ingredient","quantite","minimum","maximum","alerte","unite"];
+						var tabValeurs = [];
+						var compteurLigne = 0;
+						
+						for(var i = 0; i < tabIndice.length; i++){
+							$('<label />', {class : "indice"}).css({color: couleur,
+								    							   				border: "2px solid blue",
+								    							   				backgroundColor: "white"})
+								    							   		  .width(179)
+								    									  .text(tabIndice[i])
+								   							              .appendTo($("#id0"));
+							if(i == tabIndice.length -1){$('<br>').appendTo($("#id0"));}
+						}
+						
+						@for(produit <- produits){// pour chaque produit stocké dans la base de données;
+							
+							@for(stockResto <- stockRestos){// Pour chaque stock stocké dans la base de données;
+								
+								@if(stockResto.produit.pid == produit.pid){ // Si le stock se réfère au produit courant alors on l'affiche, sinon on ne fait rien;
+									
+									quantite = @stockResto.quantite;
+									minimum = @stockResto.stockMin; 
+									alerte = @stockResto.stockAlerte;
+									compteurLigne ++;
+									
+									if(quantite <= alerte){
+										couleur = "orange";
+										if (quantite <= minimum){
+											couleur = "red";
+										}
+									}else if(quantite > alerte){
+										couleur = "green";
+									}
+									
+									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@produit.unite"];
+									
+									for(var i = 0; i < tabIndice.length; i++){
+										$('<input />', {
+				    						id : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    						class : tabIndice[i], 
+				    						name : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    						value : tabValeurs[i]
+										}).css({color: couleur,
+											    border: "5px solid "+couleur}).appendTo($("#id0"));	
+										if(i == tabIndice.length - 1){
+											$('<br>').appendTo($("#id0"));
+											$('<br>').appendTo($("#id0"));
+										}
+									}
+									$('<input />',{
+													type: "hidden",  
+													name: "hiddenlineUpdated"+ compteurLigne,
+													value: "@stockResto.srid"
+												  }).appendTo($("#id0"));
+								}
+								
+							}
+						}
+						
+						$("#linesUpdated").val(compteurLigne); // on indique le nombre de stocks affichés;
+						
+					</script>
+					
+				</div>
+				
+				<div class="form-group" id="id1">
+				
+					<div class="row">
+						<br><br><br>
+						<div class="col-xs-2">Code couleur : </div>
+						<div class="col-xs-2">Stock normal : <canvas id="myCanvas" width="50" height="0" style="border:5px solid rgb(0,210,0);"></canvas> </div>
+						<div class="col-xs-2">Stock faible : <canvas id="myCanvas" width="50" height="0" style="border:5px solid orange;"> </canvas> </div>
+						<div class="col-xs-2">Stock critique : <canvas id="myCanvas" width="50" height="0" style="border:5px solid red;"> </canvas></div>
+					
+					</div>
+						
+				</div>
+			
+			<br><br><br>
+				
+			<div id="id2">
+		
+				<input type="hidden" name="linesCreated" id="linesCreated" value="" />
+				<script>
+					var line = 1;
+					$('#linesCreated').val(line);
+				</script> 
+				<div class="form-group">
+				
+					<div class="row">
+					
+					<h2> Ajouter un nouvel ingrédient :</h2> <br>
+						<div class="col-md-2">
+							<label for="ingredientlineCreated1">Ingrédient :</label>
+							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
+								@for(produit <- produits) {
+									<option value="@produit.pid">@produit.productName</option>
+								}
+							</select>
+						</div>
+							
+						<div class="col-md-2">
+							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" placeholder="Quantité" class="form-control" />
+						</div>
+						
+						<div class="col-md-2">
+							<input type="text" id="minimumlineCreated1" name="minimumlineCreated1" placeholder="Minimum"class="form-control" />
+						</div>
+						
+						<div class="col-md-2">
+							<input type="text" id="maximumlineCreated1" name="maximumlineCreated1" placeholder="Maximum"class="form-control" />
+						</div>
+						
+						<div class="col-md-2">
+							<input type="text" id="alertelineCreated1" name="alertelineCreated1" placeholder="Seuil d'alerte"class="form-control" />
+						</div>
+						
+						<div class="col-md-2">
+							<label for="unitelineCreated1">Unité :</label>
+							<select name="unitelineCreated1" id="unitelineCreated1">
+								<option value="pièce">piece</option>
+								<option value="kilogramme">kilogramme</option>
+								<option value="gramme">gramme</option>
+								<option value="litre">litre</option>
+							</select>
+						</div>
+					
+					</div>
+				
+				</div>
+			</div>
+				
+			<div class="form-group">
+				<input type="submit" value="Valider" class="btn btn-success btn btn-success" id="validation" />
+				<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clickedBis()" /><br><br>
+			</div>
+	}			
+		@views.html.footer()
+		</div>
+
+	</body>
+	<br><br><br>
+	
+		
+	<script>
+		var unites = ["piece","kilogramme","gramme","litre"];
+
+		function clicked(element){
+			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
+			$(".active").removeClass("active");
+			$(element).addClass("active");
+		}
+
+		function clickedBis(){
+			line ++;
+
+			$('<div />', {
+    						id : "blocv"+line,
+    						class : "form-group", 
+						}).appendTo($('#id2'));
+			$('<div />', {
+							id: "bloc"+line,
+							class: "row",
+						}).appendTo($('#blocv'+line));
+
+			for(var i = 0; i < 6; i++){
+				
+				if(i == 0){
+					
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
+					$('<label />', {
+									for: tabIndice[i]+line+i,
+									id : 'label'+line+i,	
+								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+					
+					$('<br>').appendTo($("#div"+line+i));
+					
+					$('<select />', {
+										name: tabIndice[i] + "lineCreated" + line,
+										class : "select" + tabIndice[i],
+										id: tabIndice[i] + "lineCreated" + line
+									}).appendTo($("#div"+line+i));
+					
+					@for(produit <- produits) {
+						$('<option />', {
+											value: "@produit.pid",
+											id: "option"+line+i,
+										}).html("@produit.productName")
+										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
+					}
+					
+				}else if(i == 5){
+					
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
+					$('<label />', {
+									for: tabIndice[i],
+									id : 'label'+line+i,	
+								}).html(tabIndice[i]+":")
+								  .appendTo($("#div"+line+i));
+					
+					$('<br>').appendTo($("#div"+line+i));
+
+					$('<select />', {
+										name: tabIndice[i] + "lineCreated" + line,
+										class : "select"+tabIndice[i],
+										id: tabIndice[i] + "lineCreated" + line,
+									} ).appendTo($("#div"+line+i));
+					
+					for(var j = 0; j < unites.length; j++){
+						$('<option />', {
+											value: unites[j],
+											id: "option"+line+i,
+										}).html(unites[j])
+										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
+					}
+					
+				}else{
+					
+					$('<div />', {
+									class: "col-md-2",
+									id: "div"+line+i,
+								}).appendTo($("#bloc"+line));
+					$('<label />', {
+									for: tabIndice[i],
+									id : "label"+line+i,	
+								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+					
+					$('<input />', {
+									name : tabIndice[i] + "lineCreated" + line,
+									class : "select" + tabIndice[i],
+									id : tabIndice[i] + "lineCreated" + line,
+									type : "text",
+								}).appendTo($("#div"+line+i));
+					
+				}
+			}
+			
+			$('#linesCreated').val(line);
+		}
+
+	</script>
+
+</html>

@@ -1,0 +1,71 @@
+@CHARSET "ISO-8859-1";
+
+body {
+    background: #d9f0de;
+ 	font-family: 'Open Sans';
+    font-weight: 30;
+}
+.main {
+    background: #d9f0de;
+    background-size: contain;
+    padding: 0px 20px 20px;
+    margin-top: 20px;
+}
+@media only screen and (max-width : 92px) {
+    .main {
+        background: #d9f0de;
+        margin-top: 0px;
+    }
+}
+
+
+h1{
+	text-align: center;
+	color: rgb(126,126,126);
+}
+
+h2{
+	text-align: left;
+	color: rgb(110,110,110);
+	font-size: 120%;
+	color: rgb(1)
+}
+
+a:link{
+color:121,226,244;
+text-decoration:none;
+}
+a:hover {
+color:16,164,190;
+text-decoration:none;
+}
+
+a span{
+	...
+     margin-top:23px;
+     margin-left:-35px;
+}
+
+#myCanvas{
+	border-radius: 10px;	
+}
+
+p{
+	color: rgb(80,80,80);
+}
+
+.name{
+	
+	margin-bottom: 5px;
+
+}
+
+.col-md-2{
+	
+}
+
+
+#validation{
+	display: block;
+	margin:auto;
+}
