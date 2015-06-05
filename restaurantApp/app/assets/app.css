@@ -69,3 +69,15 @@ p{
 	display: block;
 	margin:auto;
 }
+
+#footer{
+	background-color: rgb(133,193,126);
+	position: fixed;
+	text-align: center;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 30px;
+}
+	
+}
