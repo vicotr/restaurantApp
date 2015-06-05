@@ -110,10 +110,16 @@ public class Application extends Controller {
 	}
 	
 	public static Result logOut() {
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		session().clear();
 		return ok(
 	            login.render(form(Login.class))
 	        );
+        }
 	}
 	
 	public static Result index(){
