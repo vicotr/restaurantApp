@@ -31,6 +31,7 @@ import views.html.gerant_demande_reapprovisionnement;
 import views.html.gerant_accueil;
 import views.html.restaurant_mon_compte;
 import views.html.creationIngredient;
+import views.html.cuisinier_stocks;
 
 public class Application extends Controller {
 	
@@ -204,7 +205,17 @@ public class Application extends Controller {
 		return ok(creationIngredient.render());
 	}
 	
-	
+	public static Result cuisinierStock(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+		List<Produit> list_produit = StockGerant.getItem();
+		List<StockResto> stockRestos = StockRestoQuery.getItem();
+		return ok(cuisinier_stocks.render(list_produit, stockRestos));
+        }
+	}
 	
 	// ==========================================================================
 	// ==========================================================================
