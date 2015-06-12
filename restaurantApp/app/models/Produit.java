@@ -22,7 +22,6 @@ public class Produit {
     public boolean accessibleFournisseur;
     public String unite;
     public Categorie categorie;
-    public List<Plat> plats;
     public List<StockResto> stockRestos;
     public List<StockFournisseur> stockFournisseurs;
     
@@ -65,14 +64,6 @@ public class Produit {
     }
     public void setCategorie(Categorie categorie){
     	this.categorie = categorie;
-    }
-    
-   @ManyToMany(mappedBy="produits")
-    public List<Plat> getPlat(){
-    	return plats;
-    }
-    public void setPlat(List<Plat> plats){
-    	this.plats = plats;
     }
     
    @OneToMany(cascade=CascadeType.ALL, mappedBy="produit")

@@ -69,5 +69,19 @@ GET  /authentification          controllers.Application.logOut()
 GET /assets/*file    controllers.Assets.at(path="/public", file)
 GET /webjars/*file   controllers.WebJarAssets.at(file)
 
+#CUISINIER
+
 #stock cuisinier
 GET	/cuisinier_stocks				controllers.Application.cuisinierStock()
+
+#acceuil
+GET  /cuisinier_accueil      		controllers.Application.cuisinierAcceuil()
+
+
+GET  /cuisinier_plat                controllers.Application.cuisinierPlat()
+
+
+GET  /cuisinier_alertes            controllers.Application.cuisinierAlertes()
+
+
+GET  /cuisinier_platsCuisines      controllers.Application.cuisinierPlatsCuisines()

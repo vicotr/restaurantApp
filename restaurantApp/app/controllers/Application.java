@@ -18,7 +18,7 @@ import models.Utilisateur;
 import models.queries.DemandeQuery;
 import models.queries.EtatQuery;
 import models.queries.FonctionQuery;
-import models.queries.StockGerant;
+import models.queries.ProductQuery;
 import models.queries.StockRestoQuery;
 import models.queries.UtilisateurQuery;
 import models.queries.userLog;
@@ -26,6 +26,8 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.cuisinier_accueil;
+import views.html.cuisinier_alertes;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
@@ -74,7 +76,7 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-        	List<Produit> produits = StockGerant.getItem();
+        	List<Produit> produits = ProductQuery.getItem();
     		List<StockResto> stockRestos = StockRestoQuery.getItem();
 			return ok(gerant_demande_reapprovisionnement.render(produits,stockRestos));
         }
@@ -133,7 +135,7 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		List<Produit> list_produit = StockGerant.getItem();
+		List<Produit> list_produit = ProductQuery.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(gerant_stocks.render(list_produit, stockRestos));
         }
@@ -166,7 +168,7 @@ public class Application extends Controller {
                     login.render(form(Login.class)));
         }else{
         	List<StockResto> stockRestos = StockRestoQuery.getItem();
-        	List<Produit> produits = StockGerant.getItem();
+        	List<Produit> produits = ProductQuery.getItem();
         	return ok(
 				gerant_alertes.render(stockRestos,produits)
 				);
@@ -211,15 +213,21 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		List<Produit> list_produit = StockGerant.getItem();
+		List<Produit> list_produit = ProductQuery.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(gerant_stocks.render(list_produit, stockRestos));
         }
 	}
-	
+	// Maison-mère
+	// ===================================================
+	// ==================================================
 	public static Result creationIngredient(){
 		return ok(creationIngredient.render());
 	}
+	
+	// Cuisinier
+    //=====================================================
+    //=====================================================
 	
 	public static Result cuisinierStock(){
 		boolean check = checkSession();
@@ -227,12 +235,56 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		List<Produit> list_produit = StockGerant.getItem();
+		List<Produit> list_produit = ProductQuery.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(cuisinier_stocks.render(list_produit, stockRestos));
         }
 	}
-
+	
+	public static Result cuisinierAcceuil(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+    		int alertes = 0;
+    		for(int i = 0; i < stockRestos.size(); i++){
+    			StockResto stockResto = stockRestos.get(i);
+    			if(stockResto.quantite <= stockResto.stockAlerte){
+    				alertes ++;
+    			}
+    		}
+    		return ok(
+				cuisinier_accueil.render(alertes)
+				);
+        }
+	}
+	
+	public static Result cuisinierPlat(){
+		List<Produit> list_produit = ProductQuery.getItem();
+		return ok(cuisinier_plats.render(list_produit));
+	}
+	
+	public static Result cuisinierAlertes(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+        	List<Produit> produits = ProductQuery.getItem();
+        	return ok(
+				cuisinier_alertes.render(stockRestos,produits)
+				);
+        }
+		
+	}
+	
+	public static Result cuisinierPlatsCuisines(){
+		return TODO;
+		
+	}
 	
 	// ==========================================================================
 	// ==========================================================================
@@ -459,7 +511,7 @@ public class Application extends Controller {
 			}
 		
 		
-		List<Produit> list_produit = StockGerant.getItem();
+		List<Produit> list_produit = ProductQuery.getItem();
 		List<StockResto> stockRestos = StockRestoQuery.getItem();
 		return ok(gerant_stocks.render(list_produit, stockRestos));
 	

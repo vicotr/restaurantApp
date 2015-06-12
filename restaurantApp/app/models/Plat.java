@@ -15,8 +15,7 @@ public class Plat {
 	
 	   public int plid;
 	   public String platName;
-	   public List<Produit> produits;
-	    
+	   
 	   @Id
 	   public int getPlid(){
 		   return plid;
@@ -32,15 +31,7 @@ public class Plat {
 	   public void setPlatName(String platName){
 		   this.platName = platName;
 	   }
-	   
-	   @ManyToMany
-	   @JoinTable(name="PLAT_PRODUIT")
-	   public List<Produit> getProduits(){
-		   return produits;
-	   }
-	   public void setProduits(List<Produit> produits){
-		   this.produits = produits;
-	   }
+	  
 	   public static Finder<Long,Plat> find= new Finder<Long,Plat>(
 	    		Long.class, Plat.class
 	    		);

@@ -7,7 +7,7 @@ import com.avaje.ebean.Query;
 import models.Produit;
 import models.Utilisateur;
 
-public class StockGerant {
+public class ProductQuery {
 	
 public static List<Produit> getItem(){
 		return Produit.

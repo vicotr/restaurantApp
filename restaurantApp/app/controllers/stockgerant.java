@@ -3,7 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Produit;
-import models.queries.StockGerant;
+import models.queries.ProductQuery;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.gerant_stocks;
