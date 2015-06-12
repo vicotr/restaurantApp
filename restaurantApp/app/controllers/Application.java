@@ -166,8 +166,9 @@ public class Application extends Controller {
                     login.render(form(Login.class)));
         }else{
         	List<StockResto> stockRestos = StockRestoQuery.getItem();
+        	List<Produit> produits = StockGerant.getItem();
         	return ok(
-				gerant_alertes.render(stockRestos)
+				gerant_alertes.render(stockRestos,produits)
 				);
         }
 	}

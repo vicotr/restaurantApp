@@ -1,4 +1,4 @@
-@(stockRestos: List[StockResto])
+@(stockRestos: List[StockResto], produits: List[Produit])
 <!DOCTYPE html>
 <html>
 
@@ -16,14 +16,23 @@
               		 <div class="row">
               			<h1>Mes alertes</h1>
               			@for(stockResto <- stockRestos){
-              				@if(stockResto.quantite <= stockResto.stockAlerte){
-              					@if(stockResto.quantite <= stockResto.stockMin){
-              						Le stock @stockResto.produit.productName est critique. <br>	
-              					}else{
-              						Le stock @stockResto.produit.productName est faible. <br>	
+              					@if(stockResto.quantite <= stockResto.stockAlerte){
+              						@if(stockResto.quantite <= stockResto.stockMin){
+              							@for(produit <- produits){
+              								@if(stockResto.produit.pid == produit.pid){
+              									Le stock @produit.productName est critique. <br>
+              								}
+              							}
+              						}else{
+              							@for(produit <- produits){
+              								@if(stockResto.produit.pid == produit.pid){
+              									Le stock @produit.productName est faible. <br>
+              								}
+              							}
+              						}
               					}
-              				}
               			}
+              			
               		 </div>
           		 </div>
        		 </div>
