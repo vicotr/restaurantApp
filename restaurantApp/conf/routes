@@ -19,13 +19,9 @@ GET	/gerant_stocks				controllers.Application.gerantStock()
 #mon compte
 GET    /restaurant_mon_compte       controllers.Application.compteResto()       
 
-
-#nouvel ingrédient
-GET   /gerant_nouvel_ingredient  controllers.Application.nouvelIngredient()
-POST  /gerant_nouvel_ingredient  controllers.Application.nouvelIngredientTraitement()
-
 #stock gérant
 POST  /gerant_stocks             controllers.Application.modificationStock()
+GET   /gerant_supprimer_stock   controllers.Application.supprimerStock(srid: Int)
 
 #création nouvel ingrédient
 GET   /creationIngredient        controllers.Application.creationIngredient()
@@ -37,7 +33,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #demande de reapprovisionnement du gerant
 GET  /gerant_demande_reapprovisionnement    controllers.Application.demande()
-POST  /gerant_demande_reapprovisionnement   controllers.Application.traitement()
+POST  /gerant_demande_reapprovisionnement   controllers.Application.traitementDemande()
 
 
 #administration des membres

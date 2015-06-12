@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -17,12 +19,12 @@ import play.db.ebean.Model.Finder;
 public class StockResto {
 	
     public int srid;
-    public Produit produit;
     public int quantite;
     public int stockMax;
     public int stockMin;
     public int stockAlerte;
     public Local local;
+    public Produit produit;
     
     @Id
     public int getSrid(){

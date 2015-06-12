@@ -18,9 +18,10 @@ create table commande (
 
 create table demande (
   did                       integer auto_increment not null,
-  LOCAL_ID                  integer,
   ETAT_ID                   integer,
   commentaires              varchar(255),
+  date                      varchar(255),
+  LOCAL_ID                  integer,
   constraint pk_demande primary key (did))
 ;
 
@@ -63,6 +64,14 @@ create table produit (
   constraint pk_produit primary key (pid))
 ;
 
+create table produit_demande (
+  pdid                      integer auto_increment not null,
+  produit_pid               integer,
+  demande_did               integer,
+  quantite                  integer,
+  constraint pk_produit_demande primary key (pdid))
+;
+
 create table stock_fournisseur (
   sfid                      integer auto_increment not null,
   produit_pid               integer,
@@ -75,12 +84,12 @@ create table stock_fournisseur (
 
 create table stock_resto (
   srid                      integer auto_increment not null,
-  produit_pid               integer,
   quantite                  integer,
   stockMax                  integer,
   stockMin                  integer,
   stockAlerte               integer,
   local_lid                 integer,
+  produit_pid               integer,
   constraint pk_stock_resto primary key (srid))
 ;
 
@@ -100,10 +109,10 @@ create table utilisateur (
 ;
 
 
-create table COMMANDE_DEMANDE (
+create table commande_demande (
   commande_cid                   integer not null,
   demande_did                    integer not null,
-  constraint pk_COMMANDE_DEMANDE primary key (commande_cid, demande_did))
+  constraint pk_commande_demande primary key (commande_cid, demande_did))
 ;
 
 create table LOCAL_COMMANDE (
@@ -119,30 +128,34 @@ create table PLAT_PRODUIT (
 ;
 alter table commande add constraint fk_commande_etat_1 foreign key (etat_eid) references etat (eid) on delete restrict on update restrict;
 create index ix_commande_etat_1 on commande (etat_eid);
-alter table demande add constraint fk_demande_lid_2 foreign key (LOCAL_ID) references local (lid) on delete restrict on update restrict;
-create index ix_demande_lid_2 on demande (LOCAL_ID);
-alter table demande add constraint fk_demande_eid_3 foreign key (ETAT_ID) references etat (eid) on delete restrict on update restrict;
-create index ix_demande_eid_3 on demande (ETAT_ID);
+alter table demande add constraint fk_demande_etat_2 foreign key (ETAT_ID) references etat (eid) on delete restrict on update restrict;
+create index ix_demande_etat_2 on demande (ETAT_ID);
+alter table demande add constraint fk_demande_local_3 foreign key (LOCAL_ID) references local (lid) on delete restrict on update restrict;
+create index ix_demande_local_3 on demande (LOCAL_ID);
 alter table produit add constraint fk_produit_categorie_4 foreign key (categorie_catid) references categorie (catid) on delete restrict on update restrict;
 create index ix_produit_categorie_4 on produit (categorie_catid);
-alter table stock_fournisseur add constraint fk_stock_fournisseur_produit_5 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
-create index ix_stock_fournisseur_produit_5 on stock_fournisseur (produit_pid);
-alter table stock_fournisseur add constraint fk_stock_fournisseur_lid_6 foreign key (lid_lid) references local (lid) on delete restrict on update restrict;
-create index ix_stock_fournisseur_lid_6 on stock_fournisseur (lid_lid);
-alter table stock_resto add constraint fk_stock_resto_produit_7 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
-create index ix_stock_resto_produit_7 on stock_resto (produit_pid);
-alter table stock_resto add constraint fk_stock_resto_local_8 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
-create index ix_stock_resto_local_8 on stock_resto (local_lid);
-alter table utilisateur add constraint fk_utilisateur_fonction_9 foreign key (fonction_fid) references fonction (fid) on delete restrict on update restrict;
-create index ix_utilisateur_fonction_9 on utilisateur (fonction_fid);
-alter table utilisateur add constraint fk_utilisateur_local_10 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
-create index ix_utilisateur_local_10 on utilisateur (local_lid);
+alter table produit_demande add constraint fk_produit_demande_produit_5 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
+create index ix_produit_demande_produit_5 on produit_demande (produit_pid);
+alter table produit_demande add constraint fk_produit_demande_demande_6 foreign key (demande_did) references demande (did) on delete restrict on update restrict;
+create index ix_produit_demande_demande_6 on produit_demande (demande_did);
+alter table stock_fournisseur add constraint fk_stock_fournisseur_produit_7 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
+create index ix_stock_fournisseur_produit_7 on stock_fournisseur (produit_pid);
+alter table stock_fournisseur add constraint fk_stock_fournisseur_lid_8 foreign key (lid_lid) references local (lid) on delete restrict on update restrict;
+create index ix_stock_fournisseur_lid_8 on stock_fournisseur (lid_lid);
+alter table stock_resto add constraint fk_stock_resto_local_9 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
+create index ix_stock_resto_local_9 on stock_resto (local_lid);
+alter table stock_resto add constraint fk_stock_resto_produit_10 foreign key (produit_pid) references produit (pid) on delete restrict on update restrict;
+create index ix_stock_resto_produit_10 on stock_resto (produit_pid);
+alter table utilisateur add constraint fk_utilisateur_fonction_11 foreign key (fonction_fid) references fonction (fid) on delete restrict on update restrict;
+create index ix_utilisateur_fonction_11 on utilisateur (fonction_fid);
+alter table utilisateur add constraint fk_utilisateur_local_12 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
+create index ix_utilisateur_local_12 on utilisateur (local_lid);
 
 
 
-alter table COMMANDE_DEMANDE add constraint fk_COMMANDE_DEMANDE_commande_01 foreign key (commande_cid) references commande (cid) on delete restrict on update restrict;
+alter table commande_demande add constraint fk_commande_demande_commande_01 foreign key (commande_cid) references commande (cid) on delete restrict on update restrict;
 
-alter table COMMANDE_DEMANDE add constraint fk_COMMANDE_DEMANDE_demande_02 foreign key (demande_did) references demande (did) on delete restrict on update restrict;
+alter table commande_demande add constraint fk_commande_demande_demande_02 foreign key (demande_did) references demande (did) on delete restrict on update restrict;
 
 alter table LOCAL_COMMANDE add constraint fk_LOCAL_COMMANDE_local_01 foreign key (local_lid) references local (lid) on delete restrict on update restrict;
 
@@ -160,7 +173,7 @@ drop table categorie;
 
 drop table commande;
 
-drop table COMMANDE_DEMANDE;
+drop table commande_demande;
 
 drop table demande;
 
@@ -177,6 +190,8 @@ drop table plat;
 drop table PLAT_PRODUIT;
 
 drop table produit;
+
+drop table produit_demande;
 
 drop table stock_fournisseur;
 

@@ -2,16 +2,21 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlUpdate;
 
 import models.Demande;
+import models.Etat;
 import models.Fonction;
 import models.Produit;
 import models.StockResto;
 import models.Utilisateur;
+import models.queries.DemandeQuery;
+import models.queries.EtatQuery;
 import models.queries.FonctionQuery;
 import models.queries.StockGerant;
 import models.queries.StockRestoQuery;
@@ -24,7 +29,6 @@ import play.mvc.Result;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
-import views.html.gerant_nouvel_ingredient;
 import views.html.gerant_suivi_des_commandes;
 import views.html.login;
 import views.html.gerant_stocks;
@@ -69,9 +73,9 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		return ok(
-				gerant_demande_reapprovisionnement.render()
-				);
+        	List<Produit> produits = StockGerant.getItem();
+    		List<StockResto> stockRestos = StockRestoQuery.getItem();
+			return ok(gerant_demande_reapprovisionnement.render(produits,stockRestos));
         }
 	}
 	
@@ -134,8 +138,16 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		return ok(
-				gerant_accueil.render()
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+    		int alertes = 0;
+    		for(int i = 0; i < stockRestos.size(); i++){
+    			StockResto stockResto = stockRestos.get(i);
+    			if(stockResto.quantite <= stockResto.stockAlerte){
+    				alertes ++;
+    			}
+    		}
+    		return ok(
+				gerant_accueil.render(alertes)
 				);
         }
 	}
@@ -146,8 +158,9 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		return ok(
-				gerant_alertes.render()
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+        	return ok(
+				gerant_alertes.render(stockRestos)
 				);
         }
 	}
@@ -158,8 +171,9 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		return ok(
-				gerant_suivi_des_commandes.render()
+        	List<Demande> demandes = DemandeQuery.getItem();
+        	return ok(
+				gerant_suivi_des_commandes.render(demandes)
 				);
         }
 	}
@@ -199,47 +213,12 @@ public class Application extends Controller {
 		return ok(creationIngredient.render());
 	}
 	
-	public static Result nouvelIngredient(){
-		List<Produit> list_produit = StockGerant.getItem();
-		return ok(gerant_nouvel_ingredient.render(list_produit));
-	}
-	
 	
 	// ==========================================================================
 	// ==========================================================================
 	// ==========================================================================
 	
 	//Méthodes POST
-	public static Result nouvelIngredientTraitement(){
-		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();
-	    
-	    String nomProduit = nouveauProduit.get().nom;
-	    int quantite = nouveauProduit.get().quantite;
-		int minimum = nouveauProduit.get().minimum;
-		int maximum = nouveauProduit.get().maximum;
-		int seuilAlerte = nouveauProduit.get().seuilAlerte;
-		String unite = nouveauProduit.get().unite;
-		int pidProduit = 0;
-	    
-		List<Produit> produits = Produit.find.all();
-		for(int i = 0; i < produits.size(); i++){
-			if(produits.get(i).productName.equals(nomProduit)){
-				pidProduit = produits.get(i).pid;
-			}
-		}
-		
-	    String s = "INSERT INTO stock_resto (produit_pid,quantite,stockMax,stockMin,stockAlerte) VALUES (:produit_pid,:quantite,:stockMax,:stockMin,:stockAlerte)";
-	 	SqlUpdate update = Ebean.createSqlUpdate(s);
-	 	update.setParameter("produit_pid",pidProduit);
-	 	update.setParameter("quantite",quantite);
-	 	update.setParameter("stockMax",maximum);
-	 	update.setParameter("stockMin",minimum);
-	 	update.setParameter("stockAlerte",seuilAlerte);
-	 
-	 	Ebean.execute(update);
-	   
-	    return redirect("/gerant_stocks");
-	}
 	
 	public static Result creationIngredientTraitement(){
 		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();
@@ -296,17 +275,80 @@ public class Application extends Controller {
 		return redirect("/gerant_administration");
 	}
 	
-	// demande
-	public static Result traitement(){
-		  Form<DemandeBis> loginForm = form(DemandeBis.class).bindFromRequest();
-		    String commentaires = loginForm.get().commentaires;
-		    
-		    Demande demande = new Demande();
-		    demande.setCommentaires(commentaires);
-		    
-		    Ebean.save(demande);
+	public static Result traitementDemande(){
+		DynamicForm demandeForm = Form.form().bindFromRequest();
+		int nombreLignes = Integer.parseInt(demandeForm.get("nombreLignes"));
+		String commentaires = demandeForm.get("commentaires");
+		int compteur = 0;
+		int compteur1 = 0;
+		int did = 0;
+		
+		for(int i = 1; i < nombreLignes + 1; i++){
+			String commande = demandeForm.get("hiddenDemande" + i);
+			if(commande.equals("true")){
+				if(compteur == 0){
+					if(compteur1 == 0){
+						
+						Calendar calendrier = Calendar.getInstance();
+						int day = calendrier.get(Calendar.DAY_OF_MONTH);
+						int month = calendrier.get(Calendar.MONTH) + 1;
+						int year = calendrier.get(Calendar.YEAR);
+						
+						String dateString = day + "/0" + month + "/" + year;
+						
+						
+						
+						List<Etat> etats = EtatQuery.getItem();
+						
+						for(int j = 0; j < etats.size(); j++){
+							Etat etat = etats.get(j);
+							if("envoyée".equals(etat.name)){
+								String s = "INSERT INTO demande (commentaires,ETAT_ID,date) VALUES (:commentaires,:ETAT_ID,:date)";
+							 	SqlUpdate update = Ebean.createSqlUpdate(s);
+							 	update.setParameter("commentaires",commentaires);
+							 	update.setParameter("ETAT_ID",etat.eid);
+							 	update.setParameter("date", dateString);
+							 
+							 	Ebean.execute(update);
+							 	compteur ++;
+							}
+						}
+						
+						if(compteur == 0){
+							Etat etatBis = new Etat();
+							etatBis.setName("envoyée");
+							
+							Demande demande = new Demande();
+							demande.setCommentaires(commentaires);
+							demande.setDate(dateString);
+							demande.setEtat(etatBis);
+							
+							Ebean.save(etatBis);
+							Ebean.save(demande);
+						}
 
-		return redirect("/gerant_accueil");
+						List<Demande> demandes = DemandeQuery.getItem();
+						did = demandes.get(demandes.size()-1).did;
+						
+						compteur1 ++;
+					}
+				}
+				compteur ++;
+				
+				int pid = Integer.parseInt(demandeForm.get("pid" + i));
+				int quantite = Integer.parseInt(demandeForm.get("quantite" + i));
+				
+				String s = "INSERT INTO produit_demande (quantite,produit_pid,demande_did) VALUES (:quantite,:produit_pid,:demande_did)";
+			    SqlUpdate update = Ebean.createSqlUpdate(s);
+			 	update.setParameter("quantite",quantite);
+			 	update.setParameter("produit_pid", pid);
+			 	update.setParameter("demande_did", did);
+			 	
+			 	Ebean.execute(update);
+			}
+		}
+
+		return redirect("/gerant_demande_reapprovisionnement");
 	}
 	
 	public static Result authenticate() {
@@ -333,6 +375,14 @@ public class Application extends Controller {
 		List<Fonction> newFonctions = FonctionQuery.getItem();
 		List<Utilisateur> utilisateurs = UtilisateurQuery.getItem();
 		return ok(gerant_administration.render(utilisateurs,newFonctions));
+	}
+	
+	public static Result supprimerStock(int srid){
+		
+		StockResto stock = Ebean.find(StockResto.class, srid);
+		Ebean.delete(stock);
+		
+		return redirect("/gerant_stocks");
 	}
 	
 	public static Result modificationStock(){

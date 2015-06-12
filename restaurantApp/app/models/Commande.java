@@ -37,7 +37,7 @@ public class Commande {
     }
     
     @ManyToMany
-    @JoinTable(name="COMMANDE_DEMANDE")
+    @JoinTable(name="commande_demande")
     public List<Demande> getDemandes(){
         return demandes;
     }

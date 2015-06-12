@@ -13,9 +13,9 @@ import com.avaje.ebean.*;
 public class Demande {
 
     public int did;
-    public Local lid;
-    public Etat eid;
+    public Etat etat;
     public String commentaires;
+    public String date;
     public Local local;
     public List<Commande> commandes;
     
@@ -27,22 +27,29 @@ public class Demande {
       this.did = did;
     }
 
+    public String getDate(){
+    	return date;
+    }
+    public void setDate(String date){
+    	this.date = date;
+    }
+    
     @ManyToOne
     @JoinColumn(name="LOCAL_ID", nullable=false)
-    public Local getLid(){
-      return lid;
+    public Local getLocal(){
+      return local;
     }
-    public void setLid(Local lid){
-      this.lid = lid;
+    public void setLocal(Local local){
+      this.local = local;
     }
 
     @ManyToOne
     @JoinColumn(name="ETAT_ID", nullable=false)
-     public Etat getEid(){
-      return eid;
+     public Etat getEtat(){
+      return etat;
     }
-    public void setEid(Etat eid){
-      this.eid = eid;
+    public void setEtat(Etat etat){
+      this.etat = etat;
     }
     
     @Column(name="commentaires")
@@ -57,9 +64,12 @@ public class Demande {
     public List<Commande> getCommandes(){
         return commandes;
     }
-    public void setDemande(List<Commande> commandes){
+    public void setCommande(List<Commande> commandes){
     	this.commandes = commandes;
     }
+    
+ 
+    
     public static Finder<Long,Demande> find= new Finder<Long,Demande>(
     		Long.class, Demande.class
     		);

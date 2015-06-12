@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -89,7 +90,9 @@ public class Produit {
     public void setStockFournisseurs(List<StockFournisseur> stockFournisseurs){
     	this.stockFournisseurs = stockFournisseurs;
     } 
-   
+    
+  
+    
     public static Finder<Long,Produit> find= new Finder<Long,Produit>(
     		Long.class, Produit.class
     		);

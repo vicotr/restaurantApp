@@ -24,13 +24,23 @@
 						var compteurLigne = 0;
 						
 						for(var i = 0; i < tabIndice.length; i++){
-							$('<label />', {class : "indice"}).css({color: couleur,
-								    							   				border: "2px solid blue",
-								    							   				backgroundColor: "white"})
-								    							   		  .width(179)
-								    									  .text(tabIndice[i])
-								   							              .appendTo($("#id0"));
-							if(i == tabIndice.length -1){$('<br>').appendTo($("#id0"));}
+							$('<div />', {
+	    						id : "form-groupIndice",
+	    						class : "form-group", 
+							}).appendTo($('#id0'));
+						
+							$('<div />', {
+								id: "rowIndice",
+								class: "row",
+							}).appendTo($("#form-groupIndice"));
+							
+							$('<div />', {
+								class: "col-md-2",
+								id: "col"+i+"Indice",
+							}).appendTo($("#rowIndice"));
+							
+							$('<label />', {class : "indice"}).text(tabIndice[i])
+								   							  .appendTo($("#col"+i+"Indice"));
 						}
 						
 						@for(produit <- produits){// pour chaque produit stocké dans la base de données;
@@ -56,23 +66,45 @@
 									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@produit.unite"];
 									
 									for(var i = 0; i < tabIndice.length; i++){
-										$('<input />', {
-				    						id : tabIndice[i] +"lineUpdated"+ compteurLigne,
-				    						class : tabIndice[i], 
-				    						name : tabIndice[i] +"lineUpdated"+ compteurLigne,
-				    						value : tabValeurs[i]
-										}).css({color: couleur,
-											    border: "5px solid "+couleur}).appendTo($("#id0"));	
-										if(i == tabIndice.length - 1){
-											$('<br>').appendTo($("#id0"));
-											$('<br>').appendTo($("#id0"));
-										}
+										
+											$('<div />', {
+					    						id : "form-group"+compteurLigne,
+					    						class : "form-group", 
+											}).appendTo($('#id0'));
+										
+											$('<div />', {
+												id: "row"+compteurLigne,
+												class: "row",
+											}).appendTo($("#form-group"+compteurLigne));
+											
+											$('<div />', {
+												class: "col-md-2",
+												id: "col"+i+compteurLigne,
+											}).appendTo($("#row"+compteurLigne));
+											
+											$('<input />', {
+	    										id : tabIndice[i] +"lineUpdated"+ compteurLigne,
+	    										class : tabIndice[i], 
+	    										name : tabIndice[i] +"lineUpdated"+ compteurLigne,
+	    										value : tabValeurs[i]
+											}).css({color: couleur,
+								    				border: "5px solid "+couleur}).appendTo($("#col"+i+compteurLigne));
 									}
+									
 									$('<input />',{
 													type: "hidden",  
 													name: "hiddenlineUpdated"+ compteurLigne,
 													value: "@stockResto.srid"
 												  }).appendTo($("#id0"));
+									
+									$('<a />', {id: "a"+compteurLigne,
+												href: "@routes.Application.supprimerStock(stockResto.srid)"
+												}).appendTo($("#id0"));
+									
+									$('<input />',{type: "button",class: "btn btn-danger", value: "Supprimer"}).appendTo($("#a"+compteurLigne));
+									$('<br>').appendTo($("#id0"));
+									$('<br>').appendTo($("#id0"));
+	
 								}
 								
 							}
@@ -111,7 +143,7 @@
 					<div class="row">
 					
 						<div class="col-md-2">
-							<label for="ingredientlineCreated1">Ingrédient :</label>
+							<label for="ingredientlineCreated1">Ingrédient :</label><br>
 							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
 								@for(produit <- produits) {
 									<option value="@produit.pid">@produit.productName</option>
@@ -168,12 +200,6 @@
 		
 	<script>
 		var unites = ["piece","kilogramme","gramme","litre"];
-
-		function clicked(element){
-			//console.log(elementBis);function(compteur){compteur++; return "bloc"+compteur}
-			$(".active").removeClass("active");
-			$(element).addClass("active");
-		}
 
 		function clickedBis(){
 			line ++;

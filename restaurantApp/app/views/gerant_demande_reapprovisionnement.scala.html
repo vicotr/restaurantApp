@@ -1,3 +1,5 @@
+@(produits: List[Produit], stockRestos: List[StockResto])
+
 <!DOCTYPE html>
 <html>
 
@@ -10,8 +12,7 @@
 		
 		
 		
-		@helper.form(routes.Application.traitement) {
-			
+@helper.form(routes.Application.traitementDemande) {			
 			
 		<div class="container">
 			<div class="row">
@@ -27,26 +28,138 @@
 									<input name="email" placeholder="Adresse mail du gérant" class="form-control" type="email"id="email" /> </br>
 									<input name="email" placeholder="Adresse mail de la maison mère" class="form-control" type="email" id="email"/> </br>
 									
-									<!-- Ingrédients à sélectionner-->
+									<div id = "ingredients">
+									
+										<script>
+										
+												var quantite = 0,quantiteBis = 0,minimum = 0,maximum = 0,alerte = 0;
+												var tabIndice = ["ingredient","quantite"];
+												var tabValeurs = [];
+												var compteurLigne = 0;
+												var commande;
+												
+												@for(produit <- produits){// pour chaque produit stocké dans la base de données;
+													@for(stockResto <- stockRestos){// Pour chaque stock stocké dans la base de données;
+														
+														@if(stockResto.produit.pid == produit.pid){ // Si le stock se réfère au produit courant alors on l'affiche, sinon on ne fait rien;
+															
+															quantite = @stockResto.quantite;
+															minimum = @stockResto.stockMin;
+															maximum = @stockResto.stockMax;
+															alerte = @stockResto.stockAlerte;
+															compteurLigne ++;
+															
+															if(quantite <= alerte){
+																couleur = "orange";
+																commande = true;
+																if (quantite <= minimum){
+																	couleur = "red";
+																}
+															}else if(quantite > alerte){
+																commande = false;
+																couleur = "green";
+															}
+															
+															quantite = maximum - quantite;
+															quantite += "";
+															
+															tabValeurs = ["@produit.productName",quantite];
+															
+															$('<div />', {
+									    						id : "form-group"+compteurLigne,
+									    						class : "form-group", 
+															}).appendTo($('#ingredients'));
+														
+															$('<div />', {
+																id: "row"+compteurLigne,
+																class: "row",
+															}).appendTo($("#form-group"+compteurLigne));
+															
+															$('<input />', {
+																type: "hidden",
+																id: "stockId"+compteurLigne,
+																name: "pid"+compteurLigne,
+																value: "@stockResto.produit.pid"
+															}).appendTo($("#row"+compteurLigne));
+															
+															for(var i = 0; i < tabIndice.length; i++){
+																	
+																	$('<div />', {
+																		class: "col-md-2",
+																		id: "col"+i+compteurLigne,
+																	}).appendTo($("#row"+compteurLigne));
+																	
+																	$('<input />', {
+							    										id : tabIndice[i] + compteurLigne,
+							    										class : tabIndice[i], 
+							    										name : tabIndice[i] + compteurLigne,
+							    										value : tabValeurs[i]
+																	}).css({color: couleur,
+														    				border: "5px solid "+couleur}).appendTo($("#col"+i+compteurLigne));
+															}
+															
+															$('<div />', {
+																class: "col-md-2",
+																id: "colBouton"+compteurLigne,
+															}).appendTo($("#row"+compteurLigne));
+
+															$('<input />',{
+																			id: "bouton"+compteurLigne,
+																			type: "button"
+																		  }).click(function(){
+																						if($("#"+this.id).val() == "supprimer"){
+																							$("#"+this.id).val("ajouter").removeClass("btn-danger").addClass("btn-success");
+																							$("."+this.id).val(false);
+																						}else{
+																							$("#"+this.id).val("supprimer").removeClass("btn-success").addClass("btn-danger");
+																							$("."+this.id).val(true);
+																						}})
+																			.appendTo($("#colBouton"+compteurLigne));	
+															
+															if(commande){
+																$("#bouton"+compteurLigne).val("supprimer").addClass("btn btn-danger");
+															}else{
+																$("#bouton"+compteurLigne).val("ajouter").addClass("btn btn-success");	
+															}
+															
+															$('<input />',{
+																type: "hidden",  
+																class: "bouton"+compteurLigne,
+																name: "hiddenDemande"+ compteurLigne,
+																value: commande
+															  }).appendTo($("#row"+compteurLigne));
+														}
+														
+													}
+												}
+												$('<input />',{
+													type: "hidden",  
+													id: "nombreLignes",
+													name: "nombreLignes",
+													value: compteurLigne
+												  }).appendTo($("#ingredients"));
+											
+												
+										</script>
+									
+									</div>
 									
 									Commentaire :
 									<textarea id="commentaires" name="commentaires"  rows="3" cols="30" class="form-control"> </textarea>
-									</p>
+			
 									
-									<button type="submit" class="btn btn-success btn btn-success">Envoyer la demande</button>
+									<button class="btn btn-success btn btn-success">Envoyer la demande</button>
 									</div>
 								</form>
-						
 					
 					     </div>
 	          		 </div>
 	       		 </div>
 	   		 </div>
 		 </div>
+	</div>
 	
-		}
-		
+}	
 				@views.html.footer()
-		
 		</body>
 </html>
