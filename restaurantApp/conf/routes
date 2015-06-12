@@ -19,6 +19,7 @@ GET	/gerant_stocks				controllers.Application.gerantStock()
 #mon compte
 GET    /restaurant_mon_compte       controllers.Application.compteResto()       
 
+
 #stock gérant
 POST  /gerant_stocks             controllers.Application.modificationStock()
 GET   /gerant_supprimer_stock   controllers.Application.supprimerStock(srid: Int)
@@ -67,3 +68,6 @@ GET  /authentification          controllers.Application.logOut()
 #ressources
 GET /assets/*file    controllers.Assets.at(path="/public", file)
 GET /webjars/*file   controllers.WebJarAssets.at(file)
+
+#stock cuisinier
+GET	/cuisinier_stocks				controllers.Application.cuisinierStock()

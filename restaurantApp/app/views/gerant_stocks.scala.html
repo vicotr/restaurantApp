@@ -142,6 +142,7 @@
 				
 					<div class="row">
 					
+					<h2> Ajouter un nouvel ingrédient :</h2> <br>
 						<div class="col-md-2">
 							<label for="ingredientlineCreated1">Ingrédient :</label><br>
 							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
@@ -152,27 +153,23 @@
 						</div>
 							
 						<div class="col-md-2">
-							<label for="quantitelineCreated1">Quantite :</label>
-							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" />
+							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" placeholder="Quantité" class="form-control" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="minimumlineCreated1">Minimum :</label>
-							<input type="text" id="minimumlineCreated1" name="minimumlineCreated1" />
+							<input type="text" id="minimumlineCreated1" name="minimumlineCreated1" placeholder="Minimum"class="form-control" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="maximumlineCreated1">Maximum :</label>
-							<input type="text" id="maximumlineCreated1" name="maximumlineCreated1" />
+							<input type="text" id="maximumlineCreated1" name="maximumlineCreated1" placeholder="Maximum"class="form-control" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="alertelineCreated1">Seuil d'alerte :</label>
-							<input type="text" id="alertelineCreated1" name="alertelineCreated1" />
+							<input type="text" id="alertelineCreated1" name="alertelineCreated1" placeholder="Seuil d'alerte"class="form-control" />
 						</div>
 						
 						<div class="col-md-2">
-							<label for="unitelineCreated1">Unité :</label><br>
+							<label for="unitelineCreated1">Unité :</label>
 							<select name="unitelineCreated1" id="unitelineCreated1">
 								<option value="pièce">piece</option>
 								<option value="kilogramme">kilogramme</option>
@@ -187,8 +184,8 @@
 			</div>
 				
 			<div class="form-group">
-				<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clickedBis()" /><br><br>
 				<input type="submit" value="Valider" class="btn btn-success btn btn-success" id="validation" />
+				<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clickedBis()" /><br><br>
 			</div>
 	}			
 		@views.html.footer()
