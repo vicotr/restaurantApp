@@ -391,7 +391,7 @@ public class Application extends Controller {
 			
 			List<Categorie> categories = CategorieQuery.getItem();
 			List<Produit> produits = ProductQuery.getItem();
-			return ok(cuisinier_plats.render(produits,categories));
+			return ok(cuisinier_creation_plat.render(produits,categories));
 		}
 	
 	// ==========================================================================
