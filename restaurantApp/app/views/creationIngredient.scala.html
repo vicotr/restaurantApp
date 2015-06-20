@@ -1,3 +1,4 @@
+@(categories: List[Categorie])
 <!DOCTYPE html>
 <html>
 
@@ -16,7 +17,14 @@
 				<label for="nom">Nom : </label>
 				<input type="text" id="nom" name="nom"/> </br>
 				
-				<label for="unité">Unité : </label>
+				<label for="categorie">Categorie : </label>
+				<select id="categorie" name="categorie"> 
+				@for(categorie <- categories){
+					<option value="@categorie.catid">@categorie.categoryName</option>
+				}
+				</select></br>
+				
+				<label for="unité">Unite : </label>
 				<select id="unité" name="unite"> 
 					<option value="piece">Pièce</option>
 					<option value="kilogramme">kilogramme</option>
@@ -24,9 +32,43 @@
 					<option value="litre">litre</option>
 				</select></br>
 				
-				<input type="submit" id="ajouter" name="ajouter" value="Ajouter ingrédient"/>
+				<div id="ajout">
+					<input type="hidden" id="categorieLignes" name="categorieLignes" value="0" />
+				</div>
+				
+				<input type="button" class="btn btn-success btn btn-success" id="ajouter" name="ajouter" value="Ajouter une catégorie" onclick="clicked()"/>
+				<div class="row">
+					<input type="submit" class="btn btn-success btn btn-success col-md-2 col-md-offset-4" id="ajouter" name="ajouter" value="Ajouter ingrédient"/>
+				</div>
 			</fieldset>
 		}
+		
+		<script>
+		
+			var line = 0;
+			
+			function clicked(){
+				if(line == 0){
+					$('<h3 />').text("Définissez une nouvelle catégorie d'aliment:")
+					  .appendTo($("#ajout"));
+				}
+				
+				line ++;
+				
+				$('<label />').text("Catégorie:")
+							  .appendTo($("#ajout"));
+				
+				$('<input />', {
+					id : "categorie" + line,
+					class : categorie, 
+					name : "categorie" + line
+				}).appendTo($("#ajout"));
+				
+				$('<br>').appendTo($("#ajout"));
+
+				$("#categorieLignes").val(line);
+			}
+		</script>
 		
 		@views.html.footer()
 </body>

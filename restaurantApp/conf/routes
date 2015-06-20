@@ -79,6 +79,7 @@ GET  /cuisinier_accueil      		controllers.Application.cuisinierAcceuil()
 
 
 GET  /cuisinier_plat                controllers.Application.cuisinierPlat()
+POST  /cuisinier_plat               controllers.Application.traitementPlat()
 
 
 GET  /cuisinier_alertes            controllers.Application.cuisinierAlertes()

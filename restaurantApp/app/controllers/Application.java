@@ -9,15 +9,19 @@ import java.util.List;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlUpdate;
 
+import models.Categorie;
 import models.Demande;
 import models.Etat;
 import models.Fonction;
+import models.Plat;
 import models.Produit;
 import models.StockResto;
 import models.Utilisateur;
+import models.queries.CategorieQuery;
 import models.queries.DemandeQuery;
 import models.queries.EtatQuery;
 import models.queries.FonctionQuery;
+import models.queries.PlatQuery;
 import models.queries.ProductQuery;
 import models.queries.StockRestoQuery;
 import models.queries.UtilisateurQuery;
@@ -28,6 +32,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.cuisinier_accueil;
 import views.html.cuisinier_alertes;
+import views.html.cuisinier_plats;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
@@ -222,12 +227,59 @@ public class Application extends Controller {
 	// ===================================================
 	// ==================================================
 	public static Result creationIngredient(){
-		return ok(creationIngredient.render());
+		List<Categorie> categories = CategorieQuery.getItem();
+		return ok(creationIngredient.render(categories));
+	}
+	
+	// POST
+	// =========================================
+	
+	public static Result creationIngredientTraitement(){
+		DynamicForm nouveauProduit = Form.form().bindFromRequest();
+	    
+	    String nom = nouveauProduit.get("nom");
+		String unite = nouveauProduit.get("unite");
+		String catidString = nouveauProduit.get("categorie");
+		String categoryName = "";
+		int lines = Integer.parseInt(nouveauProduit.get("categorieLignes"));
+		int catid = 0;
+		
+		if(lines != 0){
+			for(int i = 1; i < lines + 1; i++){
+				categoryName = nouveauProduit.get("categorie"+i);
+				
+				Categorie categorie = new Categorie();
+			    categorie.setCategoryName(categoryName);
+			    
+			    Ebean.save(categorie);
+			}
+		}
+	    
+		if(!nom.equals("")){
+			if(!catidString.equals("")){
+				
+				catid = Integer.parseInt(catidString);
+				
+				String s = "INSERT INTO produit (productName,unite,categorie_catid) VALUES (:productName,:unite,:categorie_catid)";
+			 	SqlUpdate update = Ebean.createSqlUpdate(s);
+			 	update.setParameter("productName",nom);
+			 	update.setParameter("unite",unite);
+			 	update.setParameter("categorie_catid",catid);
+			 	
+			 	Ebean.execute(update);
+			 	
+			}
+		}
+	    
+	    return redirect("/creationIngredient");
 	}
 	
 	// Cuisinier
     //=====================================================
     //=====================================================
+	
+	// GET
+	//====================================================
 	
 	public static Result cuisinierStock(){
 		boolean check = checkSession();
@@ -262,8 +314,9 @@ public class Application extends Controller {
 	}
 	
 	public static Result cuisinierPlat(){
-		List<Produit> list_produit = ProductQuery.getItem();
-		return ok(cuisinier_plats.render(list_produit));
+		List<Categorie> categories = CategorieQuery.getItem();
+		List<Produit> produits = ProductQuery.getItem();
+		return ok(cuisinier_creation_plat.render(produits,categories));
 	}
 	
 	public static Result cuisinierAlertes(){
@@ -286,26 +339,65 @@ public class Application extends Controller {
 		
 	}
 	
+	
+	// POST
+	// =========================================================
+
+		public static Result traitementPlat(){
+			
+			DynamicForm nouveauPlat = Form.form().bindFromRequest();
+			String platName = nouveauPlat.get("plat"); // On récupère le nom du plat;
+			int nombreLignes = Integer.parseInt(nouveauPlat.get("nombreLignes"));// on récupère le nombre de lignes de la commande;
+			int pid = 0;
+			int quantite = 0;
+			String quantiteString = "";
+			String unite = "";
+			int compteur = 0;
+			Plat platCourant = null;
+			
+			for(int i = 1; i < nombreLignes + 1; i++){
+				quantiteString = nouveauPlat.get("quantite"+i);// On récupère la quantité de l'élément de la ligne i au format chaîne de caractères;
+				if(quantiteString != null && !quantiteString.equals("")){// Si la chaîne de caractères n'est pas vide, alors on récupère ;
+					unite = nouveauPlat.get("quantite"+i);//  On récupère l'unité au format de chaîne de caractères;
+					if(!unite.equals("")){ // Si l'unité n'est pas définie;
+						if(compteur == 0){
+							Plat plat = new Plat();// On crée un objet plat;
+							plat.setPlatName(platName);// On stocke le nom du plat;
+							
+							Ebean.save(plat);
+							
+							List<Plat> plats = PlatQuery.getItem();
+							platCourant = plats.get(plats.size() - 1); 
+							
+							compteur ++;
+						}
+						
+						pid = Integer.parseInt(nouveauPlat.get("produit"+i)); // on récupère l'id du produit au format int;
+						unite = nouveauPlat.get("unite"+i);
+						quantite = Integer.parseInt(quantiteString);// on convertit quantiteString en nombre;
+						
+						String s = "INSERT INTO plat_produit (produit_pid,plat_plid,quantite,unite) VALUES (:produit_pid,:plat_plid,:quantite,:unite)";
+					 	SqlUpdate update = Ebean.createSqlUpdate(s);
+					 	update.setParameter("produit_pid",pid);
+					 	update.setParameter("plat_plid",platCourant.plid);
+					 	update.setParameter("quantite",quantite);
+					 	update.setParameter("unite",unite);
+					 	
+					 	Ebean.execute(update);
+					}
+				}
+			}
+			
+			List<Categorie> categories = CategorieQuery.getItem();
+			List<Produit> produits = ProductQuery.getItem();
+			return ok(cuisinier_plats.render(produits,categories));
+		}
+	
 	// ==========================================================================
 	// ==========================================================================
 	// ==========================================================================
 	
 	//Méthodes POST
-	
-	public static Result creationIngredientTraitement(){
-		Form<NouveauProduit> nouveauProduit = form(NouveauProduit.class).bindFromRequest();
-	    
-	    String nom = nouveauProduit.get().nom;
-		String unite = nouveauProduit.get().unite;
-	    
-	    Produit produit = new Produit();
-	    produit.setProductName(nom);
-	    produit.setUnite(unite);
-	    
-	    Ebean.save(produit);
-	    
-	    return redirect("/gerant_stocks");
-	}
 	
 	public static Result nouveauMembreTraitement() {
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
@@ -516,6 +608,7 @@ public class Application extends Controller {
 		return ok(gerant_stocks.render(list_produit, stockRestos));
 	
 	}
+	
 	
 	public static boolean checkSession(){       
 	        if (session("email")!= null){
