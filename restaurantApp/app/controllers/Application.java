@@ -33,6 +33,7 @@ import play.mvc.Result;
 import views.html.cuisinier_accueil;
 import views.html.cuisinier_alertes;
 import views.html.cuisinier_plats;
+import views.html.cuisinier_creation_plat;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
