@@ -1,35 +1,104 @@
+@(plats: List[Plat], platProduits: List[PlatProduit],stockRestos: List[StockResto])
 <!DOCTYPE html>
 <html>
-	
 	<head>
-		<meta charset="ISO-8859-1">
-		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-		<title>Plats du cuisinier</title>
+		<title>Liste des plats</title>
 	</head>
 	
 	<body>
-		<label>Plat A</label>
-		<a href="../views/recette_cuisinier.html"><input type="button" name="recette" value="Recette"> 
-		
-		<a href="../views/ajouter_plat_cuisinier.html"><input type="button" name="ajouter_plat" value="Ajouter un plat"> 
-		<form>
-		
-		</form>
-		<fieldset>
-				<label for="nom">Nom du plat : </label>
-				<input type="text" id="nom_plat" name="nom_plat"/> </br>
+
+		@views.html.cuisinier_header()
+		@if(plats != null){
+			
+			<div class="container">
 				
-	
-				<label for="rôle">Rôle de l'utilisateur : </label>
-				<select id="role" name="role"> 
-					<option> - </option>
-					<option>Gérant</option>
-					<option>Cuisinier</option>
-					<option>Serveur</option>
-				</select></br>
+				<div id="plats" class="form-group">
+				</div>
+				<br><br><br>
+				<div class="row">
+						<a href="@routes.Application.formulairePlatBis()"><input type="submit" value="Valider"  class="btn btn-success btn btn-success col-md-2 col-md-offset-4" /></a><br>
+				</div>
+			</div>
+			<script>
+			
+			var line = 0;
+			
+			// On parcourt à l'aide de la boucle for, les plats enregistrés.
+			@for(plat <- plats){
 				
-				<input type="button" id="ajouter" name="ajouter" value="Créer membre"/>
-			</fieldset>
+				// Pour chaque nouveau plat, on augmente le nombre de lignes;
+				line ++;
+				
+				// Pour chaque plat, on ajoute un div représentant la ligne associée au plat
+				$('<div />',{
+								id: "row" + line,
+								class: "row form-group"
+							}).appendTo($("#plats"));
+				
+				// On ajoute les div "colonne" qui vont permettre de déterminer la largeur des inputs que l'on va rajouter;
+				for(var i = 0; i < 3; i++){
+					
+					$('<div />',{
+						id: "col" + i + line,
+						class: "col-md-4"
+					}).appendTo($("#row" + line));
+					// Si c'est le nom du plat
+					if(i == 0){
+						
+						$('<h4 />', {
+							for: "plat" + line,
+							id : 'label' + line,	
+						}).html("@plat.platName")
+						  .appendTo($("#col" + i + line));
+						
+					}else if(i == 1){// Si c'est bouton pour afficher la recette;		
+						
+						$('<input />',{
+											type: "text",
+											name: "quantitePlat" + line,
+											id: "quantitePlat" + line
+									  }).appendTo($("#col" + i + line));
+						
+					}else{
+					
+						$('<a />',{
+							href: "@routes.Application.verificationPlat(plat.plid)",
+							id: "href" + line,
+					  	}).appendTo($("#col" + i + line));		
+			
+						$('<input />',{
+								type: "button",
+								value: "Verifier",
+								class: "btn btn-warning"
+						}).appendTo($("#href" + line));
+			
+					}
+					
+				}
+			}
+		</script>
+			
+		}else{
+			<h1>Il y a un probleme.</h1>
+		}
+		
+		@views.html.footer()
+		
+		<script>
+			@if(platProduits != null){
+				@if(stockRestos != null){
+					@for(platProduit <- platProduits){
+						@for(stockResto <- stockRestos){
+							console.log("@platProduit.produit.pid");
+							console.log("@stockResto.produit.pid");
+						}
+					}
+				}else{
+					console.log("stockRestos est null");
+				}
+			}else{
+				console.log("platProduits est null");
+			}
+		</script>
 	</body>
-	
 </html>

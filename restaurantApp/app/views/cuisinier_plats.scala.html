@@ -1,10 +1,88 @@
+@(plats: List[Plat])
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Liste des plats</title>
-</head>
-<body>
+	<head>
+		<title>Liste des plats</title>
+	</head>
 	
-</body>
+	<body>
+
+		@views.html.cuisinier_header()
+		
+		<div class="container">
+			
+			<div id="plats" class="form-group">
+			</div>
+			<br><br><br>
+			<div class="row">
+					<a href="@routes.Application.formulairePlatBis()"><input type="submit" value="Ajouter un plat"  class="btn btn-success btn btn-success col-md-2 col-md-offset-4" /></a><br>
+			</div>
+		</div>
+	
+	</body>
+	
+	<script>
+		
+		var line = 0;
+		
+		// On parcourt à l'aide de la boucle for, les plats enregistrés.
+		@for(plat <- plats){
+			
+			// Pour chaque nouveau plat, on augmente le nombre de lignes;
+			line ++;
+			
+			// Pour chaque plat, on ajoute un div représentant la ligne associée au plat
+			$('<div />',{
+							id: "row" + line,
+							class: "row form-group"
+						}).appendTo($("#plats"));
+			
+			// On ajoute les div "colonne" qui vont permettre de déterminer la largeur des inputs que l'on va rajouter;
+			for(var i = 0; i < 2; i++){
+				
+				$('<div />',{
+					id: "col" + i + line,
+					class: "col-md-4"
+				}).appendTo($("#row" + line));
+				
+				// Si c'est le nom du plat
+				if(i == 0){
+					
+					$('<h4 />', {
+						for: "plat" + line,
+						id : 'label' + line,	
+					}).html("@plat.platName")
+					  .appendTo($("#col" + i + line));
+					
+				}else{// Si c'est bouton pour afficher la recette;
+					
+					$('<a />',{
+									href: "@routes.Application.formulairePlat(plat.plid)",
+									id: "href" + line,
+							  }).appendTo($("#col" + i + line));		
+					
+					$('<input />',{
+										type: "button",
+										value: "recette",
+										class: "btn btn-warning"
+								  }).appendTo($("#href" + line));
+					
+					
+					$('<a />',{
+						href: "@routes.Application.supprimerPlat(plat.plid)",
+						id: "hrefSupprimer" + line,
+				  	}).appendTo($("#row" + line));		
+		
+					$('<input />',{
+							type: "button",
+							value: "supprimer",
+							class: "btn btn-danger"
+					  }).appendTo($("#hrefSupprimer" + line));
+					
+				}
+				
+			}
+		}
+	</script>
+	
 </html>

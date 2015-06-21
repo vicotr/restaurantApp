@@ -14,6 +14,7 @@ import models.Demande;
 import models.Etat;
 import models.Fonction;
 import models.Plat;
+import models.PlatProduit;
 import models.Produit;
 import models.StockResto;
 import models.Utilisateur;
@@ -34,6 +35,8 @@ import views.html.cuisinier_accueil;
 import views.html.cuisinier_alertes;
 import views.html.cuisinier_plats;
 import views.html.cuisinier_creation_plat;
+import views.html.cuisinier_creation_platBis;
+import views.html.cuisinier_plats_cuisines;
 import views.html.gerant_administration;
 import views.html.gerant_alertes;
 import views.html.gerant_nouveau_membre;
@@ -314,10 +317,34 @@ public class Application extends Controller {
         }
 	}
 	
-	public static Result cuisinierPlat(){
+	public static Result listePlats(){
+		List<Plat> plats = PlatQuery.getItem();
+		return ok(cuisinier_plats.render(plats));	
+	}
+	
+	public static Result formulairePlat(int plid){
+		List<PlatProduit> platProduits = null;
+		Plat plat = null;
+		if(plid != 0){
+			platProduits = Ebean.find(PlatProduit.class)
+								.where().eq("plat_plid",plid)
+								.findList();
+			
+			plat = Ebean.find(Plat.class)
+					.where().eq("plid",plid)
+					.findUnique();
+		}
+		
 		List<Categorie> categories = CategorieQuery.getItem();
 		List<Produit> produits = ProductQuery.getItem();
-		return ok(cuisinier_creation_plat.render(produits,categories));
+		return ok(cuisinier_creation_plat.render(produits,categories,platProduits,plat));
+	}
+	
+	public static Result formulairePlatBis(){
+		
+		List<Categorie> categories = CategorieQuery.getItem();
+		List<Produit> produits = ProductQuery.getItem();
+		return ok(cuisinier_creation_platBis.render(produits,categories));
 	}
 	
 	public static Result cuisinierAlertes(){
@@ -336,15 +363,83 @@ public class Application extends Controller {
 	}
 	
 	public static Result cuisinierPlatsCuisines(){
-		return TODO;
 		
+		List<Plat> plats = PlatQuery.getItem();
+		List<StockResto> stockRestos = null;
+		List<PlatProduit> platProduits = null;
+		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
+	}
+	
+	public static Result verificationPlat(int plid){
+		
+		List<StockResto> stockRestos = null;
+		List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
+												.where().eq("plat_plid",plid)
+												.findList();
+		PlatProduit platProduit = null;
+		
+		 for(int i = 0; i < platProduits.size(); i++){
+			 platProduit = platProduits.get(i);
+			 StockResto stockResto = Ebean.find(StockResto.class)
+					 						.where().eq("produit_pid",platProduit.produit.pid)
+					 						.findUnique();
+			 stockRestos.add(stockResto);
+		 }
+		
+		List<Plat> plats = PlatQuery.getItem();
+		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
 	}
 	
 	
 	// POST
 	// =========================================================
 
-		public static Result traitementPlat(){
+		public static Result creationPlat(){
+			
+			DynamicForm nouveauPlat = Form.form().bindFromRequest();
+			String platName = nouveauPlat.get("plat");
+			int nombreLignes = Integer.parseInt(nouveauPlat.get("nombreLignes"));
+			int plid = Integer.parseInt(nouveauPlat.get("plidPlat"));
+			int pid = 0;
+			int quantite = 0;
+			String quantiteString = "";
+			String unite = "";
+			int compteur = 0;
+			
+			Plat plat = Ebean.find(Plat.class)
+							.where().eq("plid",plid)
+							.findUnique();
+	
+			plat.setPlatName(platName);
+
+			Ebean.save(plat);
+			
+			for(int i = 1; i < nombreLignes + 1; i++){
+				quantiteString = nouveauPlat.get("quantite"+i);
+				if(quantiteString != null && !quantiteString.equals("")){
+					unite = nouveauPlat.get("quantite"+i);
+					if(!unite.equals("")){ 
+						
+						pid = Integer.parseInt(nouveauPlat.get("produit"+i)); // on récupère l'id du produit au format int;
+						unite = nouveauPlat.get("unite"+i);
+						quantite = Integer.parseInt(quantiteString);// on convertit quantiteString en nombre;
+						
+						String s = "INSERT INTO plat_produit (produit_pid,plat_plid,quantite,unite) VALUES (:produit_pid,:plat_plid,:quantite,:unite)";
+					 	SqlUpdate update = Ebean.createSqlUpdate(s);
+					 	update.setParameter("produit_pid",pid);
+					 	update.setParameter("plat_plid",plid);
+					 	update.setParameter("quantite",quantite);
+					 	update.setParameter("unite",unite);
+					 	
+					 	Ebean.execute(update);
+					}
+				}
+			}
+			
+			return redirect("../cuisinier_plat");
+		}
+		
+		public static Result creationPlatBis(){
 			
 			DynamicForm nouveauPlat = Form.form().bindFromRequest();
 			String platName = nouveauPlat.get("plat"); // On récupère le nom du plat;
@@ -389,11 +484,39 @@ public class Application extends Controller {
 				}
 			}
 			
-			List<Categorie> categories = CategorieQuery.getItem();
-			List<Produit> produits = ProductQuery.getItem();
-			return ok(cuisinier_creation_plat.render(produits,categories));
+			return redirect("../cuisinier_plat");
 		}
 	
+		public static Result supprimerIngredient(int plid, int pid){
+			
+			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
+					  								.where().eq("plat_plid",plid)
+					  								.findList();
+			
+			List<PlatProduit> platProduitsBis = Ebean.find(PlatProduit.class)
+														.where().eq("produit_pid",pid)
+														.findList();
+									
+			Ebean.delete(platProduitsBis);
+			
+			return formulairePlat(plid);
+		}
+		
+		public static Result supprimerPlat(int plid){
+			
+			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
+												  .where().eq("plat_plid",plid)
+												  .findList();
+			Ebean.delete(platProduits);
+		
+			Plat plat = Ebean.find(Plat.class)
+			  		 		.where().eq("plid",plid)
+			  		 		.findUnique();
+	
+			Ebean.delete(plat);
+			
+			return redirect("../cuisinier_plat");
+		}
 	// ==========================================================================
 	// ==========================================================================
 	// ==========================================================================
@@ -551,6 +674,7 @@ public class Application extends Controller {
 	}
 	
 	public static Result modificationStock(){
+		
 		DynamicForm stockForm = Form.form().bindFromRequest();
 		int linesUpdated = Integer.parseInt(stockForm.get("linesUpdated"));
 		int linesCreated = Integer.parseInt(stockForm.get("linesCreated"));
