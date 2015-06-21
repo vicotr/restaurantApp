@@ -2,6 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -372,7 +373,7 @@ public class Application extends Controller {
 	
 	public static Result verificationPlat(int plid){
 		
-		List<StockResto> stockRestos = null;
+		ArrayList<StockResto> stockRestos = new ArrayList<StockResto>();
 		List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
 												.where().eq("plat_plid",plid)
 												.findList();

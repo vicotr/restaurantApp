@@ -88,11 +88,13 @@
 			@if(platProduits != null){
 				@if(stockRestos != null){
 					@for(platProduit <- platProduits){
-						@for(stockResto <- stockRestos){
-							console.log("@platProduit.produit.pid");
-							console.log("@stockResto.produit.pid");
-						}
+						console.log("@platProduit.produit.pid");
 					}
+					
+					@for(stockResto <- stockRestos){
+						console.log("@stockResto.produit.pid");
+					}
+					
 				}else{
 					console.log("stockRestos est null");
 				}
