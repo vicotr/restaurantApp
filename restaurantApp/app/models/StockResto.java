@@ -25,6 +25,7 @@ public class StockResto {
     public int stockAlerte;
     public Local local;
     public Produit produit;
+    public String unite;
     
     @Id
     public int getSrid(){
@@ -48,6 +49,13 @@ public class StockResto {
     }
     public void setQuantite(int quantite){
        this.quantite = quantite;
+    }
+    
+    public String getUnite(){
+    	return unite;
+    }
+    public void setUnite(String unite){
+    	this.unite = unite;
     }
 
     @Column(name = "stockMax")

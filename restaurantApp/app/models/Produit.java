@@ -20,7 +20,6 @@ public class Produit {
     public int pid;
     public String productName;
     public boolean accessibleFournisseur;
-    public String unite;
     public Categorie categorie;
     public List<StockResto> stockRestos;
     public List<StockFournisseur> stockFournisseurs;
@@ -47,13 +46,6 @@ public class Produit {
     }
     public void setAccessibleFournisseur(boolean accessibleFournisseur){
     	this.accessibleFournisseur = accessibleFournisseur;
-    }
-
-    public String getUnite(){
-    	return unite;
-    }
-    public void setUnite(String unite){
-    	this.unite = unite;
     }
     
     @ManyToOne

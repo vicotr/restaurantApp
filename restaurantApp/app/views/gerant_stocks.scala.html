@@ -63,7 +63,7 @@
 										couleur = "green";
 									}
 									
-									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@produit.unite"];
+									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@stockResto.unite"];
 									
 									for(var i = 0; i < tabIndice.length; i++){
 										
@@ -197,10 +197,12 @@
 	
 		
 	<script>
-
+		
+		var unites = ["piece,gramme,litre,kilogramme","kilolitre"];
+	
 		function clickedBis(){
 			line ++;
-
+			
 			$('<div />', {
     						id : "blocv"+line,
     						class : "form-group", 
@@ -211,7 +213,7 @@
 						}).appendTo($('#blocv'+line));
 
 			for(var i = 0; i < 6; i++){
-				
+				console.log(i);
 				if(i == 0){
 					
 					$('<div />', {

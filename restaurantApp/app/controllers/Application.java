@@ -25,6 +25,7 @@ import models.queries.CategorieQuery;
 import models.queries.DemandeQuery;
 import models.queries.EtatQuery;
 import models.queries.FonctionQuery;
+import models.queries.PlatProduitQuery;
 import models.queries.PlatQuery;
 import models.queries.ProductQuery;
 import models.queries.StockRestoQuery;
@@ -247,7 +248,6 @@ public class Application extends Controller {
 		DynamicForm nouveauProduit = Form.form().bindFromRequest();
 	    
 	    String nom = nouveauProduit.get("nom");
-	    String uniteName = nouveauProduit.get("unite");
 	    //categorie
 		String catidString = nouveauProduit.get("categorie"); // récupérer l'identifiant de la catégorie sélectionnée par l'utilisateur;
 		String categoryName = "";
@@ -271,10 +271,9 @@ public class Application extends Controller {
 				
 				catid = Integer.parseInt(catidString);
 				
-				String s = "INSERT INTO produit (productName,unite,categorie_catid) VALUES (:productName,:unite,:categorie_catid)";
+				String s = "INSERT INTO produit (productName,categorie_catid) VALUES (:productName,:categorie_catid)";
 			 	SqlUpdate update = Ebean.createSqlUpdate(s);
 			 	update.setParameter("productName",nom);
-			 	update.setParameter("unite",uniteName);
 			 	update.setParameter("categorie_catid",catid);
 			 	
 			 	Ebean.execute(update);
@@ -333,13 +332,8 @@ public class Application extends Controller {
 		List<PlatProduit> platProduits = null;
 		Plat plat = null;
 		if(plid != 0){
-			platProduits = Ebean.find(PlatProduit.class)
-								.where().eq("plat_plid",plid)
-								.findList();
-			
-			plat = Ebean.find(Plat.class)
-					.where().eq("plid",plid)
-					.findUnique();
+			platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
+			plat = PlatQuery.getPlat(plid);
 		}
 		
 		List<Categorie> categories = CategorieQuery.getItem();
@@ -374,27 +368,31 @@ public class Application extends Controller {
 		List<Plat> plats = PlatQuery.getItem();
 		List<StockResto> stockRestos = null;
 		List<PlatProduit> platProduits = null;
-		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
+		List<Produit> produits = null;
+		int quantitePlat = 0;
+		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos,quantitePlat,produits));
 	}
 	
-	public static Result verificationPlat(int plid){
+	public static Result verificationPlat(int plid, String quantitePlat){
 		
+		int quantitePlatBis = Integer.parseInt(quantitePlat);
 		ArrayList<StockResto> stockRestos = new ArrayList<StockResto>();
-		List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
-												.where().eq("plat_plid",plid)
-												.findList();
+		ArrayList<Produit> produits = new ArrayList<Produit>();
+		List<PlatProduit> platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
 		PlatProduit platProduit = null;
 		
 		 for(int i = 0; i < platProduits.size(); i++){
 			 platProduit = platProduits.get(i);
-			 StockResto stockResto = Ebean.find(StockResto.class)
-					 						.where().eq("produit_pid",platProduit.produit.pid)
-					 						.findUnique();
+			 
+			 StockResto stockResto = StockRestoQuery.getStockResto(platProduit.produit.pid);
 			 stockRestos.add(stockResto);
+			 
+			 Produit produit = ProductQuery.getProduit(platProduit.produit.pid);
+			 produits.add(produit);
 		 }
 		
 		List<Plat> plats = PlatQuery.getItem();
-		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
+		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos,quantitePlatBis,produits));
 	}
 	
 	
@@ -413,10 +411,8 @@ public class Application extends Controller {
 			String unite = "";
 			int compteur = 0;
 			
-			Plat plat = Ebean.find(Plat.class)
-							.where().eq("plid",plid)
-							.findUnique();
-	
+			Plat plat = PlatQuery.getPlat(plid);
+			
 			plat.setPlatName(platName);
 
 			Ebean.save(plat);
@@ -495,14 +491,8 @@ public class Application extends Controller {
 		}
 	
 		public static Result supprimerIngredient(int plid, int pid){
-			
-			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
-					  								.where().eq("plat_plid",plid)
-					  								.findList();
-			
-			List<PlatProduit> platProduitsBis = Ebean.find(PlatProduit.class)
-														.where().eq("produit_pid",pid)
-														.findList();
+				
+			List<PlatProduit> platProduitsBis = PlatProduitQuery.deletePlatProduits(pid);
 									
 			Ebean.delete(platProduitsBis);
 			
@@ -511,15 +501,10 @@ public class Application extends Controller {
 		
 		public static Result supprimerPlat(int plid){
 			
-			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
-												  .where().eq("plat_plid",plid)
-												  .findList();
+			List<PlatProduit> platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
 			Ebean.delete(platProduits);
 		
-			Plat plat = Ebean.find(Plat.class)
-			  		 		.where().eq("plid",plid)
-			  		 		.findUnique();
-	
+			Plat plat = PlatQuery.getPlat(plid);
 			Ebean.delete(plat);
 			
 			return redirect("../cuisinier_plat");
@@ -541,13 +526,13 @@ public class Application extends Controller {
  
         byte byteData[] = md.digest();
  
-        //convert the byte to hex format method 1
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < byteData.length; i++) {
-         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        	sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
         }
  
         password = sb.toString();
+        
 		String role = nouvelUtilisateurForm.get().role;
 		int fid = 0;
 		
@@ -670,7 +655,6 @@ public class Application extends Controller {
         password = sb.toString();
         //Fin cryptage
         
-        
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
 	    } else {
@@ -694,7 +678,7 @@ public class Application extends Controller {
 
 	public static Result supprimerMembre(int id){
 		
-		Utilisateur utilisateur = Ebean.find(Utilisateur.class, id);
+		Utilisateur utilisateur = UtilisateurQuery.getUtilisateur(id);
 		Ebean.delete(utilisateur);
 		
 		List<Fonction> newFonctions = FonctionQuery.getItem();
@@ -704,7 +688,7 @@ public class Application extends Controller {
 	
 	public static Result supprimerStock(int srid){
 		
-		StockResto stock = Ebean.find(StockResto.class, srid);
+		StockResto stock = StockRestoQuery.getStockRestoSrid(srid);
 		Ebean.delete(stock);
 		
 		return redirect("/gerant_stocks");
@@ -721,6 +705,7 @@ public class Application extends Controller {
 		int seuilAlerte = 0;
 		int srid = 0;
 		int pidProduit = 0;
+		String unite = "";
 		
 		for(int i = 1; i < linesUpdated+1; i++){
 			
@@ -728,15 +713,17 @@ public class Application extends Controller {
 			minimum = Integer.parseInt(stockForm.get("minimumlineUpdated"+i));
 			maximum = Integer.parseInt(stockForm.get("maximumlineUpdated"+i));
 			seuilAlerte = Integer.parseInt(stockForm.get("alertelineUpdated"+i));
+			unite = stockForm.get("unitelineCreated"+i);
 			srid = Integer.parseInt(stockForm.get("hiddenlineUpdated"+i));
 		    
 			
-			String s = "UPDATE stock_resto SET quantite = :quantite, stockMin = :stockMin, stockMax = :stockMax, stockAlerte = :stockAlerte WHERE srid = :srid";
+			String s = "UPDATE stock_resto SET quantite = :quantite, stockMin = :stockMin, stockMax = :stockMax, stockAlerte = :stockAlerte, unite = :unite WHERE srid = :srid";
 		    SqlUpdate update = Ebean.createSqlUpdate(s);
 		 	update.setParameter("quantite",quantite);
 		 	update.setParameter("stockMin",minimum);
 		 	update.setParameter("stockMax", maximum);
 		 	update.setParameter("stockAlerte", seuilAlerte);
+		 	update.setParameter("unite", unite);
 		 	update.setParameter("srid", srid);
 		 	
 		 	Ebean.execute(update);
@@ -751,14 +738,16 @@ public class Application extends Controller {
 					maximum = Integer.parseInt(stockForm.get("maximumlineCreated"+i));
 					seuilAlerte = Integer.parseInt(stockForm.get("alertelineCreated"+i));
 					pidProduit = Integer.parseInt(stockForm.get("ingredientlineCreated"+i));
+					unite = stockForm.get("unitelineCreated"+i);
 					
-					String s = "INSERT INTO stock_resto (quantite,stockMax,stockMin,stockAlerte,produit_pid) VALUES (:quantite,:stockMax,:stockMin,:stockAlerte,:produit_pid)";
+					String s = "INSERT INTO stock_resto (quantite,stockMax,stockMin,stockAlerte,unite,produit_pid) VALUES (:quantite,:stockMax,:stockMin,:stockAlerte,:unite,:produit_pid)";
 				 	SqlUpdate update = Ebean.createSqlUpdate(s);
 				 	update.setParameter("quantite",quantite);
 				 	update.setParameter("stockMin",minimum);
 				 	update.setParameter("stockMax", maximum);
 				 	update.setParameter("stockAlerte", seuilAlerte);
 				 	update.setParameter("produit_pid", pidProduit);
+				 	update.setParameter("unite", unite);
 				 	
 				 	Ebean.execute(update);
 				}

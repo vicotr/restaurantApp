@@ -17,21 +17,12 @@
 				<label for="nom">Nom : </label>
 				<input type="text" id="nom" name="nom"/> </br>
 				
-				<label for="nom">Nom : </label>
+				<label for="nom">Categorie : </label>
 				<select name="categorie" id="categorie">
 				@for(categorie <- categories){
 					<option value="@categorie.catid">@categorie.categoryName</option>
 				}
-				</select><br>
-				
-				<label for="unite">Unité :</label>
-				<select name="unite" id="unite">
-					<option value="piece">piece</option>
-					<option value="gramme">gramme</option>
-					<option value="litre">litre</option>
-					<option value="kilogramme">kilogramme</option>
-					<option value="kilolitre">kilolitre</option>
-				</select>			
+				</select><br>			
 				
 				<div id="ajout">
 					<input type="hidden" id="categorieLignes" name="categorieLignes" value="0" />

@@ -68,7 +68,6 @@ create table produit (
   pid                       integer auto_increment not null,
   productName               varchar(255),
   accessibleFournisseur     tinyint(1) default 0,
-  unite                     varchar(255),
   categorie_catid           integer,
   constraint pk_produit primary key (pid))
 ;
@@ -99,6 +98,7 @@ create table stock_resto (
   stockAlerte               integer,
   local_lid                 integer,
   produit_pid               integer,
+  unite                     varchar(255),
   constraint pk_stock_resto primary key (srid))
 ;
 

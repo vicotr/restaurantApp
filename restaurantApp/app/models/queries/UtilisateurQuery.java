@@ -10,17 +10,22 @@ import models.Utilisateur;
 
 public class UtilisateurQuery {
 	
-public static List<Utilisateur> getItem(){
-		return Utilisateur.find.all();
+	public static List<Utilisateur> getItem(){
+			return Utilisateur.find.all();
+		}
+	
+	public static int getfonction(String mail){
+		
+		Utilisateur utilisateur = Ebean.find(Utilisateur.class)
+										.where().eq("email",mail)
+										.findUnique();
+		
+		return utilisateur.fonction.fid;
 	}
-
-public static int getfonction(String mail){
 	
-	Utilisateur utilisateur = Ebean.find(Utilisateur.class)
-									.where().eq("email",mail)
-									.findUnique();
-	
-	return utilisateur.fonction.fid;
-}
+	public static Utilisateur getUtilisateur(int uid){
+		Utilisateur utilisateur = Ebean.find(Utilisateur.class, uid);
+		return utilisateur;
+	}
 
 }

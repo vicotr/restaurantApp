@@ -49,16 +49,21 @@
 										couleur = "green";
 									}
 									
-									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@produit.unite"];
+									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@stockResto.unite"];
 									
 									for(var i = 0; i < tabIndice.length; i++){
+										
+										
 										$('<input />', {
-				    						id : tabIndice[i] +"lineUpdated"+ compteurLigne,
-				    						class : tabIndice[i], 
-				    						name : tabIndice[i] +"lineUpdated"+ compteurLigne,
-				    						value : tabValeurs[i]
-										}).css({color: couleur,
-											    border: "5px solid "+couleur}).appendTo($("#form1"));	
+				    										id : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    										class : tabIndice[i], 
+				    										name : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    										value : tabValeurs[i]
+														}).css({color: couleur,
+											   					 border: "5px solid "+couleur}).appendTo($("#form1"));	
+										
+										
+										
 										if(i == tabIndice.length - 1){
 											$('<br>').appendTo($("#form1"));
 											$('<br>').appendTo($("#form1"));

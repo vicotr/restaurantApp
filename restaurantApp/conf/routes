@@ -84,7 +84,7 @@ GET  /cuisinier_plat               controllers.Application.listePlats()
 GET  /cuisinier_supprimer_plat         controllers.Application.supprimerPlat(plid: Int)
 GET  /cuisinier_supprimer_ingredient   controllers.Application.supprimerIngredient(plid: Int, pid: Int)							   
 GET  /cuisinier_creation_plat          controllers.Application.formulairePlat(plid: Int)
-GET  /cuisinier_verification_plat      controllers.Application.verificationPlat(plid: Int)
+GET  /cuisinier_verification_plat      controllers.Application.verificationPlat(plid: Int, quantitePlatBis: String)
 POST /cuisinier_creation_plat          controllers.Application.creationPlat()
 POST /cuisinier_creation_platBis       controllers.Application.creationPlatBis()
 

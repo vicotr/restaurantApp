@@ -1,4 +1,4 @@
-@(plats: List[Plat], platProduits: List[PlatProduit],stockRestos: List[StockResto])
+@(plats: List[Plat], platProduits: List[PlatProduit],stockRestos: List[StockResto], quantitePlat: Int,produits: List[Produit])
 <!DOCTYPE html>
 <html>
 	<head>
@@ -19,63 +19,140 @@
 						<a href="@routes.Application.formulairePlatBis()"><input type="submit" value="Valider"  class="btn btn-success btn btn-success col-md-2 col-md-offset-4" /></a><br>
 				</div>
 			</div>
+			
 			<script>
 			
-			var line = 0;
-			
-			// On parcourt à l'aide de la boucle for, les plats enregistrés.
-			@for(plat <- plats){
-				
-				// Pour chaque nouveau plat, on augmente le nombre de lignes;
-				line ++;
-				
-				// Pour chaque plat, on ajoute un div représentant la ligne associée au plat
-				$('<div />',{
-								id: "row" + line,
-								class: "row form-group"
-							}).appendTo($("#plats"));
-				
-				// On ajoute les div "colonne" qui vont permettre de déterminer la largeur des inputs que l'on va rajouter;
-				for(var i = 0; i < 3; i++){
+					var platCompared = 0;
+					var stockRestoUnite = "", stockRestoQuantite = 0, stockRestoPid = 0,stockRestoAlerte = 0, stockCritique = 0;
+					var platProduitUnite = "", platProduitQuantite = 0, platProduitPid = 0;
+					var nomProduit = "";
+					var alerte = "";
+					var alerteTableau = "";
+					var message = "";
 					
-					$('<div />',{
-						id: "col" + i + line,
-						class: "col-md-4"
-					}).appendTo($("#row" + line));
-					// Si c'est le nom du plat
-					if(i == 0){
-						
-						$('<h4 />', {
-							for: "plat" + line,
-							id : 'label' + line,	
-						}).html("@plat.platName")
-						  .appendTo($("#col" + i + line));
-						
-					}else if(i == 1){// Si c'est bouton pour afficher la recette;		
-						
-						$('<input />',{
-											type: "text",
-											name: "quantitePlat" + line,
-											id: "quantitePlat" + line
-									  }).appendTo($("#col" + i + line));
-						
-					}else{
-					
-						$('<a />',{
-							href: "@routes.Application.verificationPlat(plat.plid)",
-							id: "href" + line,
-					  	}).appendTo($("#col" + i + line));		
-			
-						$('<input />',{
-								type: "button",
-								value: "Verifier",
-								class: "btn btn-warning"
-						}).appendTo($("#href" + line));
-			
+					@if(quantitePlat != 0){
+						console.log("alajazam");
+						@if(stockRestos != null){
+							@if(platProduits != null){
+								@for(platProduit <- platProduits){
+									platProduitUnite = platProduit.unite;
+									platProduitQuantite = platProduit.quantie;
+									platProduitPid = platProduit.produit.pid;
+									
+									@for(stockResto <- stockRestos){
+										
+										stockRestoUnite = stockResto.unite;
+										stockRestoQuantite = stockResto.quantie;
+										stockRestoPid = stockResto.produit.pid;
+										stockRestoAlerte = stockResto.stockAlerte;
+										stockRestoCritique = stockResto.stockMin
+										if(platProduitPid == stockRestoPid){
+											
+											@for(produit <- produits){
+												
+												if(platProduitPid == produit.pid){
+													
+													if(platProduitQuantite > stockRestoQuantite){
+														alerte = "impossible";
+														nomProduit = produit.productName;
+														alerteTableau.push(alerte,nomProduit);
+													}else{
+														if(platProduitQuantite < stockRestoAlerte){
+															alerte = "alerte";
+															nomProduit = produit.productName;
+															alerteTableau.push(alerte,nomProduit);
+															if(platProduitQuantite < stockRestoCritique){
+																alerte = "critique"
+																nomProduit = produit.productName;
+																alerteTableau.push(alerte,nomProduit);
+															}
+														}else{
+															alerte = "ok";
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 					
+					for(var i = 0; i < alerteTableau.length; i = i +2){
+						if(alerteTableau[i] == "impossible"){
+							message += "Impossible de préparer le plat car il n'y a pas assez de" + alerteTableau[i+1];
+							if(alerteTableau[i] == "alerte" || alerteTableau[i] == "critique"){
+								message += "Vous pouvez préparer ce plat en utilisant les stocks" + alerte + "de l'ingrédient" + alerteTableau[i+1];
+							}		
+						}	
+					}
+					
+					$('<h1 />').text(message)
+								.appendTo($(".container"));
+		
+			
+					
+				var line = 0, quantitePlatBis = "",classInput = "", indice = "";
+				
+				@for(plat <- plats){
+					
+					line ++;
+					
+					$('<div />',{
+									id: "row" + line,
+									class: "row form-group"
+								}).appendTo($("#plats"));
+					
+					for(var i = 0; i < 3; i++){
+						
+						$('<div />',{
+							id: "col" + i + line,
+							class: "col-md-4"
+						}).appendTo($("#row" + line));
+						
+						if(i == 0){
+							
+							$('<h4 />', {
+								for: "plat" + line,
+								id : 'label' + line,	
+							}).html("@plat.platName")
+							  .appendTo($("#col" + i + line));
+							
+						}else if(i == 1){		
+							
+							$('<input />',{
+												type: "text",
+												name: "quantitePlat" + line,
+												id: "quantitePlat" + line
+										  }).appendTo($("#col" + i + line));
+							
+						}else{
+							
+							/*$('<a />',{
+								href: "",
+								id: "href" + line
+						  	}).appendTo($("#col" + i + line));	*/	
+				
+							$('<input />',{
+									type: "button",
+									value: "Verifier",
+									class: "btn btn-warning" + " " + line
+							}).click(function(){
+							    quantitePlatBis = $("#quantitePlat").val();
+								classInput = this.class;
+								console.log(classInput);
+								indice = classInput.split(" ");
+								//console.log(classInput);
+								//$("#href" + indice[2]).attr("href","@routes.Application.verificationPlat(plat.plid,"+quantitePlatBis+")");
+								
+							}).appendTo($("#col" + i + line));
+				
+						}
+						
+					}
 				}
-			}
+		
 		</script>
 			
 		}else{
@@ -83,24 +160,7 @@
 		}
 		
 		@views.html.footer()
-		
-		<script>
-			@if(platProduits != null){
-				@if(stockRestos != null){
-					@for(platProduit <- platProduits){
-						console.log("@platProduit.produit.pid");
-					}
-					
-					@for(stockResto <- stockRestos){
-						console.log("@stockResto.produit.pid");
-					}
-					
-				}else{
-					console.log("stockRestos est null");
-				}
-			}else{
-				console.log("platProduits est null");
-			}
-		</script>
+	
 	</body>
+	
 </html>
