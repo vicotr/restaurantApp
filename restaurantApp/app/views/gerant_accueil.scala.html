@@ -3,30 +3,35 @@
 <html>
 
 	<head>
-		<title> Accueil Gérant </title>
+		<title> Accueil Gerant </title>
 	</head>
 
 	<body>
-	@views.html.gerant_header()
-
-	<div class="container">
+		@views.html.gerant_header()
+	
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
-	      			<div class="main">
-	              		 <div class="row">
-		<h1> Bienvenue sur votre compte ! </h1>
-		
-		<a href="../gerant_alertes">Vous avez @alertes alertes.</a>  <br/>
-		Accédez aux fonctionnalités de votre compte en cliquant sur les autres onglets de la page.
-		
+				
+					<h1> Bienvenue sur votre compte ! </h1>	
+					<br/><br/>
+					
+				</div>
+				
+				<div class="col-xs-12">
+				
+					<a href="../gerant_alertes">Vous avez @alertes alertes.</a>
+					<br/><br/>
+					Accedez aux fonctionnalites de votre compte en cliquant sur les autres onglets de la page.
+				
+				</div>
+			
+			</div>
+	
 		</div>
-		</div>
-		</div>
-		</div>
+	
 		@views.html.footer()
-		</div>
-
-
+		
 	</body>
 
 </html>

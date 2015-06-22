@@ -29,11 +29,11 @@
 							if(i == tabIndice.length -1){$('<br>').appendTo($("#form1"));}
 						}
 						
-						@for(produit <- produits){// pour chaque produit stockÈ dans la base de donnÈes;
+						@for(produit <- produits){// pour chaque produit stocke dans la base de donnees;
 							
-							@for(stockResto <- stockRestos){// Pour chaque stock stockÈ dans la base de donnÈes;
+							@for(stockResto <- stockRestos){// Pour chaque stock stocke dans la base de donnees;
 								
-								@if(stockResto.produit.pid == produit.pid){ // Si le stock se rÈfËre au produit courant alors on l'affiche, sinon on ne fait rien;
+								@if(stockResto.produit.pid == produit.pid){ // Si le stock se refËre au produit courant alors on l'affiche, sinon on ne fait rien;
 									
 									quantite = @stockResto.quantite;
 									minimum = @stockResto.stockMin; 
