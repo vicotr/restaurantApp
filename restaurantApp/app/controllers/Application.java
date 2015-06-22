@@ -2,6 +2,8 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -527,11 +529,24 @@ public class Application extends Controller {
 	
 	//Méthodes POST
 	
-	public static Result nouveauMembreTraitement() {
+	public static Result nouveauMembreTraitement() throws NoSuchAlgorithmException {
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
 		String pseudo = nouvelUtilisateurForm.get().identifiant;
 		String mail = nouvelUtilisateurForm.get().mail;
 		String password = nouvelUtilisateurForm.get().password;
+		 
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(password.getBytes());
+ 
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+ 
+        password = sb.toString();
 		String role = nouvelUtilisateurForm.get().role;
 		int fid = 0;
 		
@@ -633,10 +648,22 @@ public class Application extends Controller {
 		return redirect("/gerant_demande_reapprovisionnement");
 	}
 	
-	public static Result authenticate() {
+	public static Result authenticate() throws NoSuchAlgorithmException {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
 	    String email = loginForm.get().email;
 	    String password = loginForm.get().password;
+	    MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(password.getBytes());
+ 
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+ 
+        password = sb.toString();
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
 	    } else {
