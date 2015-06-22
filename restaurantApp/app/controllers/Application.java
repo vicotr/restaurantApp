@@ -69,6 +69,7 @@ public class Application extends Controller {
 		public String identifiant;
 		public String password;
 		public String role;
+		public String mail;
 	}
 	
 	public static class NouveauProduit{
@@ -529,38 +530,28 @@ public class Application extends Controller {
 	public static Result nouveauMembreTraitement() {
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
 		String pseudo = nouvelUtilisateurForm.get().identifiant;
+		String mail = nouvelUtilisateurForm.get().mail;
 		String password = nouvelUtilisateurForm.get().password;
 		String role = nouvelUtilisateurForm.get().role;
-		int compteur = 0;
+		int fid = 0;
 		
-		// I On récupère toutes les fonctions 
-		List<Fonction> listeFonctions = FonctionQuery.getItem();
-		
-		for(int i = 0; i < listeFonctions.size(); i++){
-			Fonction f = listeFonctions.get(i);
-			if(role.equals(f.activity)){
-				String s = "INSERT INTO utilisateur (pseudo,password,fonction_fid) VALUES (:pseudo,:password,:uid)";
-			 	SqlUpdate update = Ebean.createSqlUpdate(s);
-			 	update.setParameter("pseudo",pseudo);
-			 	update.setParameter("password",password);
-			 	update.setParameter("uid", f.fid);
-			 
-			 	Ebean.execute(update);
-			 	compteur ++;
-			}
+		if(role.equals("Gerant")){
+			fid = 1;
+		}else if(role.equals("Cuisinier")){
+			fid = 2;
+		}else if(role.equals("Serveur")){
+			fid = 3;
 		}
 		
-		if(compteur == 0){
-			Fonction fonction = new Fonction();
-			fonction.setActivity(role);
-			
-			Utilisateur utilisateur = new Utilisateur();
-			utilisateur.setPseudo(pseudo);
-			utilisateur.setPassword(password);
-			utilisateur.setFonction(fonction);
-			
-			Ebean.save(fonction);
-			Ebean.save(utilisateur);
+		if(!mail.equals("")){
+			String s = "INSERT INTO utilisateur (pseudo,password,email,fonction_fid) VALUES (:pseudo,:password,:mail,:fid)";
+			SqlUpdate update = Ebean.createSqlUpdate(s);
+			update.setParameter("pseudo",pseudo);
+			update.setParameter("password",password);
+			update.setParameter("mail",mail );
+			update.setParameter("fid",fid );
+			 
+			Ebean.execute(update);
 		}
 		
 		return redirect("/gerant_administration");
