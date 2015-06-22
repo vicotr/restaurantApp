@@ -58,6 +58,7 @@ public class Application extends Controller {
 
 	    public String email;
 	    public String password;
+	    public int fonction_fid;
 
 	}
 	
@@ -652,6 +653,9 @@ public class Application extends Controller {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
 	    String email = loginForm.get().email;
 	    String password = loginForm.get().password;
+	    int fid = 0;
+	    
+	   // Cryptege
 	    MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
  
@@ -664,16 +668,28 @@ public class Application extends Controller {
         }
  
         password = sb.toString();
+        //Fin cryptage
+        
+        
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
 	    } else {
+	    	
 	        session().clear();
 	        session("email", email);
 	        session("password",password);
-	        return redirect(
-	            routes.Application.index()
-	        );
+	        
+	        fid = UtilisateurQuery.getfonction(email);
+	        
+		    if(fid==1){
+		    	return redirect(routes.Application.index());
+		    } else if (fid==2){
+		      	return redirect(routes.Application.cuisinierAcceuil());
+		    } else {
+		    	return redirect(routes.Application.authenticate());
+		    }
 	    }
+	    
 	}
 
 	public static Result supprimerMembre(int id){
