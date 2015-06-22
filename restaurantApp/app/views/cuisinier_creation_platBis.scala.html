@@ -1,0 +1,214 @@
+@(produits: List[Produit], categories: List[Categorie])
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Accueil cuisinier</title>
+	</head>
+
+	<body>
+	@views.html.cuisinier_header()
+	
+	<div class="container">
+	
+	@helper.form(routes.Application.creationPlatBis) {
+	
+			<input type="text" id="plat" name="plat"  placeholder="Votre plat" class="form-control"/> </br>
+			
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-3">
+						<h3>Ingredients</h3>
+					</div>
+					<div class="col-md-3">
+						<h3>Quantite</h3>
+					</div>
+					<div class="col-md-3">
+						<h3>Unite</h3>
+					</div>
+				</div><br>
+			</div>
+					
+			<div id="nouvelIngredient">
+			
+			</div>
+			
+			<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clicked()" /><br><br>
+			<div class="row">
+				<input type="submit" value="Valider"  class="btn btn-success btn btn-success col-md-2 col-md-offset-4" /><br>
+			</div>
+			
+	}
+		
+	</div>
+	
+	<script>
+	
+			
+		var line = 0, classLine = "", indexLine = "", iLine = "";
+		var produit = "", catid = 0, categorie = "";
+		
+		var tab = ["ingredient","quantite","unite"];
+		var unites = ["piece","kilogramme","gramme","litre"];
+		
+		// On affiche le nombre de lignes dans un input de type hidden;
+		$('<input />',{
+			type: "hidden", 
+			id: "nombreLignes",
+			name: "nombreLignes",
+			value: line
+		  }).appendTo($("#nouvelIngredient"));
+		
+		// On définit la foncton clicked, appelée à chaque fois que l'on clique sur le bouton "Nouvel Ingrédient".
+		function clicked(){
+			
+			// on ajoute une ligne au formulaire;
+			line ++;
+			
+			// On actualise le nombre de lignes à chaque fois que l'on appelle la fonction
+			$("#nombreLignes").val(line);
+			
+			//On ajoute un div de type form-group pour séparer les lignes
+			$('<div />', {
+				id : "lineGroup"+line,
+				class : "form-group", 
+			}).appendTo($('#nouvelIngredient'));
+			
+			// On ajoute le div symbolisant la ligne;
+			$('<div />', {
+				id: "ligne"+line,
+				class: "row",
+			}).appendTo($('#lineGroup'+line));
+			
+			// A l'aide de cette boucle, on ajoute les inputs à la ligne un par un;
+			for(var i = 0; i < 3; i++){
+				
+				// On ajoute un div qui permet de définir la largeur de l'élément que l'on va ajouter à la ligne;
+				$('<div />', {
+					class: "col-md-3",
+					id: "div"+line+i,
+				}).appendTo($("#ligne"+line));
+				
+				//Si c'est le premier input que l'on ajoute
+				if(i == 0){
+					
+					// On ajoute un select qui va permettre de choisir la catégorie de l'élément que l'on va ajouter; 
+					$('<select />', {
+						name: tab[i] + line,
+						class: line + "||" + i,
+						id: tab[i] + line
+					}).change(function(){ // Si la valeur du select a changé,
+									
+									// On récupère la classe de l'attribut courant qui contient le numéro de la ligne et l'index "i";
+									classLine = $(this).attr('class').split("||");
+									iLine = classLine[1]
+									indexLine = classLine[0];
+									
+									// On supprime la ligne qui contient l'ancien select
+									$("#rowProduit"+indexLine).remove();
+									// OK OK OK
+									console.log(iLine);
+									// On ajoute la ligne qui contiendra le nouveau select
+									$('<div />',{
+										class: "row",
+										id: "rowProduit"+indexLine
+									}).appendTo($("#div" + indexLine + iLine));
+						
+									// On ajoute la div colonne qui va permettre de dimensionner le select
+									$('<div />',{
+													class: "col-md-4",
+													id: "colProduit" + indexLine
+												}).appendTo($("#rowProduit" + indexLine));
+									
+									// On ajoute le select;
+									$('<select />', {
+										name: "produit" + indexLine,
+										class: "selectIngredient" + indexLine,
+										id: "produit" + indexLine
+									}).appendTo($("#colProduit" + indexLine));
+									
+									// On récupère l'id permettant d'identifier la nouvelle catégorie que l'utilisateur a sélectionnée;
+									catid = $("#" + tab[iLine] + indexLine).val();
+									
+									// On parcourt la liste des produits
+									@for(produit <- produits){
+										// Si l'id de la catégorie correspond à l'id stockée dans le produit, on affiche une option.
+										if(catid == @produit.categorie.catid){
+											$('<option />', { value: "@produit.pid" }).html("@produit.productName")
+											  													  .appendTo($("#produit"+indexLine));	
+										}
+									}
+							}).appendTo($("#div"+line+i));
+	
+					@for(categorie <- categories) {
+						$('<option />', { value: "@categorie.catid" }).html("@categorie.categoryName")
+										  							  .appendTo($("#" + tab[i] + line));
+					}
+					
+					$('<div />',{
+						class: "row",
+						id: "rowProduit"+line
+					}).appendTo($("#div"+line+i));
+		
+					$('<div />',{
+									class: "col-md-3",
+									id: "colProduit"+line
+								}).appendTo($("#rowProduit"+line));
+					
+					$('<select />', {
+						name: "produit" + line,
+						class: line,
+						id: "produit" + line
+					}).appendTo($("#colProduit"+line));
+					
+					catid = $("#" + tab[i] + line).val();
+					
+					@for(produit <- produits){
+						if(catid == @produit.categorie.catid){
+							$('<option />', { value: "@produit.pid" }).html("@produit.productName")
+							  													  .appendTo($("#produit"+line));	
+						}
+					}
+					
+				}else if(i == 2){
+					
+					$('<select />', {
+						name: tab[i] + line,
+						class : line,
+						id: tab[i] + line
+					}).appendTo($("#div"+line+i));
+	
+					for(var j = 0; j < unites.length; j++){
+						$('<option />', {
+											value: unites[j],
+											id: "option"+line+i,
+										}).html(unites[j])
+										  .appendTo($("#" + tab[i] + line));
+					}
+					
+					$('<input />', {
+						value: "supprimer",
+						class : "btn btn-danger",
+						id: line,
+						type : "button"
+					}).click(function(){
+								$("#ligne"+ this.id).remove();
+							}).appendTo($("#ligne" + line));
+				
+				}else{
+						
+						$('<input />', {
+							name : tab[i] + line,
+							class : line,
+							id : tab[i] + line,
+							type : "text"
+						}).appendTo($("#div"+line+i));
+						
+				}
+				
+			}
+		}		
+	</script>
+	
+    @views.html.footer()
+	</body>

@@ -49,7 +49,6 @@ public class Produit {
     	this.accessibleFournisseur = accessibleFournisseur;
     }
 
-    @Column(name="unite")
     public String getUnite(){
     	return unite;
     }
@@ -58,7 +57,6 @@ public class Produit {
     }
     
     @ManyToOne
-    @Column(name="categorie")
     public Categorie getCategorie(){
     	return categorie;
     }
@@ -82,9 +80,6 @@ public class Produit {
     	this.stockFournisseurs = stockFournisseurs;
     } 
     
-  
+    public static Finder<Long,Produit> find= new Finder<Long,Produit>(Long.class, Produit.class);
     
-    public static Finder<Long,Produit> find= new Finder<Long,Produit>(
-    		Long.class, Produit.class
-    		);
 }

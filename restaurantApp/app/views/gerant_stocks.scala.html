@@ -169,12 +169,13 @@
 						</div>
 						
 						<div class="col-md-2">
-							<label for="unitelineCreated1">Unité :</label>
+							<label for="unitelineCreated1">Unité :</label><br>
 							<select name="unitelineCreated1" id="unitelineCreated1">
-								<option value="pièce">piece</option>
-								<option value="kilogramme">kilogramme</option>
+								<option value="piece">piece</option>
 								<option value="gramme">gramme</option>
 								<option value="litre">litre</option>
+								<option value="kilogramme">kilogramme</option>
+								<option value="kilolitre">kilolitre</option>
 							</select>
 						</div>
 					
@@ -196,7 +197,6 @@
 	
 		
 	<script>
-		var unites = ["piece","kilogramme","gramme","litre"];
 
 		function clickedBis(){
 			line ++;
@@ -259,11 +259,11 @@
 										id: tabIndice[i] + "lineCreated" + line,
 									} ).appendTo($("#div"+line+i));
 					
-					for(var j = 0; j < unites.length; j++){
+					for(var i = 0; i < unites.length; i++){
 						$('<option />', {
-											value: unites[j],
-											id: "option"+line+i,
-										}).html(unites[j])
+											value: unites[i],
+											id: unites[i] + line,
+										}).html(unites[i])
 										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
 					}
 					

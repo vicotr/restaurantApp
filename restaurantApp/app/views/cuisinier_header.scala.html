@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel="stylesheet">
+		<link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.css"))' rel="stylesheet">
+		<link href='@routes.Assets.at("app.css")' rel="stylesheet">
+		<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+	</head>
+
+	<body>
+			
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+	      			<div class="main">
+						<nav class="navbar navbar-inverse">
+							<div class="container-fluid">
+					
+								<a href="@routes.Application.gerantCompte"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
+								<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Déconnexion" class="btn btn-success btn btn-success"></a>
+									
+								<ul class="nav navbar-nav">
+									<li onclick="clicked(this)"> <a href="../cuisinier_accueil">Accueil</a> </li>
+									<li onclick="clicked(this)"> <a href="../cuisinier_stocks">Stocks</a> </li>
+									<li onclick="clicked(this)"> <a href="../cuisinier_plat">Plat</a> </li>
+									<li onclick="clicked(this)"> <a href="../cuisinier_alertes">Alertes</a> </li>
+									<li onclick="clicked(this)"> <a href="../cuisinier_plats_cuisines">Plats cuisinés</a> </li>
+								</ul>
+								
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+</html>

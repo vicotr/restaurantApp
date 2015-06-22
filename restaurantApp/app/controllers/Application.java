@@ -223,9 +223,9 @@ public class Application extends Controller {
             return ok(
                     login.render(form(Login.class)));
         }else{
-		List<Produit> list_produit = ProductQuery.getItem();
-		List<StockResto> stockRestos = StockRestoQuery.getItem();
-		return ok(gerant_stocks.render(list_produit, stockRestos));
+        	List<Produit> list_produit = ProductQuery.getItem();
+	        List<StockResto> stockRestos = StockRestoQuery.getItem();
+	    	return ok(gerant_stocks.render(list_produit, stockRestos));
         }
 	}
 	// Maison-mère
@@ -243,9 +243,11 @@ public class Application extends Controller {
 		DynamicForm nouveauProduit = Form.form().bindFromRequest();
 	    
 	    String nom = nouveauProduit.get("nom");
-		String unite = nouveauProduit.get("unite");
-		String catidString = nouveauProduit.get("categorie");
+	    String uniteName = nouveauProduit.get("unite");
+	    //categorie
+		String catidString = nouveauProduit.get("categorie"); // récupérer l'identifiant de la catégorie sélectionnée par l'utilisateur;
 		String categoryName = "";
+		// Nombre de catégories ajoutées;
 		int lines = Integer.parseInt(nouveauProduit.get("categorieLignes"));
 		int catid = 0;
 		
@@ -268,7 +270,7 @@ public class Application extends Controller {
 				String s = "INSERT INTO produit (productName,unite,categorie_catid) VALUES (:productName,:unite,:categorie_catid)";
 			 	SqlUpdate update = Ebean.createSqlUpdate(s);
 			 	update.setParameter("productName",nom);
-			 	update.setParameter("unite",unite);
+			 	update.setParameter("unite",uniteName);
 			 	update.setParameter("categorie_catid",catid);
 			 	
 			 	Ebean.execute(update);
@@ -729,9 +731,9 @@ public class Application extends Controller {
 			}
 		
 		
-		List<Produit> list_produit = ProductQuery.getItem();
-		List<StockResto> stockRestos = StockRestoQuery.getItem();
-		return ok(gerant_stocks.render(list_produit, stockRestos));
+			List<Produit> list_produit = ProductQuery.getItem();
+	        List<StockResto> stockRestos = StockRestoQuery.getItem();
+	    	return ok(gerant_stocks.render(list_produit,stockRestos));
 	
 	}
 	

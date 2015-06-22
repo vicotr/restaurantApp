@@ -17,26 +17,27 @@
 				<label for="nom">Nom : </label>
 				<input type="text" id="nom" name="nom"/> </br>
 				
-				<label for="categorie">Categorie : </label>
-				<select id="categorie" name="categorie"> 
+				<label for="nom">Nom : </label>
+				<select name="categorie" id="categorie">
 				@for(categorie <- categories){
 					<option value="@categorie.catid">@categorie.categoryName</option>
 				}
-				</select></br>
+				</select><br>
 				
-				<label for="unité">Unite : </label>
-				<select id="unité" name="unite"> 
-					<option value="piece">Pièce</option>
-					<option value="kilogramme">kilogramme</option>
+				<label for="unite">Unité :</label>
+				<select name="unite" id="unite">
+					<option value="piece">piece</option>
 					<option value="gramme">gramme</option>
 					<option value="litre">litre</option>
-				</select></br>
+					<option value="kilogramme">kilogramme</option>
+					<option value="kilolitre">kilolitre</option>
+				</select>			
 				
 				<div id="ajout">
 					<input type="hidden" id="categorieLignes" name="categorieLignes" value="0" />
 				</div>
+				<input type="button" class="btn btn-success btn btn-warning" id="ajouter" name="ajouter" value="Ajouter une catégorie" onclick="clicked()"/><br><br>
 				
-				<input type="button" class="btn btn-success btn btn-success" id="ajouter" name="ajouter" value="Ajouter une catégorie" onclick="clicked()"/>
 				<div class="row">
 					<input type="submit" class="btn btn-success btn btn-success col-md-2 col-md-offset-4" id="ajouter" name="ajouter" value="Ajouter ingrédient"/>
 				</div>
@@ -59,8 +60,9 @@
 							  .appendTo($("#ajout"));
 				
 				$('<input />', {
+					type: "text",
 					id : "categorie" + line,
-					class : categorie, 
+					class : "categorie", 
 					name : "categorie" + line
 				}).appendTo($("#ajout"));
 				
@@ -68,6 +70,7 @@
 
 				$("#categorieLignes").val(line);
 			}
+			
 		</script>
 		
 		@views.html.footer()
