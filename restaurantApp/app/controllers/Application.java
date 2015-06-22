@@ -2,6 +2,8 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +58,7 @@ public class Application extends Controller {
 
 	    public String email;
 	    public String password;
+	    public int fonction_fid;
 
 	}
 	
@@ -69,6 +72,7 @@ public class Application extends Controller {
 		public String identifiant;
 		public String password;
 		public String role;
+		public String mail;
 	}
 	
 	public static class NouveauProduit{
@@ -240,6 +244,11 @@ public class Application extends Controller {
 	// =========================================
 	
 	public static Result creationIngredientTraitement(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		DynamicForm nouveauProduit = Form.form().bindFromRequest();
 	    
 	    String nom = nouveauProduit.get("nom");
@@ -261,7 +270,7 @@ public class Application extends Controller {
 			    Ebean.save(categorie);
 			}
 		}
-	    
+		
 		if(!nom.equals("")){
 			if(!catidString.equals("")){
 				
@@ -279,6 +288,7 @@ public class Application extends Controller {
 		}
 	    
 	    return redirect("/creationIngredient");
+        }
 	}
 	
 	// Cuisinier
@@ -321,11 +331,22 @@ public class Application extends Controller {
 	}
 	
 	public static Result listePlats(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<Plat> plats = PlatQuery.getItem();
 		return ok(cuisinier_plats.render(plats));	
+        }
 	}
 	
 	public static Result formulairePlat(int plid){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<PlatProduit> platProduits = null;
 		Plat plat = null;
 		if(plid != 0){
@@ -341,13 +362,20 @@ public class Application extends Controller {
 		List<Categorie> categories = CategorieQuery.getItem();
 		List<Produit> produits = ProductQuery.getItem();
 		return ok(cuisinier_creation_plat.render(produits,categories,platProduits,plat));
+        }
 	}
 	
 	public static Result formulairePlatBis(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		List<Categorie> categories = CategorieQuery.getItem();
 		List<Produit> produits = ProductQuery.getItem();
 		return ok(cuisinier_creation_platBis.render(produits,categories));
+        }
 	}
 	
 	public static Result cuisinierAlertes(){
@@ -366,14 +394,25 @@ public class Application extends Controller {
 	}
 	
 	public static Result cuisinierPlatsCuisines(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		List<Plat> plats = PlatQuery.getItem();
 		List<StockResto> stockRestos = null;
 		List<PlatProduit> platProduits = null;
 		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
+        }
 	}
 	
 	public static Result verificationPlat(int plid){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		ArrayList<StockResto> stockRestos = new ArrayList<StockResto>();
 		List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
@@ -391,6 +430,7 @@ public class Application extends Controller {
 		
 		List<Plat> plats = PlatQuery.getItem();
 		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos));
+        }
 	}
 	
 	
@@ -398,6 +438,12 @@ public class Application extends Controller {
 	// =========================================================
 
 		public static Result creationPlat(){
+			
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			DynamicForm nouveauPlat = Form.form().bindFromRequest();
 			String platName = nouveauPlat.get("plat");
@@ -440,9 +486,15 @@ public class Application extends Controller {
 			}
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 		
 		public static Result creationPlatBis(){
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			DynamicForm nouveauPlat = Form.form().bindFromRequest();
 			String platName = nouveauPlat.get("plat"); // On récupère le nom du plat;
@@ -488,9 +540,16 @@ public class Application extends Controller {
 			}
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 	
 		public static Result supprimerIngredient(int plid, int pid){
+			
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
 					  								.where().eq("plat_plid",plid)
@@ -503,9 +562,16 @@ public class Application extends Controller {
 			Ebean.delete(platProduitsBis);
 			
 			return formulairePlat(plid);
+	        }
 		}
 		
 		public static Result supprimerPlat(int plid){
+			
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			List<PlatProduit> platProduits = Ebean.find(PlatProduit.class)
 												  .where().eq("plat_plid",plid)
@@ -519,6 +585,7 @@ public class Application extends Controller {
 			Ebean.delete(plat);
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 	// ==========================================================================
 	// ==========================================================================
@@ -526,47 +593,62 @@ public class Application extends Controller {
 	
 	//Méthodes POST
 	
-	public static Result nouveauMembreTraitement() {
+	public static Result nouveauMembreTraitement() throws NoSuchAlgorithmException {
+		
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
 		String pseudo = nouvelUtilisateurForm.get().identifiant;
+		String mail = nouvelUtilisateurForm.get().mail;
 		String password = nouvelUtilisateurForm.get().password;
+		 
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(password.getBytes());
+ 
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+ 
+        password = sb.toString();
 		String role = nouvelUtilisateurForm.get().role;
-		int compteur = 0;
+		int fid = 0;
 		
-		// I On récupère toutes les fonctions 
-		List<Fonction> listeFonctions = FonctionQuery.getItem();
-		
-		for(int i = 0; i < listeFonctions.size(); i++){
-			Fonction f = listeFonctions.get(i);
-			if(role.equals(f.activity)){
-				String s = "INSERT INTO utilisateur (pseudo,password,fonction_fid) VALUES (:pseudo,:password,:uid)";
-			 	SqlUpdate update = Ebean.createSqlUpdate(s);
-			 	update.setParameter("pseudo",pseudo);
-			 	update.setParameter("password",password);
-			 	update.setParameter("uid", f.fid);
-			 
-			 	Ebean.execute(update);
-			 	compteur ++;
-			}
+		if(role.equals("Gerant")){
+			fid = 1;
+		}else if(role.equals("Cuisinier")){
+			fid = 2;
+		}else if(role.equals("Serveur")){
+			fid = 3;
 		}
 		
-		if(compteur == 0){
-			Fonction fonction = new Fonction();
-			fonction.setActivity(role);
-			
-			Utilisateur utilisateur = new Utilisateur();
-			utilisateur.setPseudo(pseudo);
-			utilisateur.setPassword(password);
-			utilisateur.setFonction(fonction);
-			
-			Ebean.save(fonction);
-			Ebean.save(utilisateur);
+		if(!mail.equals("")){
+			String s = "INSERT INTO utilisateur (pseudo,password,email,fonction_fid) VALUES (:pseudo,:password,:mail,:fid)";
+			SqlUpdate update = Ebean.createSqlUpdate(s);
+			update.setParameter("pseudo",pseudo);
+			update.setParameter("password",password);
+			update.setParameter("mail",mail );
+			update.setParameter("fid",fid );
+			 
+			Ebean.execute(update);
 		}
 		
 		return redirect("/gerant_administration");
+        }
 	}
 	
 	public static Result traitementDemande(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		DynamicForm demandeForm = Form.form().bindFromRequest();
 		int nombreLignes = Integer.parseInt(demandeForm.get("nombreLignes"));
 		String commentaires = demandeForm.get("commentaires");
@@ -640,25 +722,58 @@ public class Application extends Controller {
 		}
 
 		return redirect("/gerant_demande_reapprovisionnement");
+        }
 	}
 	
-	public static Result authenticate() {
+	public static Result authenticate() throws NoSuchAlgorithmException {
 	    Form<Login> loginForm = form(Login.class).bindFromRequest();
 	    String email = loginForm.get().email;
 	    String password = loginForm.get().password;
+	    int fid = 0;
+	    
+	   // Cryptege
+	    MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(password.getBytes());
+ 
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+ 
+        password = sb.toString();
+        //Fin cryptage
+        
+        
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
 	    } else {
+	    	
 	        session().clear();
 	        session("email", email);
 	        session("password",password);
-	        return redirect(
-	            routes.Application.index()
-	        );
+	        
+	        fid = UtilisateurQuery.getfonction(email);
+	        
+		    if(fid==1){
+		    	return redirect(routes.Application.gerantAccueil());
+		    } else if (fid==2){
+		      	return redirect(routes.Application.cuisinierAcceuil());
+		    } else {
+		    	return redirect(routes.Application.authenticate());
+		    }
 	    }
+	    
 	}
 
 	public static Result supprimerMembre(int id){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		Utilisateur utilisateur = Ebean.find(Utilisateur.class, id);
 		Ebean.delete(utilisateur);
@@ -666,17 +781,29 @@ public class Application extends Controller {
 		List<Fonction> newFonctions = FonctionQuery.getItem();
 		List<Utilisateur> utilisateurs = UtilisateurQuery.getItem();
 		return ok(gerant_administration.render(utilisateurs,newFonctions));
+        }
 	}
 	
 	public static Result supprimerStock(int srid){
-		
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		StockResto stock = Ebean.find(StockResto.class, srid);
 		Ebean.delete(stock);
 		
 		return redirect("/gerant_stocks");
+        }
 	}
 	
 	public static Result modificationStock(){
+		
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		DynamicForm stockForm = Form.form().bindFromRequest();
 		int linesUpdated = Integer.parseInt(stockForm.get("linesUpdated"));
@@ -734,6 +861,7 @@ public class Application extends Controller {
 			List<Produit> list_produit = ProductQuery.getItem();
 	        List<StockResto> stockRestos = StockRestoQuery.getItem();
 	    	return ok(gerant_stocks.render(list_produit,stockRestos));
+        }
 	
 	}
 	
