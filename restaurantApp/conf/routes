@@ -94,3 +94,6 @@ GET  /cuisinier_alertes            controllers.Application.cuisinierAlertes()
 GET  /cuisinier_creation_platBis   controllers.Application.formulairePlatBis()
 
 GET  /cuisinier_plats_cuisines      controllers.Application.cuisinierPlatsCuisines()
+
+#serveur
+GET /serveur_accueil				controllers.Application.serveurAccueil()

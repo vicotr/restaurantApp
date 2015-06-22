@@ -10,33 +10,29 @@
 		<link href='@routes.Assets.at("app.css")' rel="stylesheet">
 		<script src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
 	</head>
-
+	
 	<body>
-			
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-	      			<div class="main">
-						<nav class="navbar navbar-inverse">
-							<div class="container-fluid">
-					
-								<a href="@routes.Application.gerantCompte"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
-								<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Deconnexion" class="btn btn-success btn btn-success"></a>
-									
-								<ul class="nav navbar-nav">
-									<li onclick="clicked(this)"> <a href="../cuisinier_accueil">Accueil</a> </li>
-									<li onclick="clicked(this)"> <a href="../cuisinier_stocks">Stocks</a> </li>
-									<li onclick="clicked(this)"> <a href="../cuisinier_plat">Plat</a> </li>
-									<li onclick="clicked(this)"> <a href="../cuisinier_alertes">Alertes</a> </li>
-									<li onclick="clicked(this)"> <a href="../cuisinier_plats_cuisines">Plats cuisines</a> </li>
-								</ul>
-								
-							</div>
-						</nav>
-					</div>
+		
+        <div class="row">
+	        <nav class="navbar navbar-inverse">
+	            <div class="col-md-4">
+	            </div>
+	            <div class="col-md-6">
+	                <ul class="nav navbar-nav">
+						<li onclick="clicked(this)"> <a href="../cuisinier_accueil">Accueil</a> </li>
+						<li onclick="clicked(this)"> <a href="../cuisinier_stocks">Stocks</a> </li>
+						<li onclick="clicked(this)"> <a href="../cuisinier_plat">Plat</a> </li>
+						<li onclick="clicked(this)"> <a href="../cuisinier_alertes">Alertes</a> </li>
+						<li onclick="clicked(this)"> <a href="../cuisinier_plats_cuisines">Plats cuisines</a> </li>
+					</ul>
+	            </div>
+	            <div class="col-md-2">
+					<a href="@routes.Application.gerantCompte"><input type="button" name="Mon compte" value="Mon compte" class="btn btn-success btn btn-success"></a>
+					<a href="@routes.Application.logOut"><input type="button" name="Deconnexion" value="Deconnexion" class="btn btn-success btn btn-success"></a>			
 				</div>
-			</div>
-		</div>
+	        </nav>
+        </div>
+        
 	</body>
 	
 </html>

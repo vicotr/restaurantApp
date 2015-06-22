@@ -51,6 +51,7 @@ import views.html.gerant_accueil;
 import views.html.restaurant_mon_compte;
 import views.html.creationIngredient;
 import views.html.cuisinier_stocks;
+import views.html.serveur_accueil;
 
 public class Application extends Controller {
 	
@@ -761,11 +762,12 @@ public class Application extends Controller {
 		    	return redirect(routes.Application.gerantAccueil());
 		    } else if (fid==2){
 		      	return redirect(routes.Application.cuisinierAcceuil());
-		    } else {
-		    	return redirect(routes.Application.authenticate());
+		    } else if (fid==3) {
+		    	return redirect(routes.Application.serveurAccueil());
+		    }else{
+		    	 return badRequest(login.render(loginForm));
 		    }
-	    }
-	    
+	    } 
 	}
 
 	public static Result supprimerMembre(int id){
@@ -794,6 +796,26 @@ public class Application extends Controller {
 		Ebean.delete(stock);
 		
 		return redirect("/gerant_stocks");
+        }
+	}
+	
+	public static Result serveurAccueil(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{		
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+    		int alertes = 0;
+    		for(int i = 0; i < stockRestos.size(); i++){
+    			StockResto stockResto = stockRestos.get(i);
+    			if(stockResto.quantite <= stockResto.stockAlerte){
+    				alertes ++;
+    			}
+    		}
+    		return ok(
+				serveur_accueil.render(alertes)
+				);
         }
 	}
 	
