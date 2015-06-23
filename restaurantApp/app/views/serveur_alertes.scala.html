@@ -1,0 +1,45 @@
+@(stockRestos: List[StockResto], produits: List[Produit])
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Alertes serveur</title>
+	</head>
+
+	<body>
+	@views.html.serveur_header()
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+      			<div class="main">
+              		 <div class="row">
+              			<h1>Mes alertes</h1>
+              			@for(stockResto <- stockRestos){
+              					@if(stockResto.quantite <= stockResto.stockAlerte){
+              						@if(stockResto.quantite <= stockResto.stockMin){
+              							@for(produit <- produits){
+              								@if(stockResto.produit.pid == produit.pid){
+              									Le stock @produit.productName est critique. <br>
+              								}
+              							}
+              						}else{
+              							@for(produit <- produits){
+              								@if(stockResto.produit.pid == produit.pid){
+              									Le stock @produit.productName est faible. <br>
+              								}
+              							}
+              						}
+              					}
+              			}
+              			
+              		 </div>
+          		 </div>
+       		 </div>
+   		 </div>
+	 @views.html.footer()
+	 </div>
+	
+	</body>
+
+</html>

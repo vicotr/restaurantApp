@@ -60,6 +60,8 @@ GET /gerant_suivi_des_commandes			controllers.Application.gerantSuivi()
 
 #gerantCompte
 GET /restaurant_mon_compte			controllers.Application.gerantCompte()
+GET /cuisinier_mon_compte			controllers.Application.cuisinierCompte()
+GET /serveur_mon_compte			controllers.Application.serveurCompte()
 
 
 GET  /authentification          controllers.Application.logOut()
@@ -96,3 +98,6 @@ GET  /cuisinier_plats_cuisines      controllers.Application.cuisinierPlatsCuisin
 
 #serveur
 GET /serveur_accueil				controllers.Application.serveurAccueil()
+GET /serveur_stocks				controllers.Application.serveurStock()
+GET /serveur_alertes				controllers.Application.serveurAlertes()
+

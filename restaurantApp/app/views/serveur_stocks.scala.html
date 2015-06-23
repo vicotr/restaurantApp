@@ -1,0 +1,88 @@
+@(produits: List[Produit], stockRestos: List[StockResto])
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="ISO-8859-1">
+		<link href="../../bootstrap-3.3.4-dist/bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
+		<title>Stock du serveur</title>
+	</head>
+	
+	<body>
+	@views.html.serveur_header()
+	
+		<form id="form1" class="col-lg-12">
+		
+		<script>
+						var quantite = 0, minimum = 0, alerte=0,couleur=0;
+						var tabIndice = ["ingredient","quantite","minimum","maximum","alerte","unite"];
+						var tabValeurs = [];
+						var compteurLigne = 0;
+						
+						for(var i = 0; i < tabIndice.length; i++){
+							$('<label />', {class : "indice"}).css({color: couleur,
+								    							   				border: "2px solid blue",
+								    							   				backgroundColor: "white"})
+								    							   		  .width(179)
+								    									  .text(tabIndice[i])
+								   							              .appendTo($("#form1"));
+							if(i == tabIndice.length -1){$('<br>').appendTo($("#form1"));}
+						}
+						
+						@for(produit <- produits){// pour chaque produit stocke dans la base de donnees;
+							
+							@for(stockResto <- stockRestos){// Pour chaque stock stocke dans la base de donnees;
+								
+								@if(stockResto.produit.pid == produit.pid){ // Si le stock se refËre au produit courant alors on l'affiche, sinon on ne fait rien;
+									
+									quantite = @stockResto.quantite;
+									minimum = @stockResto.stockMin; 
+									alerte = @stockResto.stockAlerte;
+									compteurLigne ++;
+									
+									if(quantite <= alerte){
+										couleur = "orange";
+										if (quantite <= minimum){
+											couleur = "red";
+										}
+									}else if(quantite > alerte){
+										couleur = "green";
+									}
+									
+									tabValeurs = ["@produit.productName","@stockResto.quantite","@stockResto.stockMin","@stockResto.stockMax","@stockResto.stockAlerte","@stockResto.unite"];
+									
+									for(var i = 0; i < tabIndice.length; i++){
+										$('<input />', {
+				    						id : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    						class : tabIndice[i], 
+				    						name : tabIndice[i] +"lineUpdated"+ compteurLigne,
+				    						value : tabValeurs[i]
+										}).css({color: couleur,
+											    border: "5px solid "+couleur}).appendTo($("#form1"));	
+										if(i == tabIndice.length - 1){
+											$('<br>').appendTo($("#form1"));
+											$('<br>').appendTo($("#form1"));
+										}
+									}
+									
+								}
+								
+							}
+						}
+						
+						
+					</script>
+		
+			<fieldset>
+			Code couleur :<br>
+				<canvas id="myCanvas" width="200" height="0" style="border:1px solid green;"> </canvas>  Stock normal<br>
+				<canvas id="myCanvas" width="200" height="0" style="border:1px solid orange;"> </canvas>  Stock faible<br>
+				<canvas id="myCanvas" width="200" height="0" style="border:1px solid red;"> </canvas>  Stock critique, en-dessous du seuil ou nul<br>
+			</fieldset>
+		</form>
+	
+	@views.html.footer()
+	
+	</body>
+	
+</html>
