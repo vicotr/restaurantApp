@@ -1,4 +1,4 @@
-@(plats: List[Plat], platProduits: List[PlatProduit],stockRestos: List[StockResto], quantitePlat: Int,produits: List[Produit])
+@(plats: List[Plat], platProduits: List[PlatProduit], stockRestos: List[StockResto], produits: List[Produit])
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,89 +15,32 @@
 				<div id="plats" class="form-group">
 				</div>
 				<br><br><br>
-				<div class="row">
-						<a href="@routes.Application.formulairePlatBis()"><input type="submit" value="Valider"  class="btn btn-success btn btn-success col-md-2 col-md-offset-4" /></a><br>
-				</div>
+	
 			</div>
 			
 			<script>
+			var line = 0;
+			var classeInput = "", tabClass="", index = "", platQuantite = 0;
+			var stockRestoQuantite = 0, stockRestoAlerte = 0, stockRestoMinimum = 0, stockRestoUnite = 0;
+			var platProduitQuantite = 0, platProduitUnite = "";
+			var poduitName = "";
+			var quantiteTest = 0;
+			var message = "";
 			
-					var platCompared = 0;
-					var stockRestoUnite = "", stockRestoQuantite = 0, stockRestoPid = 0,stockRestoAlerte = 0, stockCritique = 0;
-					var platProduitUnite = "", platProduitQuantite = 0, platProduitPid = 0;
-					var nomProduit = "";
-					var alerte = "";
-					var alerteTableau = "";
-					var message = "";
-					
-					@if(quantitePlat != 0){
-						console.log("alajazam");
-						@if(stockRestos != null){
-							@if(platProduits != null){
-								@for(platProduit <- platProduits){
-									platProduitUnite = platProduit.unite;
-									platProduitQuantite = platProduit.quantie;
-									platProduitPid = platProduit.produit.pid;
-									
-									@for(stockResto <- stockRestos){
-										
-										stockRestoUnite = stockResto.unite;
-										stockRestoQuantite = stockResto.quantie;
-										stockRestoPid = stockResto.produit.pid;
-										stockRestoAlerte = stockResto.stockAlerte;
-										stockRestoCritique = stockResto.stockMin
-										if(platProduitPid == stockRestoPid){
-											
-											@for(produit <- produits){
-												
-												if(platProduitPid == produit.pid){
-													
-													if(platProduitQuantite > stockRestoQuantite){
-														alerte = "impossible";
-														nomProduit = produit.productName;
-														alerteTableau.push(alerte,nomProduit);
-													}else{
-														if(platProduitQuantite < stockRestoAlerte){
-															alerte = "alerte";
-															nomProduit = produit.productName;
-															alerteTableau.push(alerte,nomProduit);
-															if(platProduitQuantite < stockRestoCritique){
-																alerte = "critique"
-																nomProduit = produit.productName;
-																alerteTableau.push(alerte,nomProduit);
-															}
-														}else{
-															alerte = "ok";
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					
-					for(var i = 0; i < alerteTableau.length; i = i +2){
-						if(alerteTableau[i] == "impossible"){
-							message += "Impossible de préparer le plat car il n'y a pas assez de" + alerteTableau[i+1];
-							if(alerteTableau[i] == "alerte" || alerteTableau[i] == "critique"){
-								message += "Vous pouvez préparer ce plat en utilisant les stocks" + alerte + "de l'ingrédient" + alerteTableau[i+1];
-							}		
-						}	
-					}
-					
-					$('<h1 />').text(message)
-								.appendTo($(".container"));
-		
-			
-					
-				var line = 0, quantitePlatBis = "",classInput = "", indice = "";
+			// On parcourt a l'aide de la boucle for, les plats enregistres.
+			@for(plat <- plats){
 				
-				@for(plat <- plats){
-					
-					line ++;
+				// Pour chaque nouveau plat, on augmente le nombre de lignes;
+				line ++;
+				
+				// Pour chaque plat, on ajoute un div representant la ligne associee au plat
+				$('<div />',{
+								id: "row" + line,
+								class: "row form-group"
+							}).appendTo($("#plats"));
+				
+				// On ajoute les div "colonne" qui vont permettre de determiner la largeur des inputs que l'on va rajouter;
+				for(var i = 0; i < 3; i++){
 					
 					$('<div />',{
 									id: "row" + line,
@@ -127,36 +70,99 @@
 												id: "quantitePlat" + line
 										  }).appendTo($("#col" + i + line));
 							
-						}else{
-							
-							/*$('<a />',{
-								href: "",
-								id: "href" + line
-						  	}).appendTo($("#col" + i + line));	*/	
+						}else{	
 				
 							$('<input />',{
 									type: "button",
 									value: "Verifier",
 									class: "btn btn-warning" + " " + line
 							}).click(function(){
-							    quantitePlatBis = $("#quantitePlat").val();
-								classInput = this.class;
-								console.log(classInput);
-								indice = classInput.split(" ");
-								//console.log(classInput);
-								//$("#href" + indice[2]).attr("href","@routes.Application.verificationPlat(plat.plid,"+quantitePlatBis+")");
-								
+									
+										message = "";
+							  
+										// On récupère le nombre de plat saisi par l'utilisateur.
+										classeInput = $(this).attr('class');
+										tabClass = classeInput.split(" ");
+										index = tabClass[2];
+										
+										platQuantite = $("#quantitePlat" + index).val();
+										
+										// On analyse tous les platProduits;
+										@for(platProduit <- platProduits){
+											// Si le platProduit est associé au plat;
+											@if(platProduit.plat.plid == plat.plid){
+												
+												platProduitQuantite = @platProduit.quantite;
+												platProduitUnite = "@platProduit.unite";
+												// On parcourt tous les stockRestos;
+												@for(stockResto <- stockRestos){
+													// Si le stockResto correspond au platProduit;
+													@if(platProduit.produit.pid == stockResto.produit.pid){
+														
+														stockRestoQuantite = @stockResto.quantite;
+														stockRestoAlerte = @stockResto.stockMin;
+														stockRestoUnite = "@stockResto.unite";
+														// On parcourt les produits;
+														@for(produit <- produits){
+															// si le produit courant est associé au produit du platProduit, 
+															@if(produit.pid == stockResto.produit.pid){
+																
+																poduitName = "@produit.productName";
+																quantiteTest = platQuantite * platProduitQuantite;
+																// Ici conversion d'unité à faire.
+																if(stockRestoUnite == "piece" || stockRestoUnite == platProduitUnite){
+																	console.log("rien à faire.");	
+																}else if(stockRestoUnite != platProduitUnite){
+																	if(stockRestoUnite == "gramme" || stockRestoUnite == "litre"){
+																		quantiteTest = quantiteTest * 1000;
+																	}else{
+																		stockRestoUnite = stockRestoUnite * 1000;
+																	}	
+																}
+																
+																// Construction du message à afficher;
+																if(quantiteTest > stockRestoQuantite){// Si pas assez d'aliments;
+																	message += "Vous ne pouvez pas preparer " + platQuantite + " @plat.platName car vous n'avez pas assez de " + poduitName + ".\n";
+																}else if(quantiteTest < stockRestoAlerte){// Si le seuil d'alerte est dépassé;
+																	message += "Vous pouvez preparer " + platQuantite + " @plat.platName mais en depassant le seuil d'alerte de l'aliment " + poduitName + ".\n";  
+																}else if(quantiteTest < stockRestoMinimum){ // Si le seuil critique est dépassé;
+																	message += "Vous pouvez preparer " + platQuantite + " @plat.platName mais en depassant le seuil critique de l'aliment " + poduitName + ".\n";
+																}else{ // Si tout va bien;
+																	console.log("ok");
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+
+										console.log(message);
+										$("<div />",{id: "messageVerification"}).text(message)
+																			.appendTo($(".container"));
+										
+										$('<br>').appendTo($("#messageVerification"));
+										
+										$('<input />',{
+														type: "button",
+														value: "supprimer",
+														class: "btn btn-warning"
+													  }).click(function(){
+																	$("#messageVerification").remove();
+																}).appendTo($("#messageVerification"));
+									 
 							}).appendTo($("#col" + i + line));
 				
 						}
 						
 					}
 				}
+			}
 		
 		</script>
 			
 		}else{
-			<h1>Il y a un probleme.</h1>
+			<h1>Vous devez créer des plats.</h1>
 		}
 		
 		@views.html.footer()

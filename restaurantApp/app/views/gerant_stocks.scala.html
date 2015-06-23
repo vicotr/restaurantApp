@@ -43,11 +43,11 @@
 								   							  .appendTo($("#col"+i+"Indice"));
 						}
 						
-						@for(produit <- produits){// pour chaque produit stocké dans la base de données;
+						@for(produit <- produits){// pour chaque produit stocke dans la base de donnees;
 							
-							@for(stockResto <- stockRestos){// Pour chaque stock stocké dans la base de données;
+							@for(stockResto <- stockRestos){// Pour chaque stock stocke dans la base de donnees;
 								
-								@if(stockResto.produit.pid == produit.pid){ // Si le stock se réfère au produit courant alors on l'affiche, sinon on ne fait rien;
+								@if(stockResto.produit.pid == produit.pid){ // Si le stock se refere au produit courant alors on l'affiche, sinon on ne fait rien;
 									
 									quantite = @stockResto.quantite;
 									minimum = @stockResto.stockMin; 
@@ -110,7 +110,7 @@
 							}
 						}
 						
-						$("#linesUpdated").val(compteurLigne); // on indique le nombre de stocks affichés;
+						$("#linesUpdated").val(compteurLigne); // on indique le nombre de stocks affiches;
 						
 					</script>
 					
@@ -142,9 +142,9 @@
 				
 					<div class="row">
 					
-					<h2> Ajouter un nouvel ingrédient :</h2> <br>
+					<h2> Ajouter un nouvel ingredient :</h2> <br>
 						<div class="col-md-2">
-							<label for="ingredientlineCreated1">Ingrédient :</label><br>
+							<label for="ingredientlineCreated1">Ingredient :</label><br>
 							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
 								@for(produit <- produits) {
 									<option value="@produit.pid">@produit.productName</option>
@@ -153,7 +153,7 @@
 						</div>
 							
 						<div class="col-md-2">
-							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" placeholder="Quantité" class="form-control" />
+							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" placeholder="Quantite" class="form-control" />
 						</div>
 						
 						<div class="col-md-2">
@@ -169,7 +169,7 @@
 						</div>
 						
 						<div class="col-md-2">
-							<label for="unitelineCreated1">Unité :</label><br>
+							<label for="unitelineCreated1">Unite :</label><br>
 							<select name="unitelineCreated1" id="unitelineCreated1">
 								<option value="piece">piece</option>
 								<option value="gramme">gramme</option>

@@ -4,10 +4,15 @@ import java.util.List;
 
 import com.avaje.ebean.Ebean;
 
+import models.Fonction;
 import models.Plat;
 import models.PlatProduit;
 
 public class PlatProduitQuery {
+		
+	public static List<PlatProduit> getItem(){
+		return PlatProduit.find.all();
+	}
 	
 	public static List<PlatProduit> getPlatProduitsBis(int plid){
 		

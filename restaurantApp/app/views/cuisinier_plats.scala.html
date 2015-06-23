@@ -25,19 +25,19 @@
 		
 		var line = 0;
 		
-		// On parcourt à l'aide de la boucle for, les plats enregistrés.
+		// On parcourt a l'aide de la boucle for, les plats enregistres.
 		@for(plat <- plats){
 			
 			// Pour chaque nouveau plat, on augmente le nombre de lignes;
 			line ++;
 			
-			// Pour chaque plat, on ajoute un div représentant la ligne associée au plat
+			// Pour chaque plat, on ajoute un div representant la ligne associee au plat
 			$('<div />',{
 							id: "row" + line,
 							class: "row form-group"
 						}).appendTo($("#plats"));
 			
-			// On ajoute les div "colonne" qui vont permettre de déterminer la largeur des inputs que l'on va rajouter;
+			// On ajoute les div "colonne" qui vont permettre de determiner la largeur des inputs que l'on va rajouter;
 			for(var i = 0; i < 2; i++){
 				
 				$('<div />',{

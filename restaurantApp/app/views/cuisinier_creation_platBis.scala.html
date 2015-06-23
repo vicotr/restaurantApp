@@ -59,16 +59,16 @@
 			value: line
 		  }).appendTo($("#nouvelIngredient"));
 		
-		// On définit la foncton clicked, appelée à chaque fois que l'on clique sur le bouton "Nouvel Ingrédient".
+		// On definit la foncton clicked, appelee a chaque fois que l'on clique sur le bouton "Nouvel Ingredient".
 		function clicked(){
 			
 			// on ajoute une ligne au formulaire;
 			line ++;
 			
-			// On actualise le nombre de lignes à chaque fois que l'on appelle la fonction
+			// On actualise le nombre de lignes a chaque fois que l'on appelle la fonction
 			$("#nombreLignes").val(line);
 			
-			//On ajoute un div de type form-group pour séparer les lignes
+			//On ajoute un div de type form-group pour separer les lignes
 			$('<div />', {
 				id : "lineGroup"+line,
 				class : "form-group", 
@@ -80,10 +80,10 @@
 				class: "row",
 			}).appendTo($('#lineGroup'+line));
 			
-			// A l'aide de cette boucle, on ajoute les inputs à la ligne un par un;
+			// A l'aide de cette boucle, on ajoute les inputs a la ligne un par un;
 			for(var i = 0; i < 3; i++){
 				
-				// On ajoute un div qui permet de définir la largeur de l'élément que l'on va ajouter à la ligne;
+				// On ajoute un div qui permet de definir la largeur de l'element que l'on va ajouter a la ligne;
 				$('<div />', {
 					class: "col-md-3",
 					id: "div"+line+i,
@@ -92,14 +92,14 @@
 				//Si c'est le premier input que l'on ajoute
 				if(i == 0){
 					
-					// On ajoute un select qui va permettre de choisir la catégorie de l'élément que l'on va ajouter; 
+					// On ajoute un select qui va permettre de choisir la categorie de l'element que l'on va ajouter; 
 					$('<select />', {
 						name: tab[i] + line,
 						class: line + "||" + i,
 						id: tab[i] + line
-					}).change(function(){ // Si la valeur du select a changé,
+					}).change(function(){ // Si la valeur du select a change,
 									
-									// On récupère la classe de l'attribut courant qui contient le numéro de la ligne et l'index "i";
+									// On recupere la classe de l'attribut courant qui contient le numero de la ligne et l'index "i";
 									classLine = $(this).attr('class').split("||");
 									iLine = classLine[1]
 									indexLine = classLine[0];
@@ -127,12 +127,12 @@
 										id: "produit" + indexLine
 									}).appendTo($("#colProduit" + indexLine));
 									
-									// On récupère l'id permettant d'identifier la nouvelle catégorie que l'utilisateur a sélectionnée;
+									// On recupere l'id permettant d'identifier la nouvelle categorie que l'utilisateur a selectionnee;
 									catid = $("#" + tab[iLine] + indexLine).val();
 									
 									// On parcourt la liste des produits
 									@for(produit <- produits){
-										// Si l'id de la catégorie correspond à l'id stockée dans le produit, on affiche une option.
+										// Si l'id de la categorie correspond a l'id stockee dans le produit, on affiche une option.
 										if(catid == @produit.categorie.catid){
 											$('<option />', { value: "@produit.pid" }).html("@produit.productName")
 											  													  .appendTo($("#produit"+indexLine));	

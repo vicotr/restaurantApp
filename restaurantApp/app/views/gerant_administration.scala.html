@@ -8,26 +8,42 @@
 	</head>
 	
 	<body>
-	@views.html.gerant_header()
-		
-			<div class="container">
+		@views.html.gerant_header()
+	
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
-	      			<div class="main">
-	              		 <div class="row">
-		
-		<h1> Liste des utilisateurs du site </h1>
-
-			@for(utilisateur <- utilisateurs) {
+				
+					<h1> Administration </h1>	
+					<br/>
+					
+				</div>
+				
+				<div class="col-xs-12">
+				
+					<h2> Liste des utilisateurs du site </h2>
+					<br/>
+					
+					@for(utilisateur <- utilisateurs) {
 				@for(fonction <- fonctions) {
 					@if(fonction.fid == utilisateur.fonction.fid) {
   						@utilisateur.pseudo : @fonction.activity <a href="@routes.Application.supprimerMembre(utilisateur.uid)"><input type="button" value="Supprimer" /></a><br>
 					}
 				}
 			}
+			
+			<br/>
 				<a href="../gerant_nouveau_membre"><input type="button" value="Nouveau membre" class="btn btn-success btn btn-success" /></a>
 
+		
+				</div>
+			
+			</div>
+	
+		</div>
+	
 		@views.html.footer()
+		
 	</body>
 
 </html>

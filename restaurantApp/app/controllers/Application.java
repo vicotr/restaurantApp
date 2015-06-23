@@ -52,6 +52,7 @@ import views.html.gerant_accueil;
 import views.html.restaurant_mon_compte;
 import views.html.creationIngredient;
 import views.html.cuisinier_stocks;
+import views.html.serveur_accueil;
 
 public class Application extends Controller {
 	
@@ -245,6 +246,11 @@ public class Application extends Controller {
 	// =========================================
 	
 	public static Result creationIngredientTraitement(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		DynamicForm nouveauProduit = Form.form().bindFromRequest();
 	    
 	    String nom = nouveauProduit.get("nom");
@@ -265,7 +271,7 @@ public class Application extends Controller {
 			    Ebean.save(categorie);
 			}
 		}
-	    
+		
 		if(!nom.equals("")){
 			if(!catidString.equals("")){
 				
@@ -282,6 +288,7 @@ public class Application extends Controller {
 		}
 	    
 	    return redirect("/creationIngredient");
+        }
 	}
 	
 	// Cuisinier
@@ -324,11 +331,22 @@ public class Application extends Controller {
 	}
 	
 	public static Result listePlats(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<Plat> plats = PlatQuery.getItem();
 		return ok(cuisinier_plats.render(plats));	
+        }
 	}
 	
 	public static Result formulairePlat(int plid){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		List<PlatProduit> platProduits = null;
 		Plat plat = null;
 		if(plid != 0){
@@ -339,13 +357,20 @@ public class Application extends Controller {
 		List<Categorie> categories = CategorieQuery.getItem();
 		List<Produit> produits = ProductQuery.getItem();
 		return ok(cuisinier_creation_plat.render(produits,categories,platProduits,plat));
+        }
 	}
 	
 	public static Result formulairePlatBis(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		List<Categorie> categories = CategorieQuery.getItem();
 		List<Produit> produits = ProductQuery.getItem();
 		return ok(cuisinier_creation_platBis.render(produits,categories));
+        }
 	}
 	
 	public static Result cuisinierAlertes(){
@@ -364,35 +389,20 @@ public class Application extends Controller {
 	}
 	
 	public static Result cuisinierPlatsCuisines(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
-		List<Plat> plats = PlatQuery.getItem();
-		List<StockResto> stockRestos = null;
-		List<PlatProduit> platProduits = null;
-		List<Produit> produits = null;
-		int quantitePlat = 0;
-		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos,quantitePlat,produits));
-	}
-	
-	public static Result verificationPlat(int plid, String quantitePlat){
-		
-		int quantitePlatBis = Integer.parseInt(quantitePlat);
-		ArrayList<StockResto> stockRestos = new ArrayList<StockResto>();
-		ArrayList<Produit> produits = new ArrayList<Produit>();
-		List<PlatProduit> platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
-		PlatProduit platProduit = null;
-		
-		 for(int i = 0; i < platProduits.size(); i++){
-			 platProduit = platProduits.get(i);
-			 
-			 StockResto stockResto = StockRestoQuery.getStockResto(platProduit.produit.pid);
-			 stockRestos.add(stockResto);
-			 
-			 Produit produit = ProductQuery.getProduit(platProduit.produit.pid);
-			 produits.add(produit);
-		 }
-		
-		List<Plat> plats = PlatQuery.getItem();
-		return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos,quantitePlatBis,produits));
+			List<Plat> plats = PlatQuery.getItem();
+			List<StockResto> stockRestos = StockRestoQuery.getItem();
+			List<PlatProduit> platProduits = PlatProduitQuery.getItem();
+			List<Produit> produits = ProductQuery.getItem();
+			
+			return ok(cuisinier_plats_cuisines.render(plats,platProduits,stockRestos,produits));
+			
+        }
 	}
 	
 	
@@ -400,6 +410,12 @@ public class Application extends Controller {
 	// =========================================================
 
 		public static Result creationPlat(){
+			
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			DynamicForm nouveauPlat = Form.form().bindFromRequest();
 			String platName = nouveauPlat.get("plat");
@@ -440,9 +456,15 @@ public class Application extends Controller {
 			}
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 		
 		public static Result creationPlatBis(){
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
 			
 			DynamicForm nouveauPlat = Form.form().bindFromRequest();
 			String platName = nouveauPlat.get("plat"); // On récupère le nom du plat;
@@ -488,26 +510,43 @@ public class Application extends Controller {
 			}
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 	
 		public static Result supprimerIngredient(int plid, int pid){
-				
-			List<PlatProduit> platProduitsBis = PlatProduitQuery.deletePlatProduits(pid);
-									
-			Ebean.delete(platProduitsBis);
 			
-			return formulairePlat(plid);
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
+	        	
+		        List<PlatProduit> platProduitsBis = PlatProduitQuery.deletePlatProduits(pid);
+										
+				Ebean.delete(platProduitsBis);
+				
+				return formulairePlat(plid);
+				
+	        }
 		}
 		
 		public static Result supprimerPlat(int plid){
 			
-			List<PlatProduit> platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
+			boolean check = checkSession();
+	        if (check== false){
+	            return ok(
+	                    login.render(form(Login.class)));
+	        }else{
+			
+	        List<PlatProduit> platProduits = PlatProduitQuery.getPlatProduitsBis(plid);
+
 			Ebean.delete(platProduits);
 		
 			Plat plat = PlatQuery.getPlat(plid);
 			Ebean.delete(plat);
 			
 			return redirect("../cuisinier_plat");
+	        }
 		}
 	// ==========================================================================
 	// ==========================================================================
@@ -516,6 +555,12 @@ public class Application extends Controller {
 	//Méthodes POST
 	
 	public static Result nouveauMembreTraitement() throws NoSuchAlgorithmException {
+		
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		Form<NouvelUtilisateur> nouvelUtilisateurForm = form(NouvelUtilisateur.class).bindFromRequest();
 		String pseudo = nouvelUtilisateurForm.get().identifiant;
 		String mail = nouvelUtilisateurForm.get().mail;
@@ -556,9 +601,15 @@ public class Application extends Controller {
 		}
 		
 		return redirect("/gerant_administration");
+        }
 	}
 	
 	public static Result traitementDemande(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		DynamicForm demandeForm = Form.form().bindFromRequest();
 		int nombreLignes = Integer.parseInt(demandeForm.get("nombreLignes"));
 		String commentaires = demandeForm.get("commentaires");
@@ -632,6 +683,7 @@ public class Application extends Controller {
 		}
 
 		return redirect("/gerant_demande_reapprovisionnement");
+        }
 	}
 	
 	public static Result authenticate() throws NoSuchAlgorithmException {
@@ -640,7 +692,7 @@ public class Application extends Controller {
 	    String password = loginForm.get().password;
 	    int fid = 0;
 	    
-	   // Cryptege
+	  /* // Cryptege
 	    MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
  
@@ -653,7 +705,7 @@ public class Application extends Controller {
         }
  
         password = sb.toString();
-        //Fin cryptage
+        //Fin cryptage*/
         
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));
@@ -666,17 +718,23 @@ public class Application extends Controller {
 	        fid = UtilisateurQuery.getfonction(email);
 	        
 		    if(fid==1){
-		    	return redirect(routes.Application.index());
+		    	return redirect(routes.Application.gerantAccueil());
 		    } else if (fid==2){
 		      	return redirect(routes.Application.cuisinierAcceuil());
-		    } else {
-		    	return redirect(routes.Application.authenticate());
+		    } else if (fid==3) {
+		    	return redirect(routes.Application.serveurAccueil());
+		    }else{
+		    	 return badRequest(login.render(loginForm));
 		    }
-	    }
-	    
+	    } 
 	}
 
 	public static Result supprimerMembre(int id){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		Utilisateur utilisateur = UtilisateurQuery.getUtilisateur(id);
 		Ebean.delete(utilisateur);
@@ -684,17 +742,50 @@ public class Application extends Controller {
 		List<Fonction> newFonctions = FonctionQuery.getItem();
 		List<Utilisateur> utilisateurs = UtilisateurQuery.getItem();
 		return ok(gerant_administration.render(utilisateurs,newFonctions));
+        }
 	}
 	
 	public static Result supprimerStock(int srid){
-		
-		StockResto stock = StockRestoQuery.getStockRestoSrid(srid);
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+        StockResto stock = StockRestoQuery.getStockRestoSrid(srid);
+
 		Ebean.delete(stock);
 		
 		return redirect("/gerant_stocks");
+        }
+	}
+	
+	public static Result serveurAccueil(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{		
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+    		int alertes = 0;
+    		for(int i = 0; i < stockRestos.size(); i++){
+    			StockResto stockResto = stockRestos.get(i);
+    			if(stockResto.quantite <= stockResto.stockAlerte){
+    				alertes ++;
+    			}
+    		}
+    		return ok(
+				serveur_accueil.render(alertes)
+				);
+        }
 	}
 	
 	public static Result modificationStock(){
+		
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
 		
 		DynamicForm stockForm = Form.form().bindFromRequest();
 		int linesUpdated = Integer.parseInt(stockForm.get("linesUpdated"));
@@ -754,9 +845,8 @@ public class Application extends Controller {
 			}
 		
 		
-			List<Produit> list_produit = ProductQuery.getItem();
-	        List<StockResto> stockRestos = StockRestoQuery.getItem();
-	    	return ok(gerant_stocks.render(list_produit,stockRestos));
+			return redirect("/gerant_stocks");
+        }
 	
 	}
 	

@@ -4,7 +4,7 @@
 <html>
 
 	<head>
-		<title>Demande de réapprovisionnement</title>
+		<title>Demande de reapprovisionnement</title>
 	</head>
 
 	<body>
@@ -20,13 +20,13 @@
 	      			<div class="main">
 	              		 <div class="row">
 							 <div class="col-xs-4 col-sm-6 col-sm-offset-1">
-							<h1> Demande de réapprovisionnement </h1>
+							<h1> Demande de reapprovisionnement </h1>
 				
-								<h2>Informations pour la demande de réapprovisionnement</h2>
+								<h2>Informations pour la demande de reapprovisionnement</h2>
 								<form>
 									<div class="form-group">
-									<input name="email" placeholder="Adresse mail du gérant" class="form-control" type="email"id="email" /> </br>
-									<input name="email" placeholder="Adresse mail de la maison mère" class="form-control" type="email" id="email"/> </br>
+									<input name="email" placeholder="Adresse mail du gerant" class="form-control" type="email"id="email" /> </br>
+									<input name="email" placeholder="Adresse mail de la maison mere" class="form-control" type="email" id="email"/> </br>
 									
 									<div id = "ingredients">
 									
@@ -38,10 +38,10 @@
 												var compteurLigne = 0;
 												var commande;
 												
-												@for(produit <- produits){// pour chaque produit stocké dans la base de données;
-													@for(stockResto <- stockRestos){// Pour chaque stock stocké dans la base de données;
+												@for(produit <- produits){// pour chaque produit stocke dans la base de donnees;
+													@for(stockResto <- stockRestos){// Pour chaque stock stocke dans la base de donnees;
 														
-														@if(stockResto.produit.pid == produit.pid){ // Si le stock se réfère au produit courant alors on l'affiche, sinon on ne fait rien;
+														@if(stockResto.produit.pid == produit.pid){ // Si le stock se refere au produit courant alors on l'affiche, sinon on ne fait rien;
 															
 															quantite = @stockResto.quantite;
 															minimum = @stockResto.stockMin;
@@ -148,6 +148,7 @@
 									<textarea id="commentaires" name="commentaires"  rows="3" cols="30" class="form-control"> </textarea>
 			
 									
+									</br>
 									<button class="btn btn-success btn btn-success">Envoyer la demande</button>
 									</div>
 								</form>
