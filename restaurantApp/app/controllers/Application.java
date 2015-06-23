@@ -52,6 +52,7 @@ import views.html.restaurant_mon_compte;
 import views.html.creationIngredient;
 import views.html.cuisinier_stocks;
 import views.html.serveur_accueil;
+import views.html.*;
 
 public class Application extends Controller {
 	
@@ -434,6 +435,17 @@ public class Application extends Controller {
         }
 	}
 	
+	public static Result cuisinierCompte(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+		return ok(
+				cuisinier_mon_compte.render()
+				);
+        }
+	}
 	
 	// POST
 	// =========================================================
@@ -815,6 +827,46 @@ public class Application extends Controller {
     		}
     		return ok(
 				serveur_accueil.render(alertes)
+				);
+        }
+	}
+	
+	public static Result serveurStock(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+		List<Produit> list_produit = ProductQuery.getItem();
+		List<StockResto> stockRestos = StockRestoQuery.getItem();
+		return ok(serveur_stocks.render(list_produit, stockRestos));
+        }
+	}
+	
+	public static Result serveurAlertes(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+        	List<StockResto> stockRestos = StockRestoQuery.getItem();
+        	List<Produit> produits = ProductQuery.getItem();
+        	return ok(
+				serveur_alertes.render(stockRestos,produits)
+				);
+        }
+		
+	}
+	
+	
+	public static Result serveurCompte(){
+		boolean check = checkSession();
+        if (check== false){
+            return ok(
+                    login.render(form(Login.class)));
+        }else{
+		return ok(
+				serveur_mon_compte.render()
 				);
         }
 	}
