@@ -692,7 +692,7 @@ public class Application extends Controller {
 	    String password = loginForm.get().password;
 	    int fid = 0;
 	    
-	  /* // Cryptege
+	   // Cryptege
 	    MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
  
@@ -705,7 +705,7 @@ public class Application extends Controller {
         }
  
         password = sb.toString();
-        //Fin cryptage*/
+        //Fin cryptage
         
 	    if (userLog.authen(email, password)==null) {
 	        return badRequest(login.render(loginForm));

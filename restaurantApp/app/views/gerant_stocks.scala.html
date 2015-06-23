@@ -22,26 +22,7 @@
 						var tabIndice = ["ingredient","quantite","minimum","maximum","alerte","unite"];
 						var tabValeurs = [];
 						var compteurLigne = 0;
-						
-						for(var i = 0; i < tabIndice.length; i++){
-							$('<div />', {
-	    						id : "form-groupIndice",
-	    						class : "form-group", 
-							}).appendTo($('#id0'));
-						
-							$('<div />', {
-								id: "rowIndice",
-								class: "row",
-							}).appendTo($("#form-groupIndice"));
-							
-							$('<div />', {
-								class: "col-md-2",
-								id: "col"+i+"Indice",
-							}).appendTo($("#rowIndice"));
-							
-							$('<label />', {class : "indice"}).text(tabIndice[i])
-								   							  .appendTo($("#col"+i+"Indice"));
-						}
+					
 						
 						@for(produit <- produits){// pour chaque produit stocke dans la base de donnees;
 							
@@ -81,6 +62,14 @@
 												class: "col-md-2",
 												id: "col"+i+compteurLigne,
 											}).appendTo($("#row"+compteurLigne));
+											
+											$('<label />', {
+												for: tabIndice[i],
+												id : 'label'+compteurLigne+i,	
+											}).html(tabIndice[i]+":")
+											  .appendTo($("#col"+i+compteurLigne));
+								
+											$('<br>').appendTo($("#col"+i+compteurLigne));
 											
 											$('<input />', {
 	    										id : tabIndice[i] +"lineUpdated"+ compteurLigne,
@@ -132,61 +121,15 @@
 			<br><br><br>
 				
 			<div id="id2">
-		
-				<input type="hidden" name="linesCreated" id="linesCreated" value="" />
-				<script>
-					var line = 1;
-					$('#linesCreated').val(line);
-				</script> 
-				<div class="form-group">
-				
-					<div class="row">
-					
-					<h2> Ajouter un nouvel ingredient :</h2> <br>
-						<div class="col-md-2">
-							<label for="ingredientlineCreated1">Ingredient :</label><br>
-							<select name="ingredientlineCreated1" id="ingredientlineCreated1">
-								@for(produit <- produits) {
-									<option value="@produit.pid">@produit.productName</option>
-								}
-							</select>
-						</div>
-							
-						<div class="col-md-2">
-							<input 7type="text" id="quantitelineCreated1" name="quantitelineCreated1" placeholder="Quantite" class="form-control" />
-						</div>
-						
-						<div class="col-md-2">
-							<input type="text" id="minimumlineCreated1" name="minimumlineCreated1" placeholder="Minimum"class="form-control" />
-						</div>
-						
-						<div class="col-md-2">
-							<input type="text" id="maximumlineCreated1" name="maximumlineCreated1" placeholder="Maximum"class="form-control" />
-						</div>
-						
-						<div class="col-md-2">
-							<input type="text" id="alertelineCreated1" name="alertelineCreated1" placeholder="Seuil d'alerte"class="form-control" />
-						</div>
-						
-						<div class="col-md-2">
-							<label for="unitelineCreated1">Unite :</label><br>
-							<select name="unitelineCreated1" id="unitelineCreated1">
-								<option value="piece">piece</option>
-								<option value="gramme">gramme</option>
-								<option value="litre">litre</option>
-								<option value="kilogramme">kilogramme</option>
-								<option value="kilolitre">kilolitre</option>
-							</select>
-						</div>
-					
-					</div>
-				
-				</div>
+				<input type="hidden" name="linesCreated" id="linesCreated" value="" />		
+			</div>
+			
+			<div class="form-group">
+				<input type="button" value="Nouvel ingredient"  class="btn btn-success" onclick="clicked()" />
 			</div>
 				
 			<div class="form-group">
-				<input type="submit" value="Valider" class="btn btn-success btn btn-success" id="validation" />
-				<input type="button" value="Nouvel ingredient"  class="btn btn-success btn btn-success" onclick="clickedBis()" /><br><br>
+				<input type="submit" value="Valider" class="btn btn-success" id="validation" />
 			</div>
 	}			
 		@views.html.footer()
@@ -197,10 +140,10 @@
 	
 		
 	<script>
-		
-		var unites = ["piece,gramme,litre,kilogramme","kilolitre"];
+		var line = 0;
+		var unites = ["piece","gramme","litre","kilogramme","kilolitre"];
 	
-		function clickedBis(){
+		function clicked(){
 			line ++;
 			
 			$('<div />', {
@@ -211,19 +154,25 @@
 							id: "bloc"+line,
 							class: "row",
 						}).appendTo($('#blocv'+line));
+			
+			console.log(line);
 
 			for(var i = 0; i < 6; i++){
 				console.log(i);
+				
+				$('<div />', {
+								class: "col-md-2",
+								id: "div"+line+i,
+							 }).appendTo($("#bloc"+line));
+		
 				if(i == 0){
-					
-					$('<div />', {
-									class: "col-md-2",
-									id: "div"+line+i,
-								}).appendTo($("#bloc"+line));
+					console.log(i);
+									
 					$('<label />', {
-									for: tabIndice[i]+line+i,
-									id : 'label'+line+i,	
-								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+										for: tabIndice[i]+line+i,
+										id : 'label'+line+i,	
+									}).html(tabIndice[i]+":")
+									  .appendTo($("#div"+line+i));
 					
 					$('<br>').appendTo($("#div"+line+i));
 					
@@ -243,10 +192,6 @@
 					
 				}else if(i == 5){
 					
-					$('<div />', {
-									class: "col-md-2",
-									id: "div"+line+i,
-								}).appendTo($("#bloc"+line));
 					$('<label />', {
 									for: tabIndice[i],
 									id : 'label'+line+i,	
@@ -261,24 +206,21 @@
 										id: tabIndice[i] + "lineCreated" + line,
 									} ).appendTo($("#div"+line+i));
 					
-					for(var i = 0; i < unites.length; i++){
+					for(var j = 0; j < unites.length; j++){
 						$('<option />', {
-											value: unites[i],
-											id: unites[i] + line,
-										}).html(unites[i])
+											value: unites[j],
+											id: unites[j] + line,
+										}).html(unites[j])
 										  .appendTo($("#"+tabIndice[i]+"lineCreated"+line));
 					}
 					
 				}else{
 					
-					$('<div />', {
-									class: "col-md-2",
-									id: "div"+line+i,
-								}).appendTo($("#bloc"+line));
 					$('<label />', {
 									for: tabIndice[i],
 									id : "label"+line+i,	
-								}).html(tabIndice[i]+":").appendTo($("#div"+line+i));
+								}).html(tabIndice[i]+":")
+								  .appendTo($("#div"+line+i));
 					
 					$('<input />', {
 									name : tabIndice[i] + "lineCreated" + line,
